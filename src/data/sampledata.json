@@ -1,0 +1,28 @@
+{
+  "products": [
+    {
+      "name": "Diamond T-Shirt",
+      "price": 2400,
+      "description": "this is my favorite shirt",
+      "variants": ["XS", "S", "M", "L", "XL"],
+      "details": "Wash with care",
+      "images": ["http://lorempixel.com/480/640/fashion", "http://lorempixel.com/480/640/fashion", "http://lorempixel.com/480/640/fashion"]
+    },
+    {
+      "name": "Ruby T-Shirt",
+      "price": 3600,
+      "description": "this is my favorite shirt",
+      "variants": ["XS", "S", "M", "L", "XL"],
+      "details": "Wash with care",
+      "images": ["http://lorempixel.com/480/640/fashion", "http://lorempixel.com/480/640/fashion", "http://lorempixel.com/480/640/fashion"]
+    },
+    {
+      "name": "Sapphire T-Shirt",
+      "price": 2400,
+      "description": "this is my favorite shirt",
+      "variants": ["XS", "S", "M", "L", "XL"],
+      "details": "Wash with care",
+      "images": ["http://lorempixel.com/480/640/fashion", "http://lorempixel.com/480/640/fashion", "http://lorempixel.com/480/640/fashion"]
+    }
+  ]
+}
