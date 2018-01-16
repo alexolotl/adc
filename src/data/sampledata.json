@@ -6,7 +6,8 @@
       "description": "this is my favorite shirt",
       "variants": ["XS", "S", "M", "L", "XL"],
       "details": "Wash with care",
-      "images": ["http://lorempixel.com/480/640/fashion", "http://lorempixel.com/480/640/fashion", "http://lorempixel.com/480/640/fashion"]
+      "images": ["http://lorempixel.com/480/640/fashion/1", "http://lorempixel.com/480/640/fashion/1", "http://lorempixel.com/480/640/fashion/1"],
+      "slug": "shirt1"
     },
     {
       "name": "Ruby T-Shirt",
@@ -14,7 +15,8 @@
       "description": "this is my favorite shirt",
       "variants": ["XS", "S", "M", "L", "XL"],
       "details": "Wash with care",
-      "images": ["http://lorempixel.com/480/640/fashion", "http://lorempixel.com/480/640/fashion", "http://lorempixel.com/480/640/fashion"]
+      "images": ["http://lorempixel.com/480/640/fashion/2", "http://lorempixel.com/480/640/fashion/1", "http://lorempixel.com/480/640/fashion/1"],
+      "slug": "shirt2"
     },
     {
       "name": "Sapphire T-Shirt",
@@ -22,7 +24,79 @@
       "description": "this is my favorite shirt",
       "variants": ["XS", "S", "M", "L", "XL"],
       "details": "Wash with care",
-      "images": ["http://lorempixel.com/480/640/fashion", "http://lorempixel.com/480/640/fashion", "http://lorempixel.com/480/640/fashion"]
+      "images": ["http://lorempixel.com/480/640/fashion/3", "http://lorempixel.com/480/640/fashion/1", "http://lorempixel.com/480/640/fashion/1"]
+    },
+    {
+      "name": "Diamond T-Shirt",
+      "price": 2400,
+      "description": "this is my favorite shirt",
+      "variants": ["XS", "S", "M", "L", "XL"],
+      "details": "Wash with care",
+      "images": ["http://lorempixel.com/480/640/fashion/4", "http://lorempixel.com/480/640/fashion/1", "http://lorempixel.com/480/640/fashion/1"]
+    },
+    {
+      "name": "Ruby T-Shirt",
+      "price": 3600,
+      "description": "this is my favorite shirt",
+      "variants": ["XS", "S", "M", "L", "XL"],
+      "details": "Wash with care",
+      "images": ["http://lorempixel.com/480/640/fashion/5", "http://lorempixel.com/480/640/fashion/1", "http://lorempixel.com/480/640/fashion/1"]
+    },
+    {
+      "name": "Sapphire T-Shirt",
+      "price": 2400,
+      "description": "this is my favorite shirt",
+      "variants": ["XS", "S", "M", "L", "XL"],
+      "details": "Wash with care",
+      "images": ["http://lorempixel.com/480/640/fashion/6", "http://lorempixel.com/480/640/fashion/1", "http://lorempixel.com/480/640/fashion/1"]
+    },
+    {
+      "name": "Diamond T-Shirt",
+      "price": 2400,
+      "description": "this is my favorite shirt",
+      "variants": ["XS", "S", "M", "L", "XL"],
+      "details": "Wash with care",
+      "images": ["http://lorempixel.com/480/640/fashion/7", "http://lorempixel.com/480/640/fashion/1", "http://lorempixel.com/480/640/fashion/1"]
+    },
+    {
+      "name": "Ruby T-Shirt",
+      "price": 3600,
+      "description": "this is my favorite shirt",
+      "variants": ["XS", "S", "M", "L", "XL"],
+      "details": "Wash with care",
+      "images": ["http://lorempixel.com/480/640/fashion/8", "http://lorempixel.com/480/640/fashion/1", "http://lorempixel.com/480/640/fashion/1"]
+    },
+    {
+      "name": "Sapphire T-Shirt",
+      "price": 2400,
+      "description": "this is my favorite shirt",
+      "variants": ["XS", "S", "M", "L", "XL"],
+      "details": "Wash with care",
+      "images": ["http://lorempixel.com/480/640/fashion/9", "http://lorempixel.com/480/640/fashion/1", "http://lorempixel.com/480/640/fashion/1"]
+    },
+    {
+      "name": "Diamond T-Shirt",
+      "price": 2400,
+      "description": "this is my favorite shirt",
+      "variants": ["XS", "S", "M", "L", "XL"],
+      "details": "Wash with care",
+      "images": ["http://lorempixel.com/480/640/fashion/10", "http://lorempixel.com/480/640/fashion/1", "http://lorempixel.com/480/640/fashion/1"]
+    },
+    {
+      "name": "Ruby T-Shirt",
+      "price": 3600,
+      "description": "this is my favorite shirt",
+      "variants": ["XS", "S", "M", "L", "XL"],
+      "details": "Wash with care",
+      "images": ["http://lorempixel.com/480/640/fashion/0", "http://lorempixel.com/480/640/fashion/1", "http://lorempixel.com/480/640/fashion/1"]
+    },
+    {
+      "name": "Sapphire T-Shirt",
+      "price": 2400,
+      "description": "this is my favorite shirt",
+      "variants": ["XS", "S", "M", "L", "XL"],
+      "details": "Wash with care",
+      "images": ["http://lorempixel.com/480/640/fashion/1", "http://lorempixel.com/480/640/fashion/1", "http://lorempixel.com/480/640/fashion/1"]
     }
   ]
 }
