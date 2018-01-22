@@ -1,7 +1,12 @@
+@import url('https://fonts.googleapis.com/css?family=Cormorant+Unicase');
+/* @import url('https://fonts.googleapis.com/css?family=Vollkorn+SC');
+@import url('https://fonts.googleapis.com/css?family=EB+Garamond'); */
+@import url('https://fonts.googleapis.com/css?family=Cormorant+Garamond');
+
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: 'Cormorant Unicase', sans-serif;
 }
 
 ul, li {
