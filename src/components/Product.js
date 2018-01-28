@@ -1,19 +1,21 @@
 import React, { Component } from 'react';
-import data from 'data/sampledata.json'
 
 export default class Header extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      product: {variants: [], images: []},
-      size: null
+      product: {
+        images: [{src: null}],
+        variants: [{title: null}]
+      }
     }
   }
   componentDidMount() {
-    const product = data.products.find(elem => {
-      return elem.slug == this.props.match.params.product
-    })
-    this.setState({product: product})
+    this.props.client.product.fetch(this.props.match.params.product).then((product) => {
+        this.setState({product: product})
+
+        console.log(this.state)
+    });
   }
   selectSize = size => {
     this.setState({size: size})
@@ -22,8 +24,8 @@ export default class Header extends Component {
     return (
       <ul>
       {
-        variants.map(variant => (
-          <li onClick={() => this.selectSize(variant)}>{variant}</li>
+        variants.map((variant, i) => (
+          <li key={i} onClick={() => this.selectSize(variant)}>{variant.title}</li>
         ))
       }
       </ul>
@@ -32,10 +34,12 @@ export default class Header extends Component {
   render() {
     return (
       <div>
-        <img src={this.state.product.images[0]} />
-        <h1>{this.state.product.name}</h1>
+        <img src={this.state.product.images[0].src} />
+        <h1>{this.state.product.title}</h1>
         <p>{this.state.product.price}</p>
-        {this.renderVariants(this.state.product.variants)}
+        {
+          this.renderVariants(this.state.product.variants)
+        }
         <p>{this.state.product.description}</p>
       </div>
     );

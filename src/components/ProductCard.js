@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -42,12 +42,13 @@ const TextOverlay = styled.div`
 `;
 
 const ProductCard = props => {
+  console.log(props)
   return (
     <Card>
-      <Link to={`shop/${props.product.slug}`}>
-        <CardImg src={props.product.images[0]} />
+      <Link to={`shop/${props.product.id}`}>
+        <CardImg src={props.product.images[0].src} />
         <TextOverlay>
-          <h3>{props.product.name}</h3>
+          <h3>{props.product.title}</h3>
         </TextOverlay>
       </Link>
     </Card>

@@ -14,10 +14,11 @@ const ProductsWrapper = styled.div`
 export default class Shop extends Component {
   constructor(props) {
     super(props)
+    console.log(props)
     this.state = {products: []}
   }
   componentDidMount() {
-    this.setState({products: data.products})
+    // this.setState({products: this.props.products})
   }
   renderProducts(products) {
     return (
@@ -34,7 +35,7 @@ export default class Shop extends Component {
       <div>
         <Filters />
         <ProductsWrapper>
-            {this.renderProducts(this.state.products)}
+            {this.renderProducts(this.props.products)}
         </ProductsWrapper>
       </div>
     );
