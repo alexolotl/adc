@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {Component} from 'react';
+import {connect} from 'react-redux'
+import {setCollection} from 'redux/actions/shop'
 import styled from 'styled-components'
 
 const FilterMenu = styled.div`
@@ -17,15 +19,28 @@ const FilterItem = styled.a`
   flex: 1 0 25%;
 `;
 
-const Filters = props => {
-  return (
-    <FilterMenu>
-      <FilterItem>Clothing</FilterItem>
-      <FilterItem>Stones</FilterItem>
-      <FilterItem>Vintage</FilterItem>
-      <FilterItem active>All</FilterItem>
-    </FilterMenu>
-  );
+class Filters extends Component {
+  render() {
+    let collections;
+    if (this.props.collections) {
+      collections = this.props.collections
+    }
+    else {
+      collections = [{title: 'a'}, {title: 'b'}]
+    }
+    return (
+      <FilterMenu>
+        {collections.map(collection => (
+          <FilterItem key={collection.id} onClick={() => this.props.setCollection(collection)}>{collection.title}</FilterItem>
+        ))}
+      </FilterMenu>
+    );
+  }
 }
 
-export default Filters
+export default connect(
+  null,
+  dispatch => ({
+    setCollection: collection => dispatch(setCollection(collection))
+  })
+)(Filters)

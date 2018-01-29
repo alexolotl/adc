@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux'
 import ProductCard from 'components/ProductCard'
 import Filters from 'components/Filters'
 import {Button} from 'components/styledComponents/Button'
@@ -11,19 +12,11 @@ const ProductsWrapper = styled.div`
   flex-flow: row wrap;
 `;
 
-export default class Shop extends Component {
-  constructor(props) {
-    super(props)
-    console.log(props)
-    this.state = {products: []}
-  }
-  componentDidMount() {
-    // this.setState({products: this.props.products})
-  }
+class Shop extends Component {
   renderProducts(products) {
     return (
-      products.map(product => (
-        <ProductCard product={product} />
+      products.map((product, i) => (
+        <ProductCard key={product.handle} product={product} />
       ))
     )
   }
@@ -33,7 +26,7 @@ export default class Shop extends Component {
 
     return (
       <div>
-        <Filters />
+        <Filters collections={this.props.collections} />
         <ProductsWrapper>
             {this.renderProducts(this.props.products)}
         </ProductsWrapper>
@@ -41,3 +34,11 @@ export default class Shop extends Component {
     );
   }
 }
+
+export default connect(
+  state => ({
+    products: state.shop.products,
+    collections: state.shop.collections
+  }),
+  null
+)(Shop)

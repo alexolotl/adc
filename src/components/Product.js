@@ -1,21 +1,27 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
 
-export default class Header extends Component {
+class Product extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      loaded: false,
       product: {
         images: [{src: null}],
-        variants: [{title: null}]
+        title: null,
+        price: null,
+        description: null,
+        variants: []
       }
     }
   }
-  componentDidMount() {
-    this.props.client.product.fetch(this.props.match.params.product).then((product) => {
-        this.setState({product: product})
-
-        console.log(this.state)
-    });
+  componentWillReceiveProps(newProps) {
+    console.log(newProps)
+     if (!this.state.loaded) {
+       newProps.client.product.fetch(this.props.match.params.product).then((product) => {
+          this.setState({product: product, loaded: true})
+      });
+    }
   }
   selectSize = size => {
     this.setState({size: size})
@@ -34,7 +40,7 @@ export default class Header extends Component {
   render() {
     return (
       <div>
-        <img src={this.state.product.images[0].src} />
+        <img style={{maxHeight: 600}} src={this.state.product.images[0].src} />
         <h1>{this.state.product.title}</h1>
         <p>{this.state.product.price}</p>
         {
@@ -45,3 +51,9 @@ export default class Header extends Component {
     );
   }
 }
+
+export default connect(
+  state => ({
+    client: state.client.client
+  })
+)(Product)

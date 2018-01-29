@@ -42,7 +42,6 @@ const TextOverlay = styled.div`
 `;
 
 const ProductCard = props => {
-  console.log(props)
   return (
     <Card>
       <Link to={`shop/${props.product.id}`}>

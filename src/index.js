@@ -4,19 +4,42 @@ import { BrowserRouter } from 'react-router-dom'
 import './index.css';
 import App from './containers/App';
 import registerServiceWorker from './registerServiceWorker';
+import { Provider } from 'react-redux'
+import { createStore, applyMiddleware, compose } from 'redux'
+import { createLogger } from 'redux-logger'
+import thunkMiddleware from 'redux-thunk'
+import rootReducer from './redux/reducers'
+// import Client, {Config} from 'shopify-buy';
+// //
+// const config = {
+//   storefrontAccessToken: 'dd4d4dc146542ba7763305d71d1b3d38',
+//   domain: 'graphql.myshopify.com',
+// }
+//
+// const client = Client.buildClient(config)
 
-import Client, {Config} from 'shopify-buy';
+const loggerMiddleware = createLogger()
 
-const config = {
-  storefrontAccessToken: 'dd4d4dc146542ba7763305d71d1b3d38',
-  domain: 'graphql.myshopify.com',
-}
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const client = Client.buildClient(config)
+let store = createStore(
+  rootReducer,
+  composeEnhancers(applyMiddleware(
+    thunkMiddleware,
+    loggerMiddleware
+  ))
+)
 
-ReactDOM.render((
-  <BrowserRouter>
-    <App client={client} />
-  </BrowserRouter>
-), document.getElementById('root'));
+const Root = ({ store }) => (
+  <Provider store={store}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Provider>
+)
+
+ReactDOM.render(
+  <Root store={store} />,
+  document.getElementById('root')
+);
 registerServiceWorker();

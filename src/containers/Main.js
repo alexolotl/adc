@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import { Switch, Route } from 'react-router-dom'
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
 
 import Home from 'containers/Home'
 import Shop from 'containers/Shop'
 import Product from 'components/Product'
 
-export default class Main extends Component {
+class Main extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -62,40 +64,24 @@ export default class Main extends Component {
     });
   }
 
-
-
-  componentWillMount() {
-    this.props.client.checkout.create().then((res) => {
-      this.setState({
-        checkout: res,
-      });
-    });
-
-    this.props.client.product.fetchAll().then((res) => {
-      this.setState({
-        products: res,
-      });
-    });
-
-    // this.props.client.fetchShopInfo().then((res) => {
-    //   this.setState({
-    //     shop: res,
-    //   });
-    // });
-  }
-
   render() {
     return (
       <main>
         <Switch>
           <Route exact path='/' component={Home} />
-          <Route exact path='/shop' render={props => <Shop {...props} shop={this.state.shop} products={this.state.products} client={this.props.client} />} />
-          <Route exact path='/shop/:product' render={props => <Product {...props} client={this.props.client} />} />
+          <Route exact path='/shop' component={Shop} />
+          <Route exact path='/shop/:product' component={Product} />
         </Switch>
       </main>
     )
   }
 }
+
+export default connect(
+  state => ({
+    client: state.client
+  })
+)(Main)
 
 /*
   NOTE: ROUTING EXAMPLES:
