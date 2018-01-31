@@ -1,6 +1,7 @@
-import {SET_CHECKOUT, GET_ALL_PRODUCTS, SET_SHOP, GET_COLLECTIONS, SET_COLLECTION} from 'redux/actions/shop'
+import {REQUEST_CLIENT, RECEIVE_CLIENT, SET_CHECKOUT, GET_ALL_PRODUCTS, SET_SHOP, GET_COLLECTIONS, SET_COLLECTION} from 'redux/actions/shop'
 
 let initialState = {
+  isFetching: false,
   isCartOpen: false,
   checkout: { lineItems: [] },
   products: [],
@@ -29,7 +30,8 @@ const shop = (state = initialState, action) => {
       })
     case SET_COLLECTION:
       return Object.assign({}, state, {
-        products: action.products
+        products: action.products,
+        activeCollection: action.activeCollection
       })
     case 'TOGGLE_CART':
       return {

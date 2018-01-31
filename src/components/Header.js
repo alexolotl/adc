@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom'
+import {Link, withRouter} from 'react-router-dom'
+import {connect} from 'react-redux'
 import Menu from 'components/Menu'
 import styled from 'styled-components'
 
@@ -31,7 +32,7 @@ const A = styled.a`
   font-weight: 100;
 `
 
-export default class Header extends Component {
+class Header extends Component {
   constructor(props) {
     super(props)
     this.state = {menu: false}
@@ -46,6 +47,7 @@ export default class Header extends Component {
       <div>
         <HeaderStyled>
           <h1><StyledLink to='/'>AdC</StyledLink></h1>
+          <h1>Cart: {this.props.checkout.lineItems.length}</h1>
           <h1><A onClick={this.toggleMenu}>§</A></h1>
         </HeaderStyled>
         {this.state.menu && <Menu toggleMenu={this.toggleMenu} />}
@@ -53,3 +55,9 @@ export default class Header extends Component {
     );
   }
 }
+
+export default withRouter(connect(
+  state => ({
+    checkout: state.cart.checkout
+  })
+)(Header))

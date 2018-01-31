@@ -47,7 +47,9 @@ const ProductCard = props => {
       <Link to={`shop/${props.product.id}`}>
         <CardImg src={props.product.images[0].src} />
         <TextOverlay>
+          <h3>{props.product.vendor}</h3>
           <h3>{props.product.title}</h3>
+          <h3>{props.product.productType}</h3>
         </TextOverlay>
       </Link>
     </Card>

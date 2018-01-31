@@ -1,20 +1,19 @@
-import {REQUEST_CLIENT, RECEIVE_CLIENT} from 'redux/actions/client'
+import {TOGGLE_CART, UPDATE_CHECKOUT} from 'redux/actions/cart'
 
 let initialState = {
-  client: {},
-  isFetching: false
+  isCartOpen: false,
+  checkout: {lineItems: []}
 }
 
 const client = (state = initialState, action) => {
   switch (action.type) {
-    case REQUEST_CLIENT:
+    case TOGGLE_CART:
       return Object.assign({}, state, {
-        isFetching: true
+        isCartOpen: !state.isCartOpen
       })
-    case RECEIVE_CLIENT:
+    case UPDATE_CHECKOUT:
       return Object.assign({}, state, {
-        isFetching: false,
-        client: action.payload
+        checkout: action.payload
       })
     default:
       return state

@@ -1,5 +1,6 @@
 import Client from 'shopify-buy';
 import * as shopActions from 'redux/actions/shop'
+import * as cartActions from 'redux/actions/cart'
 
 export const REQUEST_CLIENT = 'REQUEST_CLIENT'
 function requestClient(config) {
@@ -16,17 +17,15 @@ function receiveClient(payload) {
   }
 }
 
-export function fetchClient(config) {
+export function initializeClient(config) {
   return function(dispatch) {
     // sets isFetching to true
     dispatch(requestClient(config))
 
     const client = Client.buildClient(config)
 
-    // AZ is this correct, to dispatch other actions from an async action like this?
     client.checkout.create().then((checkout) => {
-      console.log('to get checkout')
-      dispatch(shopActions.setCheckout(checkout))
+      dispatch(cartActions.updateCheckout(checkout))
     });
 
     client.product.fetchAll().then((products) => {

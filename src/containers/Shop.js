@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux'
+import {withRouter} from 'react-router-dom'
+
 import ProductCard from 'components/ProductCard'
 import Filters from 'components/Filters'
 import {Button} from 'components/styledComponents/Button'
@@ -23,7 +25,7 @@ class Shop extends Component {
   render() {
 
     const {params} = this.props.match
-
+// BAD ! I'm passing large store variables to an action creator manually
     return (
       <div>
         <Filters collections={this.props.collections} />
@@ -35,10 +37,9 @@ class Shop extends Component {
   }
 }
 
-export default connect(
+export default withRouter(connect(
   state => ({
     products: state.shop.products,
-    collections: state.shop.collections
-  }),
-  null
-)(Shop)
+    collections: state.shop.collections,
+  })
+)(Shop))

@@ -1,23 +1,25 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
+import {withRouter} from 'react-router-dom'
 
 import logo from '../assets/logo.svg';
 import Header from 'components/Header'
 import Main from 'containers/Main'
 import './App.css';
 import Client, {Config} from 'shopify-buy';
-import {fetchClient} from 'redux/actions/client'
+import {initializeClient} from 'redux/actions/client'
+import * as cartActions from 'redux/actions/cart'
 //
 
 class App extends Component {
-  componentDidMount() {
+  componentWillMount() {
     const config = {
       storefrontAccessToken: 'dd4d4dc146542ba7763305d71d1b3d38',
       domain: 'graphql.myshopify.com',
     }
 
-    this.props.fetchClient(config)
+    this.props.initializeClient(config)
   }
   render() {
     return (
@@ -31,11 +33,12 @@ class App extends Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchClient: config => dispatch(fetchClient(config))
+    initializeClient: config => dispatch(initializeClient(config)),
+    // initializeCheckout: client => dispatch(cartActions.initializeCheckout(client))
   }
 }
 
-export default connect(
+export default withRouter(connect(
     null,
     mapDispatchToProps
-)(App)
+)(App))

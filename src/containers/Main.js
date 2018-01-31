@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { Switch, Route } from 'react-router-dom'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
+import {withRouter} from 'react-router-dom'
 
 import Home from 'containers/Home'
 import Shop from 'containers/Shop'
@@ -16,11 +17,14 @@ class Main extends Component {
       products: [],
       shop: {}
     }
-    this.handleCartClose = this.handleCartClose.bind(this);
     this.addVariantToCart = this.addVariantToCart.bind(this);
     this.updateQuantityInCart = this.updateQuantityInCart.bind(this);
     this.removeLineItemInCart = this.removeLineItemInCart.bind(this);
   }
+
+  // openCheckout() {
+  //   window.open(this.props.checkout.webUrl);
+  // }
 
   addVariantToCart(variantId, quantity){
     this.setState({
@@ -58,30 +62,24 @@ class Main extends Component {
     });
   }
 
-  handleCartClose() {
-    this.setState({
-      isCartOpen: false,
-    });
-  }
-
   render() {
     return (
       <main>
         <Switch>
           <Route exact path='/' component={Home} />
           <Route exact path='/shop' component={Shop} />
-          <Route exact path='/shop/:product' component={Product} />
+          <Route path='/shop/:product' component={Product} />
         </Switch>
       </main>
     )
   }
 }
 
-export default connect(
+export default withRouter(connect(
   state => ({
-    client: state.client
+    client: state.shop.client
   })
-)(Main)
+)(Main))
 
 /*
   NOTE: ROUTING EXAMPLES:

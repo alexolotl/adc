@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux'
-import {setCollection} from 'redux/actions/shop'
+import {setCollection, filterByType} from 'redux/actions/shop'
 import styled from 'styled-components'
+import {withRouter} from 'react-router-dom'
+
 
 const FilterMenu = styled.div`
   margin: 0;
@@ -22,6 +24,7 @@ const FilterItem = styled.a`
 class Filters extends Component {
   render() {
     let collections;
+    let types = ['Boots', 'Shirts']
     if (this.props.collections) {
       collections = this.props.collections
     }
@@ -33,14 +36,21 @@ class Filters extends Component {
         {collections.map(collection => (
           <FilterItem key={collection.id} onClick={() => this.props.setCollection(collection)}>{collection.title}</FilterItem>
         ))}
+
+        {types.map(type => (
+          <FilterItem key={type} onClick={() => this.props.filterByType(type, this.props.client)}>{type}</FilterItem>
+        ))}
       </FilterMenu>
     );
   }
 }
 
-export default connect(
-  null,
+export default withRouter(connect(
+  state => ({
+    client: state.client.client
+  }),
   dispatch => ({
-    setCollection: collection => dispatch(setCollection(collection))
+    setCollection: collection => dispatch(setCollection(collection)),
+    filterByType: (type, client) => dispatch(filterByType(type, client))
   })
-)(Filters)
+)(Filters))
