@@ -6,6 +6,7 @@ import {withRouter} from 'react-router-dom'
 import logo from '../assets/logo.svg';
 import Header from 'components/Header'
 import Main from 'containers/Main'
+import Checkout from 'containers/Checkout'
 import './App.css';
 import Client, {Config} from 'shopify-buy';
 import {initializeClient} from 'redux/actions/client'
@@ -25,20 +26,18 @@ class App extends Component {
     return (
       <div className="App">
         <Header />
+        {this.props.isCartOpen && <Checkout />}
         <Main />
       </div>
     );
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    initializeClient: config => dispatch(initializeClient(config)),
-    // initializeCheckout: client => dispatch(cartActions.initializeCheckout(client))
-  }
-}
-
 export default withRouter(connect(
-    null,
-    mapDispatchToProps
+    state => ({
+      isCartOpen: state.cart.isCartOpen
+    }),
+    dispatch => ({
+      initializeClient: config => dispatch(initializeClient(config)),
+    })
 )(App))

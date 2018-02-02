@@ -1,7 +1,7 @@
 import {TOGGLE_CART, UPDATE_CHECKOUT} from 'redux/actions/cart'
 
 let initialState = {
-  isCartOpen: false,
+  isCartOpen: true,
   checkout: {lineItems: []}
 }
 

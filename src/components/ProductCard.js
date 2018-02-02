@@ -44,7 +44,7 @@ const TextOverlay = styled.div`
 const ProductCard = props => {
   return (
     <Card>
-      <Link to={`shop/${props.product.id}`}>
+      <Link style={{height: 0}} to={`shop/${props.product.id}`}>
         <CardImg src={props.product.images[0].src} />
         <TextOverlay>
           <h3>{props.product.vendor}</h3>

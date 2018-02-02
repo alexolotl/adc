@@ -17,6 +17,7 @@ class Product extends Component {
         variants: [],
       }
     }
+    console.log(this.props.checkout)
   }
   componentWillReceiveProps(newProps, prevProps) {
     if (!this.state.loaded && newProps.client != prevProps.client) {

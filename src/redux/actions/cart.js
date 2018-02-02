@@ -25,16 +25,20 @@ export function addVariantToCart(variantId, quantity, client, checkoutId) {
 
 // the following 2 are not used yet
 
-export function updateQuantityInCart(lineItemId, client, checkoutId) {
-  const lineItemsToUpdate = [{id: lineItemId, quantity: parseInt(quantity, 10)}]
+export function updateQuantityInCart(lineItemId, quantity, client, checkoutId) {
+  return function(dispatch) {
+    const lineItemsToUpdate = [{id: lineItemId, quantity: parseInt(quantity, 10)}]
 
-  return client.checkout.updateLineItems(checkoutId, lineItemsToUpdate).then(res => {
-    dispatch(updateCheckout(res))
-  });
+    return client.checkout.updateLineItems(checkoutId, lineItemsToUpdate).then(res => {
+      return dispatch(updateCheckout(res))
+    });
+  }
 }
 
-export function removeLineItemInCart(lineItemId, client, checkoutId) {
-  return client.checkout.removeLineItems(checkoutId, [lineItemId]).then(res => {
-    dispatch(updateCheckout(res))
-  });
+export function removeLineItemFromCart(lineItemId, client, checkoutId) {
+  return function(dispatch) {
+    return client.checkout.removeLineItems(checkoutId, [lineItemId]).then(res => {
+      dispatch(updateCheckout(res))
+    });
+  }
 }

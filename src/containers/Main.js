@@ -17,7 +17,6 @@ class Main extends Component {
       products: [],
       shop: {}
     }
-    this.addVariantToCart = this.addVariantToCart.bind(this);
     this.updateQuantityInCart = this.updateQuantityInCart.bind(this);
     this.removeLineItemInCart = this.removeLineItemInCart.bind(this);
   }
@@ -25,21 +24,6 @@ class Main extends Component {
   // openCheckout() {
   //   window.open(this.props.checkout.webUrl);
   // }
-
-  addVariantToCart(variantId, quantity){
-    this.setState({
-      isCartOpen: true,
-    });
-
-    const lineItemsToAdd = [{variantId, quantity: parseInt(quantity, 10)}]
-    const checkoutId = this.state.checkout.id
-
-    return this.props.client.addLineItems(checkoutId, lineItemsToAdd).then(res => {
-      this.setState({
-        checkout: res,
-      });
-    });
-  }
 
   updateQuantityInCart(lineItemId, quantity) {
     const checkoutId = this.state.checkout.id
