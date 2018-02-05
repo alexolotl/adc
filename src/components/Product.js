@@ -17,18 +17,16 @@ class Product extends Component {
         variants: [],
       }
     }
-    console.log(this.props.checkout)
   }
   componentWillReceiveProps(newProps, prevProps) {
     if (!this.state.loaded && newProps.client != prevProps.client) {
       newProps.client.product.fetch(newProps.match.params.product).then((product) => {
-          this.setState({product: product, loaded: true})
+          this.setState({product: product, loaded: true, variant: product.variants[0]})
       })
     }
   }
   selectVariant = variant => {
     this.setState({variant: variant})
-    console.log(variant)
   }
   renderVariants = variants => {
     return (

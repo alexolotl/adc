@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import * as THREE from 'three';
 import textFragment from './shaders/textFragment'
 import textVertex from './shaders/textVertex'
+
+import styled from 'styled-components'
 const _texmap = require('assets/images/painting1.jpg')
+
 
 export default class ThreeWindow extends Component {
   constructor(props) {
@@ -18,7 +21,7 @@ export default class ThreeWindow extends Component {
 
   render() {
     return (
-      <div style={{width: '100vw', height: '100vh', position: 'absolute', left: 0, top: 0}} ref={ref => this.threeRef = ref}>
+      <div ref={ref => this.threeRef = ref}>
       </div>
     )
   }

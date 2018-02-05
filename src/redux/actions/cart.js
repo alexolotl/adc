@@ -1,7 +1,8 @@
 export const TOGGLE_CART = 'TOGGLE_CART'
-export function toggleCart() {
+export function toggleCart(bool) {
   return {
-    type: TOGGLE_CART
+    type: TOGGLE_CART,
+    payload: bool
   }
 }
 

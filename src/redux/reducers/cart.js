@@ -1,7 +1,7 @@
 import {TOGGLE_CART, UPDATE_CHECKOUT} from 'redux/actions/cart'
 
 let initialState = {
-  isCartOpen: true,
+  isCartOpen: false,
   checkout: {lineItems: []}
 }
 
@@ -9,7 +9,7 @@ const client = (state = initialState, action) => {
   switch (action.type) {
     case TOGGLE_CART:
       return Object.assign({}, state, {
-        isCartOpen: !state.isCartOpen
+        isCartOpen: action.payload
       })
     case UPDATE_CHECKOUT:
       return Object.assign({}, state, {
