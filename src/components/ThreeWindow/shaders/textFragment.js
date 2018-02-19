@@ -21,6 +21,7 @@ const fragShader =  `precision highp float;
           // Refs
           uniform sampler2D textureSampler;
           uniform sampler2D textureSampler2;
+          uniform sampler2D textureSampler3;
 
           mat2 rotate2d(in float _angle) {
               return mat2(cos(_angle),-sin(_angle),sin(_angle),cos(_angle));
@@ -38,9 +39,10 @@ const fragShader =  `precision highp float;
             st = mix(vUV, st, mouse);
 
             vec4 texcolor1 = texture2D(textureSampler, st);
-            vec4 texcolor2 = texture2D(textureSampler2, -st*.1 + vUV+.1*texcolor1.x);
+            vec4 texcolor2 = texture2D(textureSampler2, st);
+            vec4 texcolor3 = texture2D(textureSampler3, vUV + vec2(.1*texcolor2.xy));
 
-            vec4 texcolor = texcolor2;
+            vec4 texcolor = texcolor3;
 
             gl_FragColor = texcolor;
           }`

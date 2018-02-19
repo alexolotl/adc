@@ -3,18 +3,23 @@ import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 
 const Card = styled.div`
-  border: 1px solid black;
+  border-right: 2px solid black;
+  border-bottom: 2px solid black;
   box-sizing: border-box;
-  flex: 1 1 25%;
-  min-height: 450px;
+  flex: 1 1 20%;
+  // min-height: 450px;
+  min-width: 300px;
+  height: 400px;
+  overflow: hidden;
   position: relative;
 `;
 
 const CardImg = styled.img`
   // width: 300px;
   // height: 300px;
+
   width: 100%;
-  height: 450px;
+  height: 100%;
   object-fit: cover;
   // padding: 20px;
 `;
@@ -37,7 +42,7 @@ const TextOverlay = styled.div`
   }
 
   &:hover h3 {
-    color: white;
+    color: yellow;
   }
 `;
 
@@ -49,7 +54,8 @@ const ProductCard = props => {
         <TextOverlay>
           <h3>{props.product.vendor}</h3>
           <h3>{props.product.title}</h3>
-          <h3>{props.product.productType}</h3>
+          <hr />
+          <h3>{props.product.variants[0].price}</h3>
         </TextOverlay>
       </Link>
     </Card>

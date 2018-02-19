@@ -8,6 +8,13 @@ const img1 = require('assets/images/rtd1.jpg')
 const img2 = require('assets/images/rtd2.jpg')
 const img3 = require('assets/images/rtd3.jpg')
 
+const Img = styled.img`
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+`;
+
+
 
 const Overlay = styled.div`
   position: fixed;
@@ -20,16 +27,16 @@ const Overlay = styled.div`
   top: 0;
 `
 
-const Splash = FlexRow.extend`
+const Splash = FlexCol.extend`
+  width: 50vw;
   position: fixed;
   overflow: scroll;
-  height: 100vh;
   right: 0;
   top: 0;
   justify-content: center;
-  z-index: 15;
+  z-index: 5;
   img {
-    z-index: 15;
+    z-index: 5;
   }
 `
 
@@ -68,15 +75,16 @@ const Banner = styled.div`
   position: fixed;
   bottom: 0;
   text-align: left;
+  animation: ${bannerMotion} 15s linear infinite;
   // background-color: #ef0232;
   background-color: blue;
 `
 const CenteredText= styled.div`
   width: 100vw;
   height: 100vh;
-  z-index: 25;
+  z-index: 15;
   position: fixed;
-  bottom: -50vh;
+  top:0;
   left:0;
   text-align: center;
   display: flex;
@@ -93,43 +101,21 @@ const CenteredText= styled.div`
 
 
   img {
-    width: 1200px;
+    width: 700px;
     filter: contrast(0) saturate(10000) brightness(1000);
-    opacity: .5;
-    z-index: 25;
-    pointer-events: none;
   }
-`
-
-const Img = styled.img`
-  max-height: 50vh;
-  object-fit: cover;
-  object-position: 75% center;
-  width: 100%;
-  margin: 40px;
-  box-sizing: border-box;
-
-  border: solid 8px ${props => props.active ? 'yellow' : 'transparent'};
-
 `
 
 export default class Home extends Component {
   constructor() {
     super()
     this.state = {
-      img: 'https://s3.amazonaws.com/codepen-az/rtd1.jpg',
-      active: null
+      img: 'https://s3.amazonaws.com/codepen-az/rtd1.jpg'
     }
   }
   render() {
 
     const images = [
-      'https://s3.amazonaws.com/codepen-az/rtd1.jpg',
-      'https://s3.amazonaws.com/codepen-az/rtd2.jpg',
-      'https://s3.amazonaws.com/codepen-az/rtd3.jpg',
-      'https://s3.amazonaws.com/codepen-az/rtd1.jpg',
-      'https://s3.amazonaws.com/codepen-az/rtd2.jpg',
-      'https://s3.amazonaws.com/codepen-az/rtd3.jpg',
       'https://s3.amazonaws.com/codepen-az/rtd1.jpg',
       'https://s3.amazonaws.com/codepen-az/rtd2.jpg',
       'https://s3.amazonaws.com/codepen-az/rtd3.jpg',
@@ -141,6 +127,7 @@ export default class Home extends Component {
       <div>
 
       <ThreeWindow img={this.state.img} />
+      <Banner><H1>Antes De Cristo ✞ Antes De Cristo ✞ Antes De Cristo ✞ Antes De Cristo ✞ Antes De Cristo ✞ Antes De Cristo ✞ </H1></Banner>
       <Overlay>
       {
         images.map(i => (
@@ -149,16 +136,13 @@ export default class Home extends Component {
       }
       </Overlay>
       <CenteredText><img src={require('assets/images/tribal.png')} /></CenteredText>
-      <CenteredText style={{top: '-50vh'}}><img src={require('assets/images/tribal.png')} /></CenteredText>
-      <div style={{zIndex: 15, position: 'absolute'}}>
-        <h1 style={{lineHeight: 1.5, fontFamily: 'sans-serif', fontSize: '8em', color: 'white', fontWeight: 800, fontStyle: 'italic'}}>antes de cristo antes de cristo antes de cristo antes de cristo antes de cristo antes de cristo antes de cristo antes de cristo antes de cristo antes de cristo antes de cristo antes de cristo antes de cristo antes de cristo antes de cristo</h1>
-      </div>
       <Splash>
       {
-        images.map((i, idx) => (
-            <Img active={this.state.active == idx} onClick={() => this.setState({img: i, active: idx})}
-              src={i}
-            />
+        images.map(i => (
+          <img onClick={() => this.setState({img: i})}
+            src={i}
+            style={{maxHeight: 400, objectFit: 'cover', objectPosition: '75% center', width: '100%', padding: 0}}
+          />
         ))
       }
       </Splash>

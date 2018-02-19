@@ -7,9 +7,13 @@ const MenuWrapper = styled.header`
   position: fixed;
   top: 0;
   color: white;
-  background-color: rgba(0,0,0,.9);
-  width: 100vw;
-  height: 100vh;
+  background-color: rgba(0,0,255,.5);
+  width: 40vw;
+  height: calc(80vh - 80px);
+  top: 40px;
+  right: 40px;
+  border: 4px solid white;
+  box-sizing: border-box;
   z-index: 20;
 `;
 
@@ -39,20 +43,21 @@ const Border = styled.div`
 const MenuHeader = styled.div`
   width: 100%;
   height: 80px;
+  border-bottom: 2px solid white;
   text-align: right;
 `
 
 const X = styled.a`
   position: absolute;
-  font-size: 4em;
-  font-weight: 100;
+  font-size: 2em;
   right: 10px;
   top: 10px;
   height: 60px;
   width: 60px;
   line-height: 1;
+  box-sizing: border-box;
+  border: 2px solid white;
   padding: 15px;
-
 `
 
 const StyledLink = styled(Link)`
@@ -66,7 +71,7 @@ const StyledLink = styled(Link)`
   }
 
   &:visited {
-    color: white;
+    color: yellow;
   }
 `;
 

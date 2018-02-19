@@ -8,8 +8,16 @@ import {withRouter} from 'react-router-dom'
 const FilterMenu = styled.div`
   margin: 0;
   display: flex;
-  flex-flow: row nowrap;
-  max-width: 100%;
+  flex-flow: column nowrap;
+  height: 600px;
+  border: 2px solid black;
+  width: 400px;
+  position: fixed;
+  top: 200px;
+  left: 20px;
+  z-index: 20;
+
+  display: ${props => props.active ? 'block' : 'none'};
 `;
 
 const FilterItem = styled.a`
@@ -18,10 +26,17 @@ const FilterItem = styled.a`
   padding: 20px 0;
   margin: 0;
   font-size: 1.5em;
-  flex: 1 0 25%;
+  flex: 1 1 auto;
+  cursor: pointer;
 `;
 
 class Filters extends Component {
+  constructor() {
+    super()
+    this.state = {
+      isActive: false
+    }
+  }
   render() {
     let collections;
     let types = ['Boots', 'Shirts']
@@ -32,7 +47,10 @@ class Filters extends Component {
       collections = [{title: 'a'}, {title: 'b'}]
     }
     return (
-      <FilterMenu>
+      <FilterMenu active={this.state.isActive} onClick={() => this.setState({isActive: true})}>
+        <header>
+          <h1>Filters</h1>
+        </header>
         {collections.map(collection => (
           <FilterItem key={collection.id} onClick={() => this.props.setCollection(collection)}>{collection.title}</FilterItem>
         ))}

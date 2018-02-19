@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ThreeWindow from 'components/ThreeWindow/ThreeWindow'
 import styled, {keyframes} from 'styled-components'
 import {H2} from 'components/styledComponents/Typography'
 import {FlexCol, FlexRow} from 'globalStyles'
@@ -28,8 +27,11 @@ const Splash = FlexRow.extend`
   top: 0;
   justify-content: center;
   z-index: 15;
+  // pointer-events: none;
   img {
     z-index: 15;
+    // pointer-events: initial;
+    box-sizing: border-box;
   }
 `
 
@@ -82,7 +84,7 @@ const CenteredText= styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 10em;
+  font-size: 8em;
   color: transparent;
   // -webkit-text-stroke-width: 3px;
   // -webkit-text-stroke-color: yellow;
@@ -98,6 +100,13 @@ const CenteredText= styled.div`
     opacity: .5;
     z-index: 25;
     pointer-events: none;
+  }
+`
+
+const Brand = styled.span`
+  &:hover {
+    color: yellow;
+    text-decoration: underline;
   }
 `
 
@@ -137,10 +146,25 @@ export default class Home extends Component {
       'https://s3.amazonaws.com/codepen-az/rtd2.jpg',
       'https://s3.amazonaws.com/codepen-az/rtd3.jpg'
     ]
+    const labels = [
+      'antes de cristo',
+      'baby angel',
+      'ready to die',
+      'antes de cristo',
+      'baby angel',
+      'ready to die',
+      'antes de cristo',
+      'baby angel',
+      'ready to die',
+      'antes de cristo',
+      'baby angel',
+      'ready to die',
+      'antes de cristo',
+      'baby angel',
+      'ready to die',
+    ]
     return (
       <div>
-
-      <ThreeWindow img={this.state.img} />
       <Overlay>
       {
         images.map(i => (
@@ -151,7 +175,13 @@ export default class Home extends Component {
       <CenteredText><img src={require('assets/images/tribal.png')} /></CenteredText>
       <CenteredText style={{top: '-50vh'}}><img src={require('assets/images/tribal.png')} /></CenteredText>
       <div style={{zIndex: 15, position: 'absolute'}}>
-        <h1 style={{lineHeight: 1.5, fontFamily: 'sans-serif', fontSize: '8em', color: 'white', fontWeight: 800, fontStyle: 'italic'}}>antes de cristo antes de cristo antes de cristo antes de cristo antes de cristo antes de cristo antes de cristo antes de cristo antes de cristo antes de cristo antes de cristo antes de cristo antes de cristo antes de cristo antes de cristo</h1>
+        <h1 style={{lineHeight: 1.5, fontFamily: 'sans-serif', fontSize: '8em', color: 'white', fontWeight: 800, fontStyle: 'italic'}}>
+          {
+            labels.map(brand => (
+              <Brand>{`${brand} | `}</Brand>
+            ))
+          }
+        </h1>
       </div>
       <Splash>
       {

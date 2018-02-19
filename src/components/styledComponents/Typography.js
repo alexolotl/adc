@@ -8,7 +8,7 @@ export const H1 = styled.h1`
 export const H2 = styled.h2`
   /* Adapt the colours based on primary prop */
   font-size: 2em;
-  font-family: 'Noe Display';
+  // font-family: 'Noe Display';
 `;
 
 export const H4 = styled.h4`

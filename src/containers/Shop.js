@@ -8,6 +8,7 @@ import {Button} from 'components/styledComponents/Button'
 import {H1} from 'components/styledComponents/Typography'
 import data from 'data/sampledata.json'
 import styled from 'styled-components'
+import {FlexRow} from 'globalStyles'
 
 const ProductsWrapper = styled.div`
   display: flex;
@@ -28,10 +29,12 @@ class Shop extends Component {
 // BAD ! I'm passing large store variables to an action creator manually
     return (
       <div>
-        <Filters collections={this.props.collections} />
-        <ProductsWrapper>
-            {this.renderProducts(this.props.products)}
-        </ProductsWrapper>
+        <Filters />
+        <FlexRow style={{flexFlow: 'row wrap'}}>
+          <ProductsWrapper>
+              {this.renderProducts(this.props.products)}
+          </ProductsWrapper>
+        </FlexRow>
       </div>
     );
   }

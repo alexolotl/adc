@@ -1,11 +1,32 @@
 import React, { Component } from 'react';
 import * as THREE from 'three';
-import textFragment from './shaders/textFragment'
+import textFragment from './shaders/frag2'
 import textVertex from './shaders/textVertex'
 
 import styled from 'styled-components'
-const _texmap = require('assets/images/painting1.jpg')
+const _texmap = require('assets/images/adc.png')
+const _texmap2 = require('assets/images/rtd1.jpg')
+const _texmap3 = require('assets/images/rtd2.jpg')
+const _texmap4 = require('assets/images/rtd3.jpg')
 
+const Div = styled.div`
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 4;
+  pointer-events: none;
+
+  canvas {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 4;
+  }
+`
 
 export default class ThreeWindow extends Component {
   constructor(props) {
@@ -16,19 +37,27 @@ export default class ThreeWindow extends Component {
   }
 
   componentDidMount() {
-    this.setState({scene: new Three(this.threeRef)})
+    this.setState({scene: new Three(this.threeRef, window.innerWidth, window.innerHeight)})
+  }
+
+  componentDidUpdate() {
+    const imgTex = _loader.load(this.props.img)
+    this.state.scene.scene.morph.uniforms.textureSampler1.value = imgTex
   }
 
   render() {
     return (
-      <div ref={ref => this.threeRef = ref}>
-      </div>
+      <Div innerRef={ref => this.threeRef = ref}>
+      </Div>
     )
   }
 }
 
 const _loader = new THREE.TextureLoader()
-const _tex = _loader.load(_texmap)
+_loader.crossOrigin = ''
+const _tex1 = _loader.load(_texmap2)
+const _tex2 = _loader.load(_texmap3)
+const _tex3 = _loader.load(_texmap4)
 const _mouse = new THREE.Vector2(0, 0);
 const _dampenedMouse = new THREE.Vector2(0, 0);
 
@@ -40,7 +69,7 @@ class Sphere extends THREE.Mesh {
       color: 0xffffff,
       // transparent: true,
       // wireframe: true,
-      map: _tex,
+      map: _tex1,
       side: THREE.DoubleSide
     });
     super(geometry, material);
@@ -62,12 +91,11 @@ class TextCanvas extends THREE.Mesh {
 
     const context = canvas.getContext('2d');
     const metrics = context.measureText(text);
-    const textWidth = window.innerWidth;
-    canvas.width = textWidth;
+    canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     context.fillStyle = 'rgba(0,0,0,1)';
     context.fillRect(0,0,canvas.width,canvas.height);
-    context.font = '200px Cormorant Unicase';
+    context.font = '200px Xolonium';
     context.textAlign = 'center';
     context.textBaseline = 'middle';
     context.fillStyle = 'rgba(255,255,255,1)';
@@ -75,10 +103,13 @@ class TextCanvas extends THREE.Mesh {
     context.fillText(text, canvas.width / 2, canvas.height / 2);
     const textTexture = new THREE.Texture(canvas);
     textTexture.needsUpdate = true;
+    console.log(window.innerWidth)
 
     const uniforms = {
       textureSampler: { type: 't', value: textTexture },
-      textureSampler2: { type: 't', value: _tex },
+      textureSampler1: { type: 't', value: _tex1 },
+      textureSampler2: { type: 't', value: _tex2 },
+      textureSampler3: { type: 't', value: _tex3 },
       time: { type: 'f', value: 0 },
       mouse: { type: 'v2', value: new THREE.Vector2() },
       resolution: {
@@ -140,13 +171,52 @@ class TextObject extends THREE.Object3D {
   }
 }
 
+class Morph extends THREE.Mesh {
+  constructor() {
+
+    const uniforms = {
+      textureSampler: { type: 't', value: null },
+      textureSampler1: { type: 't', value: _tex1 },
+      textureSampler2: { type: 't', value: _tex2 },
+      textureSampler3: { type: 't', value: _tex3 },
+      time: { type: 'f', value: 0 },
+      mouse: { type: 'v2', value: new THREE.Vector2() },
+      resolution: {
+        type: 'v2',
+        value: new THREE.Vector2(window.innerWidth, window.innerHeight)
+      }
+    };
+
+    const geometry = new THREE.PlaneGeometry(20, 20, 1)
+    const material = new THREE.ShaderMaterial({
+      uniforms,
+      vertexShader: textVertex,
+      fragmentShader: textFragment,
+      // transparent: true
+    });
+    super(geometry, material)
+    this.uniforms = uniforms
+  }
+
+  update() {
+    this.uniforms.time.value += 0.02;
+    this.uniforms.mouse.value = new THREE.Vector2(
+      Math.abs(_mouse.x - _dampenedMouse.x),
+      Math.abs(_mouse.y - _dampenedMouse.y)
+    ).multiplyScalar(0.0006);
+  }
+}
+
 class Scene extends THREE.Scene {
   constructor(bufferTexture, themeColor) {
     super();
 
     this.time = 0;
 
-    this.add( new TextObject() );
+    this.morph = new Morph();
+    this.add(this.morph)
+
+    // this.add( new TextObject() );
 
     // this.add( new Sphere() )
 
@@ -168,17 +238,17 @@ class Scene extends THREE.Scene {
 }
 
 class Three {
-  constructor(container, props) {
-    this.innerWidth = window.innerWidth;
-    this.innerHeight = window.innerHeight;
+  constructor(container, width, height, props) {
+    this.width = width;
+    this.height = height;
     this.fov = 45;
-    this.aspect = this.innerWidth / this.innerHeight;
+    this.aspect = this.width / this.height;
     this.camera = new THREE.PerspectiveCamera(this.fov, this.aspect, 1, 1000);
-    this.camera.position.z = 12.5;
+    this.camera.position.z = 10;
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     this.renderer.setPixelRatio(window.devicePixelRatio);
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer.setSize(this.width, this.height);
     this.renderer.setClearColor( 0x000000, 0 ); // the default
     container.appendChild(this.renderer.domElement);
 
@@ -214,13 +284,13 @@ class Three {
   }
 
   resize() {
-    this.innerWidth = window.innerWidth;
-    this.innerHeight = window.innerHeight;
+    this.width = window.innerWidth;
+    this.height = window.innerHeight;
 
-    this.camera.aspect = this.innerWidth / this.innerHeight;
+    this.camera.aspect = this.width / this.height;
     this.camera.updateProjectionMatrix();
 
-    this.renderer.setSize(this.innerWidth, this.innerHeight);
+    this.renderer.setSize(this.width, this.height);
   }
 
   mousemove(e) {
