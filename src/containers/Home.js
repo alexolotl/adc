@@ -3,11 +3,6 @@ import ThreeWindow from 'components/ThreeWindow/ThreeWindow'
 import styled, {keyframes} from 'styled-components'
 import {H2} from 'components/styledComponents/Typography'
 import {FlexCol, FlexRow} from 'globalStyles'
-const painting = require('assets/images/painting1.jpg')
-const img1 = require('assets/images/rtd1.jpg')
-const img2 = require('assets/images/rtd2.jpg')
-const img3 = require('assets/images/rtd3.jpg')
-
 
 const Overlay = styled.div`
   position: fixed;
@@ -117,25 +112,25 @@ export default class Home extends Component {
   constructor() {
     super()
     this.state = {
-      img: 'https://s3.amazonaws.com/codepen-az/rtd1.jpg',
+      img: 'https://s3.amazonaws.com/codepen-az/4E75ABD1-7990-4D36-9D04-BF3BB9D48701.jpg',
       active: null
     }
   }
   render() {
 
     const images = [
-      'https://s3.amazonaws.com/codepen-az/rtd1.jpg',
-      'https://s3.amazonaws.com/codepen-az/rtd2.jpg',
-      'https://s3.amazonaws.com/codepen-az/rtd3.jpg',
-      'https://s3.amazonaws.com/codepen-az/rtd1.jpg',
-      'https://s3.amazonaws.com/codepen-az/rtd2.jpg',
-      'https://s3.amazonaws.com/codepen-az/rtd3.jpg',
-      'https://s3.amazonaws.com/codepen-az/rtd1.jpg',
-      'https://s3.amazonaws.com/codepen-az/rtd2.jpg',
-      'https://s3.amazonaws.com/codepen-az/rtd3.jpg',
-      'https://s3.amazonaws.com/codepen-az/rtd1.jpg',
-      'https://s3.amazonaws.com/codepen-az/rtd2.jpg',
-      'https://s3.amazonaws.com/codepen-az/rtd3.jpg'
+      'https://s3.amazonaws.com/codepen-az/4E75ABD1-7990-4D36-9D04-BF3BB9D48701.jpg',
+      'https://s3.amazonaws.com/codepen-az/5A3D47D4-DE5F-4615-B0C6-EF5BDBD48C7B.jpg',
+      'https://s3.amazonaws.com/codepen-az/887D160C-45A2-43EE-86EB-E33615A0A0FB.jpg',
+      'https://s3.amazonaws.com/codepen-az/980F1BFE-7501-4DFF-9380-56F6631452C2.jpg',
+      'https://s3.amazonaws.com/codepen-az/3956F141-BEC3-4EAB-9937-EE8C6C06D37C.jpg',
+      'https://s3.amazonaws.com/codepen-az/B6CAC62C-4F4F-4FA0-A193-55FD82553BEC.jpg',
+      'https://s3.amazonaws.com/codepen-az/C449C45D-0BE2-4CEE-8DDB-5532CFE8B6CA.jpg',
+      'https://s3.amazonaws.com/codepen-az/D8D84297-A927-49FA-9923-1A5DF99260B2.jpg',
+      'https://s3.amazonaws.com/codepen-az/E0CDBE9B-0ACD-4F55-8316-757DCB9F09A0.jpg',
+      'https://s3.amazonaws.com/codepen-az/EC50288F-2E64-4EAA-89CB-C4367632D2ED.jpg',
+      'https://s3.amazonaws.com/codepen-az/F303BB32-EC15-44E0-9904-41F29C279929.jpg',
+      'https://s3.amazonaws.com/codepen-az/FA40DC87-CFAE-4C15-AA69-BC526081C41E.jpg',
     ]
     return (
       <div>
@@ -148,8 +143,6 @@ export default class Home extends Component {
         ))
       }
       </Overlay>
-      <CenteredText><img src={require('assets/images/tribal.png')} /></CenteredText>
-      <CenteredText style={{top: '-50vh'}}><img src={require('assets/images/tribal.png')} /></CenteredText>
       <div style={{zIndex: 15, position: 'absolute'}}>
         <h1 style={{lineHeight: 1.5, fontFamily: 'sans-serif', fontSize: '8em', color: 'white', fontWeight: 800, fontStyle: 'italic'}}>antes de cristo antes de cristo antes de cristo antes de cristo antes de cristo antes de cristo antes de cristo antes de cristo antes de cristo antes de cristo antes de cristo antes de cristo antes de cristo antes de cristo antes de cristo</h1>
       </div>

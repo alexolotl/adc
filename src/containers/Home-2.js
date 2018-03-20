@@ -3,7 +3,7 @@ import ThreeWindow from 'components/ThreeWindow/ThreeWindow'
 import styled, {keyframes} from 'styled-components'
 import {H2} from 'components/styledComponents/Typography'
 import {FlexCol, FlexRow} from 'globalStyles'
-const painting = require('assets/images/painting1.jpg')
+// const painting = require('assets/images/painting1.jpg')
 const img1 = require('assets/images/rtd1.jpg')
 const img2 = require('assets/images/rtd2.jpg')
 const img3 = require('assets/images/rtd3.jpg')

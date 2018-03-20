@@ -17,6 +17,8 @@ uniform mat4 world;
 uniform float time;
 uniform vec2 mouse;
 uniform vec2 resolution;
+uniform float ramp;
+uniform float amplitude;
 
 // Refs
 uniform sampler2D textureSampler1;
@@ -122,7 +124,7 @@ void main(void)
 
     vec2 st2 = st + 20.5*vec2(fbm(vec3(st*vec2(10., 1.),time/4.)));
 
-    st2 = mix(st, st2, mouse);
+    st2 = mix(st, st2, (amplitude*amplitude)/6. );
 
     float grad = st2.y*st2.x;
     // vec3 color1 = vec3(1.,1.,1.);
@@ -131,7 +133,9 @@ void main(void)
     vec3 color2 = vec3(1.);
     vec3 color = mix(color1,color2,grad);
     color = texture2D(textureSampler1, (st/2. + st2/10.) * vec2(1.3, .8)).xyz;
+    vec3 oldImage = texture2D(textureSampler2, (st/2. + st2/10.) * vec2(1.3, .8)).xyz;
 
+    color = mix(oldImage, color, clamp(0.,1.,ramp*ramp/2.));
 
     // float randfbm = fbm(vec3(st*1.2,44.23+time/20.));
     // vec3 color3 = vec3(1.,1.,0.);

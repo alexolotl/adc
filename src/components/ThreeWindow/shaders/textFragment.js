@@ -17,6 +17,7 @@ const fragShader =  `precision highp float;
           uniform float time;
           uniform vec2 mouse;
           uniform vec2 resolution;
+          uniform float ramp;
 
           // Refs
           uniform sampler2D textureSampler;
