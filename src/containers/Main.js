@@ -4,9 +4,9 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {withRouter} from 'react-router-dom'
 
-import Home from 'containers/Home'
 import Shop from 'containers/Shop'
 import Product from 'components/Product'
+import Home from 'components/Home'
 
 class Main extends Component {
   constructor(props) {
@@ -51,7 +51,7 @@ class Main extends Component {
       <main>
         <Switch>
           <Route exact path='/' component={Home} />
-          <Route exact path='/shop' component={Shop} />
+          <Route path='/shop' component={Shop} />
           <Route path='/shop/:product' component={Product} />
         </Switch>
       </main>
@@ -75,6 +75,8 @@ export default withRouter(connect(
       NOTE: number will be stored as match.params.number
     <Route path='/schedule' component={Schedule}/>
   </Switch>
+
+  // NOTE: when nesting Routes within other components, it's important that the inner nested ones are the ones that have exact or else it will only render the outer components
 
   NOTE: Only one of the following should be supplied as a prop to a Route element:
 

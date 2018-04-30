@@ -3,154 +3,199 @@ import ThreeWindow from 'components/ThreeWindow/ThreeWindow'
 import styled, {keyframes} from 'styled-components'
 import {H2} from 'components/styledComponents/Typography'
 import {FlexCol, FlexRow} from 'globalStyles'
-// const painting = require('assets/images/painting1.jpg')
-const img1 = require('assets/images/rtd1.jpg')
-const img2 = require('assets/images/rtd2.jpg')
-const img3 = require('assets/images/rtd3.jpg')
+import Draggable, {DraggableCore} from 'react-draggable'
+import { Switch, Route, withRouter, Link } from 'react-router-dom'
+import * as threeActions from 'redux/actions/three'
+import {connect} from 'react-redux'
 
-const Img = styled.img`
-  width: 100vw;
-  height: 100vh;
-  object-fit: cover;
-`;
+const img1 = require('assets/images/lookbook/FA40DC87-CFAE-4C15-AA69-BC526081C41E.jpg')
+const img2 = require('assets/images/lookbook/F303BB32-EC15-44E0-9904-41F29C279929.jpg')
+const img3 = require('assets/images/lookbook/C449C45D-0BE2-4CEE-8DDB-5532CFE8B6CA.jpg')
+const img4 = require('assets/images/lookbook/980F1BFE-7501-4DFF-9380-56F6631452C2.jpg')
+const img5 = require('assets/images/lookbook/3956F141-BEC3-4EAB-9937-EE8C6C06D37C.jpg')
+const img6 = require('assets/images/lookbook/B6CAC62C-4F4F-4FA0-A193-55FD82553BEC.jpg')
+const img7 = require('assets/images/lookbook/887D160C-45A2-43EE-86EB-E33615A0A0FB.jpg')
+const img8 = require('assets/images/lookbook/D8D84297-A927-49FA-9923-1A5DF99260B2.jpg')
 
+const imgMap = [img1, img2, img3, img4, img5, img6, img7, img8]
 
-
-const Overlay = styled.div`
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: scroll;
-  top: 0;
-`
-
-const Splash = FlexCol.extend`
-  width: 50vw;
-  position: fixed;
-  overflow: scroll;
-  right: 0;
-  top: 0;
-  justify-content: center;
-  z-index: 5;
-  img {
-    z-index: 5;
-  }
-`
-
-const H1 = styled.h1`
-  color: white;// white;//black;
-  font-style: italic;
-  // font-family: 'Noe Display';
-  font-size: 4em;
-  font-weight: 100;
-  // -webkit-text-stroke-width: 1px;
-  //  -webkit-text-stroke-color: white;
-   z-index: 10;
-   text-align: left;
-   justify-self: space-between;
-   height: 100%;
-   text-wrap: none;
-   line-height: 1;
-   color: white;
-`
-
-const bannerMotion = keyframes`
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(-25%);
-  }
-`;
-
-const Banner = styled.div`
-  width: 200vw;
-  max-height: 70px;
+const Container = styled.div`
+  width: 100%;
+  position: absolute;
+  top: 4vw;
+  height: calc(100vh - 4vw - 4vw);
   overflow: hidden;
-  z-index: 10;
-  position: fixed;
-  bottom: 0;
-  text-align: left;
-  animation: ${bannerMotion} 15s linear infinite;
-  // background-color: #ef0232;
-  background-color: blue;
 `
-const CenteredText= styled.div`
-  width: 100vw;
-  height: 100vh;
-  z-index: 15;
-  position: fixed;
-  top:0;
-  left:0;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 10em;
-  color: transparent;
-  // -webkit-text-stroke-width: 3px;
-  // -webkit-text-stroke-color: yellow;
-  color: yellow;
-  pointer-events: none;
-  font-family: 'Noe Display';
-  // background-color: yellow;
+const Img = styled.img`
+  object-fit: contain;
+  box-sizing: border-box;
+  z-index: 12;
+  max-height: 400px;
+  margin: 75px;
+  margin-right: ${props => props.active ? 0 : '200px'};
+  cursor: pointer;
+  transition: transform .25s;
 
-
-  img {
-    width: 700px;
-    filter: contrast(0) saturate(10000) brightness(1000);
+  :hover {
+    transform: scale(1.04);
+    transition: transform .25s;
   }
+
+  // border: solid 8px ${props => props.active ? 'yellow' : 'transparent'};
 `
 
-export default class Home extends Component {
+const ScrollDiv = styled.div`
+  // max-height: 600px;
+  width: auto;
+  overflow: scroll;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  height: calc(100vh - 4vw - 4vw);
+  overflow-y: hidden;
+
+  width: 100vw;
+
+`
+
+const Flex = styled.div`
+  max-width: 100%;
+  height: 100%;
+  overflow: scroll;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+`
+
+const X = styled.h1`
+  position: absolute;
+  right: 10;
+  top: 10;
+`
+
+class ProductSlider extends Component {
   constructor() {
     super()
-    this.state = {
-      img: 'https://s3.amazonaws.com/codepen-az/rtd1.jpg'
-    }
   }
+
+  componentDidMount() {
+    this.scrollRef.addEventListener('scroll', this.onScroll)
+  }
+
+  onScroll = () => {
+    this.scrollRef && this.scrollRef.childNodes.forEach(outerNode => {
+      const node = outerNode.childNodes[0]
+      if (node.getBoundingClientRect().left > 0 && node.getBoundingClientRect().left < 450 && this.props.image != node.src) {
+        // this.setState({img: node.src})
+        this.props.setImage(node.src)
+      }
+    })
+  }
+
   render() {
-
-    const images = [
-      'https://s3.amazonaws.com/codepen-az/rtd1.jpg',
-      'https://s3.amazonaws.com/codepen-az/rtd2.jpg',
-      'https://s3.amazonaws.com/codepen-az/rtd3.jpg',
-      'https://s3.amazonaws.com/codepen-az/rtd1.jpg',
-      'https://s3.amazonaws.com/codepen-az/rtd2.jpg',
-      'https://s3.amazonaws.com/codepen-az/rtd3.jpg'
-    ]
     return (
-      <div>
+      <ScrollDiv innerRef={ref => this.scrollRef = ref}>
+        {
+          imgMap.map((img, i) => (
+            <Link key={i} to={'productexample'}><Img onClick={() => this.props.setImage(img)} src={img} /></Link>
+          ))
+        }
+      </ScrollDiv>
+    )
+  }
+}
 
-      <ThreeWindow img={this.state.img} />
-      <Banner><H1>Antes De Cristo ✞ Antes De Cristo ✞ Antes De Cristo ✞ Antes De Cristo ✞ Antes De Cristo ✞ Antes De Cristo ✞ </H1></Banner>
-      <Overlay>
-      {
-        images.map(i => (
-          <img onClick={() => this.setState({img: i})} src={i} />
-        ))
-      }
-      </Overlay>
-      <CenteredText><img src={require('assets/images/tribal.png')} /></CenteredText>
-      <Splash>
-      {
-        images.map(i => (
-          <img onClick={() => this.setState({img: i})}
-            src={i}
-            style={{maxHeight: 400, objectFit: 'cover', objectPosition: '75% center', width: '100%', padding: 0}}
-          />
-        ))
-      }
-      </Splash>
-        {/*
+ProductSlider = withRouter(connect(
+  state => ({
+    image: state.three.image
+  }),
+  dispatch => ({
+    setImage: (img) => dispatch(threeActions.setImage(img))
+  })
+)(ProductSlider))
 
-          <Img src={painting} alt="image" />
-        */}
-      </div>
+const DetailsPanel = styled.div`
+  background-color: white;
+  border: 2px solid black;
+  min-width: 400px;
+  text-align: left;
+  padding: 20px;
+  margin: 40px;
+  min-height: 400px;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-around;
+
+`
+
+class ProductDetail extends Component {
+  constructor(props) {
+    super(props)
+  }
+
+  render() {
+    return (
+      <FlexRow style={{justifyContent: 'space-around', maxWidth: 800, margin: '0 auto'}}>
+        <Img src={this.props.image} />
+        <DetailsPanel>
+          <h1>Example Product</h1>
+          <p>Example text example text example text example text</p>
+          <h2>$28</h2>
+          <h2>ADD TO CART</h2>
+        </DetailsPanel>
+      </FlexRow>
+    )
+  }
+}
+
+ProductDetail = withRouter(connect(
+  state => ({
+    image: state.three.image
+  })
+)(ProductDetail))
+
+
+export default class Home extends Component {
+
+  constructor(props) {
+    super(props)
+    console.log(this.props.match.url)
+  }
+  onImgClick = (e) => {
+  }
+
+  render() {
+    return (
+      <Container>
+        <ThreeWindow />
+
+        <Route exact path={'/'} component={ProductSlider}/>
+        <Route exact path={'/:product'} component={ProductDetail}/>
+
+        <Flex style={{display: 'none'}}>
+        {
+          //  this.state.images.map((img,i) => (
+          //   <Draggable
+          //     key={i}
+          //     axis="both"
+          //     defaultPosition={{x: 100 - 200*Math.random(2*i), y: 100 - 200*Math.random(2*i+1)}}
+          //     position={null}
+          //     onStart={this.handleStart}
+          //     onDrag={this.handleDrag}
+          //     onStop={this.handleStop}
+          //   >
+          //     <div onClick={() => this.setState({img: img.src})} style={{opacity: img.active ? 1 : 0, maxWidth: 300, maxHeight: 400, padding: 0, margin: 20}}>
+          //       <X onClick={() => {let imgs = this.state.images; imgs[i].active = false; this.setState({images: imgs})}}>X</X>
+          //       <Img src={img.src} />
+          //     </div>
+          //   </Draggable>
+          // ))
+        }
+        </Flex>
+
+
+
+      </Container>
     );
   }
 }

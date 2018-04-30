@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import * as THREE from 'three';
 import textFragment from './shaders/frag2'
 import textVertex from './shaders/textVertex'
+import {connect} from 'react-redux'
+import {withRouter} from 'react-router-dom'
 
 import styled from 'styled-components'
-const _texmap = require('assets/images/adc.png')
-const _texmap2 = require('assets/images/lookbook/5A3D47D4-DE5F-4615-B0C6-EF5BDBD48C7B.jpg')
-const _texmap3 = require('assets/images/lookbook/4E75ABD1-7990-4D36-9D04-BF3BB9D48701.jpg')
-const _texmap4 = require('assets/images/lookbook/887D160C-45A2-43EE-86EB-E33615A0A0FB.jpg')
+const _texmap = require('assets/images/lookbook/F303BB32-EC15-44E0-9904-41F29C279929.jpg')
 
 const Div = styled.div`
   position: fixed;
@@ -15,20 +14,23 @@ const Div = styled.div`
   top: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 4;
+  z-index: -2 !important;
   pointer-events: none;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
 
   canvas {
     position: fixed;
-    left: 0;
-    top: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 4;
+    // left: 0;
+    // width: 100vw;
+    // height: 100vh;
+    z-index: -2 !important;
   }
 `
 
-export default class ThreeWindow extends Component {
+class ThreeWindow extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -38,37 +40,20 @@ export default class ThreeWindow extends Component {
 
   componentDidMount() {
     this.setState({scene: new Three(this.threeRef, window.innerWidth, window.innerHeight)})
-
-    // audio.src = URL.createObjectURL(files[0]);
-    // audio.load();
-    // audio.play();
-    // var context = new AudioContext();
-    // var src = context.createMediaElementSource(audio);
-    // var analyser = context.createAnalyser();
-    // src.connect(analyser);
-    // analyser.connect(context.destination);
-    // analyser.fftSize = 256;
-    // var bufferLength = analyser.frequencyBinCount;
-    // console.log(bufferLength);
-    // var dataArray = new Uint8Array(bufferLength);
-    // var sum = 0;
-    // for (var i = 0; i < bufferLength; i++) {
-    //   sum += dataArray[i]
-    // }
-    // sum /= bufferLength
-    //
-
-
-
-
-
   }
 
-  componentDidUpdate() {
-    const imgTex = _loader.load(this.props.img)
-    this.state.scene.scene.morph.uniforms.textureSampler2.value = this.state.scene.scene.morph.uniforms.textureSampler1.value
-    this.state.scene.scene.morph.uniforms.textureSampler1.value = imgTex
-    this.state.scene.scene.morph.uniforms.ramp.value = 0
+  componentDidUpdate(oldProps, oldState) {
+    _loader.needsUpdate = true
+    if (this.props.image != oldProps.image) {
+      console.log('different');
+      _loader.load(this.props.image, imgTex => {
+        imgTex.needsUpdate = true
+        this.state.scene.scene.morph.uniforms.textureSampler2.value = this.state.scene.scene.morph.uniforms.textureSampler1.value
+        this.state.scene.scene.morph.uniforms.textureSampler1.value = imgTex
+        this.state.scene.scene.morph.uniforms.ramp.value = 0
+      })
+
+    }
   }
 
   render() {
@@ -79,8 +64,16 @@ export default class ThreeWindow extends Component {
   }
 }
 
+export default withRouter(connect(
+  state => ({
+    image: state.three.image
+  })
+)(ThreeWindow))
+
 const _loader = new THREE.TextureLoader()
 _loader.crossOrigin = ''
+// _loader.setCrossOrigin("");
+// _loader.crossOrigin = ''
 const _tex1 = _loader.load(_texmap)
 // const _tex2 = _loader.load(_texmap3)
 // const _tex3 = _loader.load(_texmap4)
@@ -178,11 +171,11 @@ class TextCanvas extends THREE.Mesh {
 
   update() {
     this.uniforms.time.value += 0.02;
-    this.uniforms.ramp.value += 0.02;
+    this.uniforms.ramp.value += 0.06;
     this.uniforms.mouse.value = new THREE.Vector2(
       Math.abs(_mouse.x - _dampenedMouse.x),
       Math.abs(_mouse.y - _dampenedMouse.y)
-    ).multiplyScalar(0.005);
+    ).multiplyScalar(0.05);
   }
 }
 
@@ -227,21 +220,55 @@ class Morph extends THREE.Mesh {
     super(geometry, material)
     this.uniforms = uniforms
 
+    // this.createAudioCtx()
+  }
 
-        this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        this.analyser = this.audioCtx.createAnalyser();
-        // this.audio.src = URL.createObjectURL(inputRef.files[0]);
-        this.audio = document.createElement('audio')
-        this.audio.src = require('assets/test.mp3')
-        this.audio.load();
-        this.audio.play();
-        this.source = this.audioCtx.createMediaElementSource(this.audio);
-        // this.source = this.audioCtx.createMediaStreamSource(stream);
-        this.source.connect(this.analyser);
-        this.analyser.connect(this.audioCtx.destination);
-        this.analyser.fftSize = 256;
-        this.bufferLength = this.analyser.frequencyBinCount;
-        console.log(this.bufferLength);
+  createAudioCtx() {
+    this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    this.analyser = this.audioCtx.createAnalyser();
+    this.analyser.smoothingTimeConstant = 0.3;
+    // this.audio.src = URL.createObjectURL(inputRef.files[0]);
+    this.audio = document.createElement('audio')
+    // this.audio.src = require('assets/test.mp3')
+    this.audio.load();
+    this.audio.play();
+    this.source = this.audioCtx.createMediaElementSource(this.audio);
+    // this.source = this.audioCtx.createMediaStreamSource(stream);
+    this.source.connect(this.analyser);
+    this.analyser.connect(this.audioCtx.destination);
+    this.analyser.fftSize = 512;
+    this.bufferLength = this.analyser.frequencyBinCount;
+    // console.log(this.bufferLength);
+  }
+
+  updateAudio() {
+    var dataArray = new Uint8Array(this.bufferLength);
+    this.analyser.getByteTimeDomainData(dataArray);
+
+    //this.analyser.getByteFrequencyData(dataArray);
+
+    var amp = 0
+    const amps = []
+    const division = 256
+    const start = 30
+    const end = 60
+    const offset = end - start
+    for(var i = parseInt((start)*this.bufferLength/division); i < parseInt((end)*this.bufferLength/division); i++) {
+      amp += dataArray[i]
+      // amps.pushv(dataArray[i])
+    }
+    // console.log(amps)
+    amp /= parseInt(this.bufferLength / division)*offset
+    // console.log(amp/256)
+    if (amp/256 > .6) {console.log('hit')}
+    // this works too...
+    // this.uniforms.amplitude.value += (amp/256 - this.uniforms.amplitude.value) * 0.07
+    if (amp/256 > .6) {
+      this.uniforms.amplitude.value += (amp/256 - this.uniforms.amplitude.value) * 0.07
+    }
+    else {
+      this.uniforms.amplitude.value += (0 - this.uniforms.amplitude.value) * 0.07
+    }
   }
 
   update() {
@@ -250,16 +277,10 @@ class Morph extends THREE.Mesh {
     this.uniforms.mouse.value = new THREE.Vector2(
       Math.abs(_mouse.x - _dampenedMouse.x),
       Math.abs(_mouse.y - _dampenedMouse.y)
-    ).multiplyScalar(0.0006);
+    ).multiplyScalar(0.002);
 
-    var dataArray = new Uint8Array(this.bufferLength);
-    this.analyser.getByteTimeDomainData(dataArray);
-    var amp = 0
-    for(var i = parseInt(0*this.bufferLength/12); i < parseInt(1*this.bufferLength/12); i++) {
-      amp += dataArray[i]
-    }
-    amp /= parseInt(this.bufferLength / 12)
-    this.uniforms.amplitude.value += (amp/256 - this.uniforms.amplitude.value) * 0.1
+    // this.updateAudio()
+
   }
 }
 
@@ -320,9 +341,9 @@ class Three {
   }
 
   bind() {
-    window.addEventListener('resize', this.resize.bind(this), false);
+    // window.addEventListener('resize', this.resize.bind(this), false);
     window.addEventListener('mousemove', this.mousemove.bind(this), false);
-    window.addEventListener('click', this.click.bind(this), false);
+    // window.addEventListener('click', this.click.bind(this), false);
   }
 
   loop() {
@@ -340,8 +361,8 @@ class Three {
   }
 
   resize() {
-    this.width = window.innerWidth;
-    this.height = window.innerHeight;
+    // this.width = window.innerWidth;
+    // this.height = window.innerHeight;
 
     this.camera.aspect = this.width / this.height;
     this.camera.updateProjectionMatrix();

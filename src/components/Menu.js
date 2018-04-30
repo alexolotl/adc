@@ -7,7 +7,7 @@ const MenuWrapper = styled.header`
   position: fixed;
   top: 0;
   color: white;
-  background-color: rgba(0,0,0,.9);
+  background-color: rgba(0,0,0,.8);
   width: 100vw;
   height: 100vh;
   z-index: 20;
@@ -26,6 +26,8 @@ const FlexLi = styled.li`
   display: flex;
   justify-content: center;
   align-items: center;
+  // background-color: blue;
+  padding: 0 40px;
 `;
 const Border = styled.div`
   position: fixed;
@@ -56,18 +58,18 @@ const X = styled.a`
 `
 
 const StyledLink = styled(Link)`
-  color: palevioletred;
-  display: block;
-  margin: 0.5em 0;
-  text-decoration: none;
 
-  &:hover {
-    text-decoration: underline;
-  }
+    font-size: 1em;
+    font-family: "UnifrakturCook";
+    // color: transparent;
+    -webkit-text-stroke: 2px black;
+    letter-spacing: .07em;
+    color: lavender;
 
-  &:visited {
-    color: white;
-  }
+    :hover {
+      color: lavender;
+      text-shadow: 2px 2px black;
+    }
 `;
 
 export default class Header extends Component {
@@ -84,6 +86,9 @@ export default class Header extends Component {
           </MenuHeader>
           <FlexLi>
             <H1><StyledLink to='/shop' onClick={this.props.toggleMenu}>Shop</StyledLink></H1>
+          </FlexLi>
+          <FlexLi>
+            <H1><StyledLink to='/shop' onClick={this.props.toggleMenu}>Designers</StyledLink></H1>
           </FlexLi>
           <FlexLi>
             <H1><StyledLink to='/archive' onClick={this.props.toggleMenu}>Archive</StyledLink></H1>

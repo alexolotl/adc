@@ -5,12 +5,14 @@
   "dependencies": {
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-draggable": "^3.0.5",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.0.17",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
+    "seedrandom": "^2.4.3",
     "shopify-buy": "^1.0.2",
     "styled-components": "^2.4.0",
     "three": "^0.89.0"

@@ -17,6 +17,14 @@ export function getAllProducts(payload) {
   }
 }
 
+export const SET_ACTIVE_PRODUCT = 'SET_ACTIVE_PRODUCT'
+export function setActiveProduct(payload) {
+  return {
+    type: SET_ACTIVE_PRODUCT,
+    payload
+  }
+}
+
 export const SET_SHOP = 'SET_SHOP'
 export function setShop(payload) {
   return {
@@ -48,6 +56,15 @@ export function filterByType(type, client) {
       let filtered = products.filter(product => product.productType == type)
       return dispatch(getAllProducts(filtered))
     });
+  }
+}
+
+export function getProductById(id, client) {
+  return dispatch => {
+    return client.product.fetch(id).then((product) => {
+      console.log(product);
+      return dispatch(setActiveProduct(product))
+    })
   }
 }
 

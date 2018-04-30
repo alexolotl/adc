@@ -120,11 +120,14 @@ mat2 rotate2d(in float _angle) {
 // used a tutorial by Inigo Quilez as a starting point and branched out in a different direction
 void main(void)
 {
-	  vec2 st = 1.0 * gl_FragCoord.xy / resolution.xy;
+	  vec2 st = 1.0 * gl_FragCoord.xy / (resolution.xy+vec2(resolution.x/2., 0.));
 
     vec2 st2 = st + 20.5*vec2(fbm(vec3(st*vec2(10., 1.),time/4.)));
 
-    st2 = mix(st, st2, (amplitude*amplitude)/6. );
+    vec2 st3 = st + 10.*vec2(fbm(vec3(amplitude*5., st.x, st.y)));
+
+    st2 = mix(st, st2, mouse/4.);
+    st2 = mix(st2, st3, amplitude);
 
     float grad = st2.y*st2.x;
     // vec3 color1 = vec3(1.,1.,1.);
@@ -135,7 +138,7 @@ void main(void)
     color = texture2D(textureSampler1, (st/2. + st2/10.) * vec2(1.3, .8)).xyz;
     vec3 oldImage = texture2D(textureSampler2, (st/2. + st2/10.) * vec2(1.3, .8)).xyz;
 
-    color = mix(oldImage, color, clamp(0.,1.,ramp*ramp/2.));
+    color = mix(oldImage, color, clamp(0.,1.,sin(min(ramp, 1.)*M_PI-M_PI/2.)/2.+.5));
 
     // float randfbm = fbm(vec3(st*1.2,44.23+time/20.));
     // vec3 color3 = vec3(1.,1.,0.);

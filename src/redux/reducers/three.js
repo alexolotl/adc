@@ -1,20 +1,14 @@
-const three = (state = [], action) => {
+const initialState = {
+  image: null
+}
+
+const three = (state = initialState, action) => {
   switch (action.type) {
-    case 'ADD_TODO':
-      return [
+    case 'SET_IMAGE':
+      return {
         ...state,
-        {
-          id: action.id,
-          text: action.text,
-          completed: false
-        }
-      ]
-    case 'TOGGLE_TODO':
-      return state.map(todo =>
-        (todo.id === action.id)
-          ? {...todo, completed: !todo.completed}
-          : todo
-      )
+        image: action.payload
+      }
     default:
       return state
   }
