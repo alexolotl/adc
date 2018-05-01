@@ -55,6 +55,10 @@ const X = styled.a`
   line-height: 1;
   padding: 15px;
 
+  @media (max-width: 700px) {
+    font-size: .6em;
+  }
+
 `
 
 const StyledLink = styled(Link)`
@@ -70,6 +74,10 @@ const StyledLink = styled(Link)`
       color: lavender;
       text-shadow: 2px 2px black;
     }
+
+    @media (max-width: 700px) {
+      font-size: .6em;
+    }
 `;
 
 export default class Header extends Component {
@@ -82,7 +90,6 @@ export default class Header extends Component {
       <MenuWrapper>
         <FlexCol>
           <MenuHeader>
-            <X onClick={this.props.toggleMenu}>X</X>
           </MenuHeader>
           <FlexLi>
             <H1><StyledLink to='/shop' onClick={this.props.toggleMenu}>Shop</StyledLink></H1>

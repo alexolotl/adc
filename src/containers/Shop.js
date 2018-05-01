@@ -17,30 +17,141 @@ const Container = styled.div`
   // width: calc(100vw - 120px);
   width: 100vw;
   margin: 0 auto;
+  max-width: 100vw;
+  overflow-x: hidden;
+
+  @media (max-width: 700px) {
+    width: calc(100vw - 50px);
+    margin: 0 auto;
+    overflow: visible;
+  }
 `
-const Img = styled.img`
-  object-fit: cover;
-  object-fit: contain;
-  width: 100%;
-  height: 100%;
 
-  pointer-events: none;
+const Products = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: space-around;
+  max-width: 100vw;
+  overflow: hidden;
 
-  :hover {
-    // transform: scale(1.04);
-    // transition: transform .25s;
+  .react-draggable {
+    flex: 0 1 auto;
+    // width: 450px;
+    max-width: 100vw;
+    // width: 300px;
+
+    @media (max-width: 700px) {
+      transform: none !important;
+    }
+  }
+
+  @media (max-width: 700px) {
+
   }
 `
 
 const Card = styled.div`
   position: relative;
-  width: 100%;
+  // width: 100%;
   height: 100%;
   margin: 40px;
 
   z-index: ${props => props.activeProduct ? 5 : 2};
-  width: ${props => props.random}px;
-  height: ${props => props.random}px;
+  // width: ${props => props.random}px;
+  // height: ${props => props.random}px;
+
+
+  &:nth-of-type(4n+1) a {
+    position: relative;
+    left: -50px;
+  }
+  &:nth-of-type(4n+2) a {
+    position: relative;
+    right: -25px;
+    text-align: right;
+    width: 100%;
+  }
+  &:nth-of-type(4n) a {
+    position: relative;
+    text-align: center;
+    width: 100%;
+  }
+
+  @media (max-width: 700px) {
+
+    &:nth-of-type(3n) {
+      position: relative;
+      left: -25px;
+      a {
+        position: relative;
+        right: -25px;
+        text-align: right;
+        width: 100%;
+      }
+    }
+    &:nth-of-type(3n+1) {
+      position: relative;
+      width: 90%;
+      a {
+        position: relative;
+        left: -10px;
+      }
+    }
+    &:nth-of-type(3n+2) {
+      position: relative;
+      right: -25px;
+      a {
+        position: relative;
+        left: -50px;
+      }
+    }
+
+    &:nth-of-type(5n+2) {
+      width: 75%;
+      right: -75px;
+      a {
+        position: relative;
+        right: -50px;
+      }
+    }
+    &:nth-of-type(5n+4) {
+      width: 85%;
+      a {
+        position: relative;
+        right: -30px;
+        text-align: right;
+        width: 100%;
+      }
+    }
+
+    margin: 0;
+    margin-bottom: 25px;
+  }
+`
+
+const Img = styled.img`
+  object-fit: contain;
+  // width: 100%;
+  // height: 100%;
+
+  max-width: 300px;
+
+  pointer-events: none;
+
+
+
+  :hover {
+    // transform: scale(1.04);
+    // transition: transform .25s;
+  }
+
+  @media (max-width: 700px) {
+    // width: 100vw;
+    width: 100%;
+    object-fit: cover;
+    margin: 0;
+  }
 `
 
 const HoverText = styled.div`
@@ -50,6 +161,17 @@ const HoverText = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
+
+  cursor: move; /* fallback if grab cursor is unsupported */
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+
+  &:active {
+      cursor: grabbing;
+      cursor: -moz-grabbing;
+      cursor: -webkit-grabbing;
+  }
 
   flex-flow: column nowrap;
   align-items: flex-start;
@@ -61,7 +183,7 @@ const HoverText = styled.div`
   opacity: 0;
 
   a {
-    opacity: 0;
+    opacity: 1;
     z-index: 5;
     cursor: pointer;
 
@@ -73,15 +195,10 @@ const HoverText = styled.div`
     h4 {
     }
 
-    :hover {
-      opacity: 1 !important;
-    }
-
 
   }
 
   :hover a {
-    opacity: .6;
     transition: all .25s;
   }
 
@@ -89,6 +206,22 @@ const HoverText = styled.div`
     background-color: rgba(0,0,0,.4);
     opacity: 1;
     transition: opacity .25s;
+  }
+
+  @media (max-width: 700px) {
+    // position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 1;
+    margin: 0;
+
+    a {
+      opacity: 1;
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: space-around;
+    }
   }
 
 `
@@ -105,23 +238,14 @@ const X = styled.img`
   :hover {
     opacity: 1;
   }
-`
 
-const Products = styled.div`
-  display: flex;
-  flex-flow: row wrap;
-  align-items: center;
-  justify-content: space-around;
-  max-width: 100vw;
-
-  .react-draggable {
-    flex: 0 1 auto;
-    width: 450px;
-    max-width: 100vw;
-
-    width: 300px;
+  @media (max-width: 700px) {
+    display: none;
   }
 `
+
+
+
 
 class ProductSlider extends Component {
 
@@ -157,10 +281,6 @@ class ProductSlider extends Component {
   render() {
     return (
       <div>
-
-      {
-          <ThreeWindow />
-      }
       <Products innerRef={ref => this.productsRef = ref}>
         {
           this.props.shop.products.map((prod, i) => (
@@ -178,6 +298,8 @@ class ProductSlider extends Component {
                 activeProduct={this.state.activeProductIdx == i}
                 random={Math.floor(Math.seedrandom(i)*200)+200}
               >
+              <Img onClick={() => {this.props.setImage(prod.images[0].src)}} src={prod.images[0].src} />
+
                 <HoverText>
                   <X onClick={() => this.closeProduct(i)} src={xIcon}></X>
                   <Link
@@ -189,7 +311,6 @@ class ProductSlider extends Component {
                     <h4>{prod.variants[0].price}</h4>
                   </Link>
                 </HoverText>
-                <Img onClick={() => {this.props.setImage(prod.images[0].src)}} src={prod.images[0].src} />
               </Card>
             </Draggable>
           ))
@@ -215,6 +336,9 @@ export default class Shop extends Component {
   render() {
     return (
       <Container>
+      {
+          <ThreeWindow />
+      }
         <Route exact path={'/shop'} component={ProductSlider}/>
         <Route exact path={'/shop/:product'} component={Product}/>
       </Container>

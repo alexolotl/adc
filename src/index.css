@@ -9,7 +9,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: "Xolonium", sans-serif;
-  background-color: #eaeaef;
+  background-color: #dfdee3;
 }
 
 ul, li, h1, h2, h3, h4, h5, p {
@@ -17,7 +17,7 @@ ul, li, h1, h2, h3, h4, h5, p {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  margin-bottom: .75em;
+  margin-bottom: 20px;
   font-weight: 400;
   font-family: "Xolonium", sans-serif;
 }
@@ -34,4 +34,10 @@ textarea:focus, input:focus{
 
 *:focus {
     outline: none;
+}
+
+@media (max-width: 700px) {
+  html {
+    font-size: 14px;
+  }
 }

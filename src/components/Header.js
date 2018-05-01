@@ -6,6 +6,14 @@ import * as cartActions from 'redux/actions/cart'
 import Menu from 'components/Menu'
 import styled from 'styled-components'
 
+const FlexRow = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  h1 {
+    margin-left: 30px;
+  }
+`
+
 const HeaderStyled = styled.header`
   position: fixed;
   display: flex;
@@ -13,7 +21,7 @@ const HeaderStyled = styled.header`
   justify-content: space-between;
   align-items: center;
   width: 100vw;
-  padding: 40px;
+  padding: 40px 25px;
   z-index: 20;
   box-sizing: border-box;
   height: 4vw;
@@ -25,6 +33,10 @@ const HeaderStyled = styled.header`
   & * {
     margin-bottom: 0;
   }
+
+  @media (max-width: 700px) {
+
+  }
 `;
 
 const HeaderLink = H1.extend`
@@ -35,31 +47,49 @@ const HeaderLink = H1.extend`
   color: white;
   font-weight: 100;
   line-height: 1;
+  z-index: 100;
+
+  img {
+    width: 45px;
+  }
 
   :hover {
-    transform: rotate(180deg);
+    transform: ${props => props.cross ? 'rotate(180deg)' : 'rotate(0deg)'};
   }
 
   display: ${props => props.hide ? 'none' : 'block'};
 
   // -webkit-text-stroke-width: 1px;
   //  -webkit-text-stroke-color: white;
+
+  @media (max-width: 700px) {
+    font-size: 2.5em;
+  }
 `
 
  const Logo = HeaderLink.extend`
+ z-index: 10;
   font-size: 3.25em;
   letter-spacing: 2px;
   font-style: italic;
-    text-decoration: underline;
+    // text-decoration: underline;
   a {
     color: white;
     text-align: left;
   }
 
+  @media (max-width: 700px) {
+    font-size: 1.75em;
+  }
+
  `
 
 const HeaderPlaceholder = styled.div`
-  height: 11vh;
+  height: 0px;
+
+  @media (max-width: 700px) {
+    height: 80px;
+  }
 `;
 
 const StyledLink = styled(Link)`
@@ -98,6 +128,10 @@ const Footer = styled.footer`
       color: lavender;
       text-shadow: 2px 2px black;
     }
+
+    @media (max-width: 700px) {
+      display: none;
+    }
   }
 `
 
@@ -113,7 +147,7 @@ class Header extends Component {
   }
 
   render() {
-    return this.props.match.path != '/' && (
+    return (
       <div>
         <HeaderStyled>
           {
@@ -122,8 +156,11 @@ class Header extends Component {
 
           }
 
-          <Logo><Link to='/'>Antes De Cristo</Link></Logo>
-          <HeaderLink onClick={this.toggleMenu}>✝</HeaderLink>
+          <Logo><Link to='/shop'>Antes De Cristo</Link></Logo>
+          <FlexRow>
+            <HeaderLink><Link to='/cart'><img src={require('assets/icons/shopping-cart.svg')} /></Link></HeaderLink>
+            <HeaderLink cross={true} onClick={this.toggleMenu}>✝</HeaderLink>
+          </FlexRow>
         </HeaderStyled>
         {
           <Footer>
@@ -136,8 +173,8 @@ class Header extends Component {
         }
 
         {
-            // <HeaderPlaceholder>
-            // </HeaderPlaceholder>
+            <HeaderPlaceholder>
+            </HeaderPlaceholder>
         }
 
         {this.state.menu && <Menu toggleMenu={this.toggleMenu} />}

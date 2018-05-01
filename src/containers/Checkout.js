@@ -8,15 +8,15 @@ import {P, H4} from 'components/styledComponents/Typography'
 import {FlexRow} from 'globalStyles'
 
 const CheckoutWrapper = styled.div`
-  position: fixed;
-  min-height: calc(100vh - 80px);
-  width: 900px;
-  left: 40px;
-  top: 40px;
-  border: 2px solid black;
-  box-sizing: border-box;
-  background-color: white;
-  padding: 30px;
+  width: calc(100vw - 40px);
+  margin: 0 auto;
+  margin-top: 120px;
+  > div {
+    width: 100%;
+    > div {
+      width: 100%;
+    }
+  }
 `
 
 const FlexRowCenter = FlexRow.extend`
@@ -28,12 +28,11 @@ const FlexRowRight = FlexRow.extend`
 `
 
 const Box = P.extend`
-    border: 1px solid black;
     box-sizing: border-box;
-    width: 40px;
-    height: 40px;
     display: flex;
     flex-flow: row nowrap;
+
+    font-size: 2em;
 
     justify-content: center;
     align-items: center;
@@ -48,19 +47,22 @@ class Checkout extends Component {
       this.props.checkout.lineItems.map((line_item) => {
         return (
           <div key={line_item.id.toString()}>
-            <FlexRow style={{justifyContent: 'space-around', borderBottom: '1px solid black'}}>
-              <H4>{line_item.title}</H4>
-              <P>/</P>
-              <P>{line_item.variant.title}</P>
-              <P>/</P>
-              <P>${line_item.variant.price}</P>
-              <P>/</P>
-              <P>Qty: {line_item.quantity}</P>
-              <div style={{display: 'inherit'}}>
-                <P style={{marginRight: 20}} onClick={() => this.props.updateQuantityInCart(line_item.id, Math.max(0, line_item.quantity - 1), this.props.client, this.props.checkout.id)}>–</P>
-                <P onClick={() => this.props.updateQuantityInCart(line_item.id, line_item.quantity + 1, this.props.client, this.props.checkout.id)}>+</P>
-              </div>
-              <Box style={{color: 'red' }} onClick={() => this.props.removeLineItemFromCart(line_item.id, this.props.client, this.props.checkout.id)}>×</Box>
+            <FlexRow style={{justifyContent: 'space-between', borderBottom: '1px solid black'}}>
+                <FlexRow style={{width: 'auto'}}>
+                <H4>{line_item.title }</H4>
+                <P>| </P>
+                <P>${line_item.variant.price}</P>
+              </FlexRow>
+              {
+                // <P>/</P>
+                // <P>Qty: {line_item.quantity}</P>
+                // <div style={{display: 'inherit'}}>
+                //   <P style={{marginRight: 20}} onClick={() => this.props.updateQuantityInCart(line_item.id, Math.max(0, line_item.quantity - 1), this.props.client, this.props.checkout.id)}>–</P>
+                //   <P onClick={() => this.props.updateQuantityInCart(line_item.id, line_item.quantity + 1, this.props.client, this.props.checkout.id)}>+</P>
+                // </div>
+              }
+
+              <Box onClick={() => this.props.removeLineItemFromCart(line_item.id, this.props.client, this.props.checkout.id)}>×</Box>
             </FlexRow>
           </div>
         );
@@ -90,10 +92,8 @@ class Checkout extends Component {
     return (
       <CheckoutWrapper>
           <FlexRow>
-            <h2>Your cart</h2>
-            <H4 onClick={this.props.closeCart}>×</H4>
+            {this.props.checkout.lineItems.length == 0 ? <div>Your cart is empty!</div> : this.renderContent()}
           </FlexRow>
-          {this.props.checkout.lineItems.length == 0 ? <div>Your cart is empty!</div> : this.renderContent()}
       </CheckoutWrapper>
     );
   }

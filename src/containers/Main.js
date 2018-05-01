@@ -7,6 +7,7 @@ import {withRouter} from 'react-router-dom'
 import Shop from 'containers/Shop'
 import Product from 'components/Product'
 import Home from 'components/Home'
+import Checkout from 'containers/Checkout'
 
 class Main extends Component {
   constructor(props) {
@@ -51,6 +52,7 @@ class Main extends Component {
       <main>
         <Switch>
           <Route exact path='/' component={Home} />
+          <Route exact path='/cart' component={Checkout} />
           <Route path='/shop' component={Shop} />
           <Route path='/shop/:product' component={Product} />
         </Switch>

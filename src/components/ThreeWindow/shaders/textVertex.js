@@ -1,4 +1,4 @@
-const vertexShader =  `precision highp float;
+const vertexShader =  `precision mediump float;
 
       #define M_PI 3.14159265359
 
