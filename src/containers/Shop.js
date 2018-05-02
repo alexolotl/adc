@@ -299,7 +299,6 @@ class ProductSlider extends Component {
                 random={Math.floor(Math.seedrandom(i)*200)+200}
               >
               <Img onClick={() => {this.props.setImage(prod.images[0].src)}} src={prod.images[0].src} />
-
                 <HoverText>
                   <X onClick={() => this.closeProduct(i)} src={xIcon}></X>
                   <Link

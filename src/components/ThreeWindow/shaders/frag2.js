@@ -1,6 +1,5 @@
 const fragShader = `
 precision mediump float;
-
 #define M_PI 3.14159265359
 
 // Varying

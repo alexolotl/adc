@@ -43,12 +43,16 @@ class ThreeWindow extends Component {
   }
 
   componentDidUpdate(oldProps, oldState) {
-    _loader.needsUpdate = true
     if (this.props.image != oldProps.image) {
-      console.log('different');
+
+      // this.state.scene.scene.morph.uniforms.textureSampler2.value.image.src = this.state.scene.scene.morph.uniforms.textureSampler1.value.image.src
+      // this.state.scene.scene.morph.uniforms.textureSampler1.value.image.src = this.props.image
+      //
+      // this.state.scene.scene.morph.uniforms.ramp.value = 0
+
+
       _loader.load(this.props.image, imgTex => {
-        imgTex.needsUpdate = true
-        this.state.scene.scene.morph.uniforms.textureSampler2.value = this.state.scene.scene.morph.uniforms.textureSampler1.value
+        this.state.scene.scene.morph.uniforms.textureSampler2.value.image.src = this.state.scene.scene.morph.uniforms.textureSampler1.value.image.src
         this.state.scene.scene.morph.uniforms.textureSampler1.value = imgTex
         this.state.scene.scene.morph.uniforms.ramp.value = 0
       })
@@ -72,11 +76,7 @@ export default withRouter(connect(
 
 const _loader = new THREE.TextureLoader()
 _loader.crossOrigin = ''
-// _loader.setCrossOrigin("");
-// _loader.crossOrigin = ''
 const _tex1 = _loader.load(_texmap)
-// const _tex2 = _loader.load(_texmap3)
-// const _tex3 = _loader.load(_texmap4)
 const _mouse = new THREE.Vector2(0, 0);
 const _dampenedMouse = new THREE.Vector2(0, 0);
 
