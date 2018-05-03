@@ -67,7 +67,7 @@ const Details = styled.div`
   justify-content: center;
   align-items: center;
 
-  color: white;
+  color: black;
 
   position: relative;
   left: -15%;
@@ -117,7 +117,7 @@ const Variant = styled.div`
 
 const Button = styled.div`
   padding: 20px;
-  border: 2px solid white;
+  border: 2px solid black;
   box-sizing: border-box;
   pointer-events: ${props => props.active ? 'auto' : 'none'};
   cursor: pointer;
@@ -127,7 +127,7 @@ const Button = styled.div`
   text-align:center;
   background-color: transparent;//rgba(255,255,255,.65);
 
-  color: white;
+  color: black;
   font-size: 1.75em;
 
   :hover {
@@ -152,7 +152,7 @@ const Screen = styled.div`
   left: 0;
   width: 100vw;
   height: 700vh;
-  background: linear-gradient(to top, rgba(0,0,0,.5), rgba(0,0,0,.2));
+  // background: linear-gradient(to top, rgba(0,0,0,.5), rgba(0,0,0,.2));
   z-index: -1;
 `
 

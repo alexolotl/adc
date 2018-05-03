@@ -52,7 +52,6 @@ class Main extends Component {
       <main>
         <Switch>
           <Route exact path='/' component={Home} />
-          <Route exact path='/cart' component={Checkout} />
           <Route path='/shop' component={Shop} />
           <Route path='/shop/:product' component={Product} />
         </Switch>

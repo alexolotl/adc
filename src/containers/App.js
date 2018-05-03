@@ -25,7 +25,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Header />
+        {this.props.location.pathname != '/' && <Header />}
         {this.props.isCartOpen && <Checkout />}
         <Main />
       </div>

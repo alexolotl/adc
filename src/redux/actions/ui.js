@@ -4,3 +4,11 @@ export function toggleHamburger() {
     type: TOGGLE_HAMBURGER
   }
 }
+
+export const SHOW_HEADER = 'SHOW_HEADER'
+export function showHeader(bool) {
+  return {
+    type: SHOW_HEADER,
+    payload: bool
+  }
+}
