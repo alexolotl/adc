@@ -2,15 +2,26 @@ import React, { Component } from 'react';
 import {withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
 import * as cartActions from 'redux/actions/cart'
-import LineItem from 'components/LineItem'
+import * as uiActions from 'redux/actions/ui'
 import styled from 'styled-components'
 import {P, H4} from 'components/styledComponents/Typography'
 import {FlexRow} from 'globalStyles'
 
 const CheckoutWrapper = styled.div`
-  width: calc(100vw - 40px);
+  // max-width: calc(100vw - 160px);
+  // min-width: 400px;
+  width: 600px;
   margin: 0 auto;
-  margin-top: 120px;
+  margin-top: 80px;
+  background-color: white;
+  border: 2px solid black;
+  height: calc(100vh - 280px);
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-around;
+  align-items: center;
+  padding: 20px;
+
   > div {
     width: 100%;
     > div {
@@ -40,19 +51,31 @@ const Box = P.extend`
     cursor: pointer;
 `
 
+const LineItem = FlexRow.extend`
+  width: 100% !important;
+  max-width: 600px;
+  justify-content: space-around;
+
+`
+
 class Checkout extends Component {
 
+  componentDidMount() {
+    this.props.setBkgText('CART ')
+  }
   renderLineItems = () => {
     return (
       this.props.checkout.lineItems.map((line_item) => {
         return (
           <div key={line_item.id.toString()}>
             <FlexRow style={{justifyContent: 'space-between', borderBottom: '1px solid black'}}>
-                <FlexRow style={{width: 'auto'}}>
+              <LineItem style={{width: 'auto'}}>
                 <H4>{line_item.title }</H4>
                 <P>| </P>
                 <P>${line_item.variant.price}</P>
-              </FlexRow>
+                <P>| </P>
+                <Box onClick={() => this.props.removeLineItemFromCart(line_item.id, this.props.client, this.props.checkout.id)}>×</Box>
+              </LineItem>
               {
                 // <P>/</P>
                 // <P>Qty: {line_item.quantity}</P>
@@ -62,7 +85,6 @@ class Checkout extends Component {
                 // </div>
               }
 
-              <Box onClick={() => this.props.removeLineItemFromCart(line_item.id, this.props.client, this.props.checkout.id)}>×</Box>
             </FlexRow>
           </div>
         );
@@ -107,6 +129,7 @@ export default withRouter(connect(
   dispatch => ({
     updateQuantityInCart: (li_id, qty, client, checkout_id) => dispatch(cartActions.updateQuantityInCart(li_id, qty, client, checkout_id)),
     removeLineItemFromCart: (li_id, client, checkout_id) => dispatch(cartActions.removeLineItemFromCart(li_id, client, checkout_id)),
-    closeCart: () => dispatch(cartActions.toggleCart(false))
+    closeCart: () => dispatch(cartActions.toggleCart(false)),
+    setBkgText: txt => dispatch(uiActions.setBkgText(txt))
   })
 )(Checkout))

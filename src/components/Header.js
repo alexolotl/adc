@@ -36,10 +36,8 @@ const Links = FlexRow.extend`
   font-family: "UnifrakturCook";
   font-size: 2.5em;
   justify-content: space-around;
-
   a {
-    color: white;
-    -webkit-text-stroke: 1px black;
+    cursor: pointer !important;
   }
 `
 
@@ -70,6 +68,14 @@ const Footer = styled.footer`
   height: 40px;
 `
 
+const Cross = styled.a`
+  color: white;
+  -webkit-text-stroke: 1px black;
+  :hover {
+    transform: rotate(180deg);
+  }
+`
+
 
 class Nav extends Component {
   constructor(props) {
@@ -91,8 +97,8 @@ class Nav extends Component {
             <Link to='/archive'>Archive</Link>
             <Link to='/about'>About</Link>
             <Link to='/cart'>Cart {this.props.checkout.quantity}</Link>
-            <Link to='/cart'><img src={require('assets/icons/shopping-cart.svg')} /></Link>
-            <a cross={true} onClick={this.toggleMenu}>✝</a>
+            <Link to='/cart'><img src={require('assets/icons/cart-black.svg')} /></Link>
+            <Cross onClick={this.toggleMenu}>✝</Cross>
           </Links>
         </Header>
 

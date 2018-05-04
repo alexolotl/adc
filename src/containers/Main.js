@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Switch, Route } from 'react-router-dom'
 import {connect} from 'react-redux'
+import styled from 'styled-components'
 import {bindActionCreators} from 'redux'
 import {withRouter} from 'react-router-dom'
 
@@ -8,6 +9,25 @@ import Shop from 'containers/Shop'
 import Product from 'components/Product'
 import Home from 'components/Home'
 import Checkout from 'containers/Checkout'
+import Cart from 'containers/Cart'
+import Archive from 'containers/Archive'
+import About from 'containers/About'
+
+const BackgroundText = styled.div`
+  width: 140vw;
+  margin: 0 auto;
+  height: 100vh;
+  position: fixed;
+  top: 60px;
+  left: -20vw;
+  z-index: -5;
+  font-size: 8em;
+  font-style: italic;
+  text-transform: uppercase;
+  pointer-events: none;
+
+  display: ${props => props.hidden ? 'none': 'block'};
+`
 
 class Main extends Component {
   constructor(props) {
@@ -47,13 +67,24 @@ class Main extends Component {
     });
   }
 
+
+
   render() {
+    const list = [...Array(100).keys()]
     return (
       <main>
+        <BackgroundText hidden={this.props.location.pathname == '/'}>
+          {
+            list.map(i => <span key={i}>{this.props.backgroundText}</span>)
+          }
+        </BackgroundText>
         <Switch>
           <Route exact path='/' component={Home} />
           <Route path='/shop' component={Shop} />
           <Route path='/shop/:product' component={Product} />
+          <Route path='/cart' component={Checkout} />
+          <Route path='/archive' component={Archive} />
+          <Route path='/about' component={About} />
         </Switch>
       </main>
     )
@@ -62,7 +93,9 @@ class Main extends Component {
 
 export default withRouter(connect(
   state => ({
-    client: state.shop.client
+    client: state.shop.client,
+    backgroundText: state.ui.backgroundText,
+    backgroundTextStyle: state.ui.backgroundTextStyle
   })
 )(Main))
 

@@ -7,6 +7,7 @@ import Draggable, {DraggableCore} from 'react-draggable'
 import { Switch, Route, withRouter, Link } from 'react-router-dom'
 import * as threeActions from 'redux/actions/three'
 import * as shopActions from 'redux/actions/shop'
+import * as uiActions from 'redux/actions/ui'
 import {connect} from 'react-redux'
 import Product from 'components/Product'
 import seedrandom from 'seedrandom'
@@ -14,7 +15,7 @@ import seedrandom from 'seedrandom'
 const xIcon = require('assets/icons/close-button.svg')
 
 const Container = FlexRow.extend`
-  // width: calc(100vw - 50px);
+  width: calc(100vw - 50px);
   position: absolute;
   top: 100px;
   margin: 0 auto;
@@ -53,27 +54,6 @@ const PreviewContainer = styled.div`
       cursor: pointer;
       // opacity: .5;
     }
-    > div {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      height: 15%;
-      left: 0;
-      p {
-        font-size: 4em;
-        color: #5b00ff;
-        overflow: visible;
-        text-align: center;
-      }
-      .button {
-        padding: 15px;
-        height: 15px;
-        background-color: white;
-        border: 3px solid black;
-        width: 200px;
-        margin: 0 auto;
-      }
-    }
   }
 
   :hover > div {
@@ -85,6 +65,26 @@ const PreviewContainer = styled.div`
     }
   }
 `
+
+const Button = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+
+  p {
+    color: white;
+    font-size: 1.5em;
+    font-style: italic;
+    text-transform: uppercase;
+  }
+`
+
 // const Hover = FlexCol.extend`
 //   position: absolute;
 //   bottom: 0;
@@ -95,33 +95,26 @@ const PreviewContainer = styled.div`
 //   display: none;
 // `
 
-const BackgroundText = styled.div`
-  width: 140vw;
-  margin: 0 auto;
-  height: 100vh;
-  position: fixed;
-  top: 60px;
-  left: -20vw;
-  z-index: 0;
-  font-size: 8em;
-  font-style: italic;
-  text-transform: uppercase;
-  pointer-events: none;
-`
+
 
 class ProductsList extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      activeProductIdx: 0,
-      backgroundText: 'ANTES DE CRISTO  ✝  '
+      activeProductIdx: 0
     }
+  }
+
+  componentDidMount() {
+    this.props.setBkgText('ADC ✝ ')
   }
 
   onHover = (src, i, title, vendor) => {
     this.props.setImage(src)
-    this.setState({activeProductIdx: i, activeImage: src, backgroundText: title + '  ✝  '})
+    this.setState({activeProductIdx: i, activeImage: src})
+    this.props.setBkgText(title + '  ✝  ')
+    this.props.setBkgTextStyle({fontStyle: 'italic'})
   }
 
   closeProduct = i => {
@@ -129,18 +122,11 @@ class ProductsList extends Component {
   }
 
   render() {
-    const list = [...Array(100).keys()]
-
     return (
       <Container>
-        <BackgroundText>
-          {
-            list.map(i => `${this.state.backgroundText}`)
-          }
-        </BackgroundText>
         <Products innerRef={ref => this.productsRef = ref}>
         {
-          this.props.shop.products.map((prod, i) => (
+          this.props.shop.products && this.props.shop.products.map((prod, i) => (
             <Draggable
               key={i}
               axis="both"
@@ -150,17 +136,14 @@ class ProductsList extends Component {
               onDrag={this.handleDrag}
               onStop={this.handleStop}
             >
-              <PreviewContainer active={this.state.activeProductIdx == i} onMouseOver={() => this.onHover(prod.images[0].src, i, prod.title, prod.vendor)}>
+              <PreviewContainer active={this.state.activeProductIdx == i} onMouseOver={() => this.onHover(prod.images[0].src, i, prod.title, prod.vendor)} onMouseOut={() => this.props.setBkgTextStyle({fontStyle: ''})}>
                   <div>
                     <img src={xIcon} onClick={() => this.closeProduct(i)} />
-                    <div>
+                    <Button>
                       <Link to={'shop/' + prod.handle}>
-                        {
-                          // <p>{prod.title}</p>
-                        }
-                        <div class="button">CHECK ME OUT</div>
+                          <p>{prod.title}</p>
                       </Link>
-                    </div>
+                    </Button>
                   </div>
                   <Link to={'shop/' + prod.handle}>
                     <Preview src={prod.images[0].src} alt={prod.title} />
@@ -181,7 +164,9 @@ export default withRouter(connect(
     shop: state.shop
   }),
   dispatch => ({
-    setImage: (img) => dispatch(threeActions.setImage(img))
+    setImage: (img) => dispatch(threeActions.setImage(img)),
+    setBkgText: text => dispatch(uiActions.setBkgText(text)),
+    setBkgTextStyle: style => dispatch(uiActions.setBkgTextStyle(style))
   })
 )(ProductsList))
 

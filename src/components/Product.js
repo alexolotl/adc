@@ -12,11 +12,12 @@ const ProductPage = FlexRow.extend`
   width: calc(100vw - 40px);
   height: 100vh;
   overflow: hidden;
-  // position: absolute;
-  // left: 0;
-  // top: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
   justify-content: space-between;
   margin: 0 auto;
+  margin-top: 20px;
 
   @media (max-width: 700px) {
     overflow: scroll;
@@ -76,6 +77,7 @@ const Details = styled.div`
   h1 {
     font-size: 3em;
     text-align: left;
+    text-transform: uppercase;
   }
 
   p {
@@ -125,13 +127,14 @@ const Button = styled.div`
   width: 100%;
   max-width: 400px;
   text-align:center;
-  background-color: transparent;//rgba(255,255,255,.65);
+  background-color: black;//transparent;//rgba(255,255,255,.65);
 
-  color: black;
+  color: white;
   font-size: 1.75em;
 
   :hover {
-    background-color: rgba(255,255,255,.3);
+    // background-color: rgba(255,255,255,.3);
+    background-color: #aa72ff;
   }
 `
 
@@ -139,6 +142,13 @@ const DetailRow = FlexRow.extend`
   justify-content: flex-start;
   width: 100%;
   margin-bottom: 30px;
+
+  span {
+    background-color: white;
+    padding: 0 20px;
+    height: 60px;
+    border: 2px solid black;
+  }
 
   @media (max-width: 700px) {
     margin: 0;
@@ -231,18 +241,18 @@ class Product extends Component {
         </ImgContainer>
         <Details>
             <DetailRow>
-              <h1>{this.state.product.title}</h1>
+              <span><h1>{this.state.product.title}</h1></span>
             </DetailRow>
 
             <DetailRow>
-              {
+              <span>{
                 this.renderVariants(product.variants)
-              }
+              }</span>
             </DetailRow>
 
 
             <DetailRow>
-              <p>{product.description}</p>
+              <span><p>{product.description}</p></span>
             </DetailRow>
 
             {
@@ -256,7 +266,7 @@ class Product extends Component {
 
             <DetailRow>
               <Button active={this.state.variant} onClick={() => {this.props.addVariantToCart(this.state.variant.id, this.state.quantity, this.props.client, this.props.checkout.id); this.setState({added: true})}}>
-                {this.state.added ? 'ADDED!' : 'ADD TO CART'}
+              {this.state.added ? 'ADDED!' : 'ADD TO CART'}
               </Button>
             </DetailRow>
         </Details>

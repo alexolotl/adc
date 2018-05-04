@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
+import 'components/LineItem.css'
 
 class LineItem extends Component {
   constructor(props) {
     super(props);
-
     this.decrementQuantity = this.decrementQuantity.bind(this);
     this.incrementQuantity = this.incrementQuantity.bind(this);
   }

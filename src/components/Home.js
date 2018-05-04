@@ -18,6 +18,8 @@ const Text = styled.div`
     margin: 0;
     z-index: 5;
 
+    cursor: pointer;
+
     :hover {
       unicode-bidi:bidi-override;
       direction:rtl;

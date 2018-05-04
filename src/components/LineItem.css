@@ -1,0 +1,43 @@
+.Line-item {
+  width: 100%;
+
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+}
+.Line-item__img {
+    flex: 1 1 30%;
+}
+.Line-item__img img {
+    width: 80px;
+}
+.Line-item__content {
+  flex: 1 1 60%;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+}
+.Line-item__content-row {
+
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-around;
+}
+.Line-item__variant-title{
+
+}
+.Line-item__title{
+}
+.Line-item__quantity-container{
+}
+.Line-item__quantity-update{
+}
+.Line-item__quantity{
+}
+.Line-item__price{
+}
+.Line-item__remove{
+}
