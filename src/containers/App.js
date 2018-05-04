@@ -16,7 +16,7 @@ import * as cartActions from 'redux/actions/cart'
 class App extends Component {
   componentWillMount() {
     const config = {
-      storefrontAccessToken: process.env.SHOPIFY_TOKEN || null,
+      storefrontAccessToken: process.env.SHOPIFY_TOKEN.toString() || null,
       domain: 'antes-de-cristo.myshopify.com',
     }
 
