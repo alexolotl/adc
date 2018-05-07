@@ -39,7 +39,7 @@ class ThreeWindow extends Component {
   }
 
   componentDidMount() {
-    this.setState({scene: new Three(this.threeRef, window.innerWidth, window.innerHeight)})
+    this.setState({scene: new Three(this.threeRef, window.innerWidth - 40, window.innerHeight - 160, this.props.image)})
   }
 
   componentDidUpdate(oldProps, oldState) {

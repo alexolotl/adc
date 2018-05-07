@@ -15,15 +15,41 @@ import seedrandom from 'seedrandom'
 const xIcon = require('assets/icons/close-button.svg')
 
 const Container = FlexRow.extend`
-  width: calc(100vw - 50px);
-  position: absolute;
+  // width: calc(100vw - 50px);
+  // position: absolute;
   top: 100px;
   margin: 0 auto;
   min-height: 100vh;
   flex-flow: row wrap;
-  max-width: 100vw;
+  max-width: 100vw !important;
+  overflow-x: hidden;
+  width: 100vw;
+  box-sizing: border-box;
 
   .react-draggable {
+  }
+
+  @media (max-width: 700px) {
+    max-width: calc(100vw - 50px);
+
+    .react-draggable {
+      transform: none !important;
+      position: relative;
+
+      &:nth-of-type(3n) {
+        left: 25px;
+      }
+      &:nth-of-type(3n + 1) {
+        left: -25px;
+      }
+      &:nth-of-type(4n+2) {
+        width: 80%;
+      }
+      &:nth-of-type(4n+4) {
+        width: 90%;
+      }
+
+    }
   }
 `
 const Products = FlexRow.extend`
@@ -31,10 +57,19 @@ const Products = FlexRow.extend`
   margin: 0 auto;
   min-height: 100vh;
   flex-flow: row wrap;
+  box-sizing: border-box;
 `
 const Preview = styled.img`
   max-width: 350px;
   pointer-events: none;
+
+  @media (max-width: 700px) {
+    margin: 0;
+    padding: 0;
+    border: none;
+    max-width: 100%;
+    pointer-events: initial;
+  }
 `
 const PreviewContainer = styled.div`
   max-width: 350px;
@@ -43,6 +78,17 @@ const PreviewContainer = styled.div`
   padding: 25px;
   border: 3px solid black;
   background-color: white;
+
+  cursor: move; /* fallback if grab cursor is unsupported */
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+
+  :active {
+      cursor: grabbing;
+      cursor: -moz-grabbing;
+      cursor: -webkit-grabbing;
+  }
 
   > div {
     display: none;
@@ -64,6 +110,18 @@ const PreviewContainer = styled.div`
       }
     }
   }
+
+  @media (max-width: 700px) {
+    margin: 0;
+    padding: 0;
+    border: none;
+    max-width: 100%;
+    margin-top: 20px;
+
+    > div img {
+      display: none;
+    }
+  }
 `
 
 const Button = styled.div`
@@ -75,34 +133,45 @@ const Button = styled.div`
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
+  max-width: calc(100% - 90px);
+  left: 45px;
+
+  display: ${props => props.active ? 'flex' : 'none'};
 
   p {
-    color: white;
+    background-color: white;
+    padding: 10px;
     font-size: 1.5em;
     font-style: italic;
     text-transform: uppercase;
+    margin-bottom: 55px;
+    border: 2px solid black;
+    box-sizing: border-box;
+
+    :hover {
+      background-color: #aa72ff;
+      color: white;
+      border: 2px solid white;
+    }
+  }
+
+  @media (max-width: 700px) {
+    max-width: calc(100% - 40px);
+    left: 20px;
+    p {
+      margin-bottom: 20px;
+    }
   }
 `
-
-// const Hover = FlexCol.extend`
-//   position: absolute;
-//   bottom: 0;
-//   left: 0;
-//   width: 100%;
-//   height: 25%;
-//   font-size: 2em;
-//   display: none;
-// `
-
 
 
 class ProductsList extends Component {
 
-  constructor(props) {
-    super(props)
+  constructor(props, context) {
+    super(props, context)
     this.state = {
-      activeProductIdx: 0
+      activeProductIdx: null
     }
   }
 
@@ -112,7 +181,7 @@ class ProductsList extends Component {
 
   onHover = (src, i, title, vendor) => {
     this.props.setImage(src)
-    this.setState({activeProductIdx: i, activeImage: src})
+    window.innerWidth > 700 && this.setState({activeProductIdx: i, activeImage: src})
     this.props.setBkgText(title + '  ✝  ')
     this.props.setBkgTextStyle({fontStyle: 'italic'})
   }
@@ -121,9 +190,21 @@ class ProductsList extends Component {
     this.productsRef && this.productsRef.childNodes[i].setAttribute('style', 'opacity: 0; pointer-events: none;')
   }
 
+  onClick = (i, handle) => {
+    if (this.state.activeProductIdx == i && window.innerWidth < 700) {
+      this.props.history.push('/shop/'+handle);
+    }
+    else {
+      this.setState({
+        activeProductIdx: i
+      })
+    }
+  }
+
   render() {
     return (
       <Container>
+
         <Products innerRef={ref => this.productsRef = ref}>
         {
           this.props.shop.products && this.props.shop.products.map((prod, i) => (
@@ -135,19 +216,26 @@ class ProductsList extends Component {
               onStart={this.handleStart}
               onDrag={this.handleDrag}
               onStop={this.handleStop}
+              disabled={window.innerWidth <= 700}
             >
-              <PreviewContainer active={this.state.activeProductIdx == i} onMouseOver={() => this.onHover(prod.images[0].src, i, prod.title, prod.vendor)} onMouseOut={() => this.props.setBkgTextStyle({fontStyle: ''})}>
+              <PreviewContainer
+                active={this.state.activeProductIdx == i}
+                onMouseOver={() => this.onHover(prod.images[0].src, i, prod.title, prod.vendor)}
+                onMouseOut={() => this.props.setBkgTextStyle({fontStyle: ''})}
+              >
                   <div>
                     <img src={xIcon} onClick={() => this.closeProduct(i)} />
-                    <Button>
+                    <Button onClick={() => this.onClick(i, prod.handle)} active={this.state.activeProductIdx == i}>
                       <Link to={'shop/' + prod.handle}>
                           <p>{prod.title}</p>
                       </Link>
                     </Button>
                   </div>
-                  <Link to={'shop/' + prod.handle}>
-                    <Preview src={prod.images[0].src} alt={prod.title} />
-                  </Link>
+                <Preview
+                  onClick={() => this.onClick(i, prod.handle)}
+                  src={prod.images[0].src}
+                  alt={prod.title}
+                />
               </PreviewContainer>
             </Draggable>
           ))

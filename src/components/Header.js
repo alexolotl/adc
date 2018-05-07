@@ -6,8 +6,10 @@ import {H1} from 'components/styledComponents/Typography'
 import * as cartActions from 'redux/actions/cart'
 import Menu from 'components/Menu'
 import styled from 'styled-components'
+import Cart from 'containers/Checkout'
 
 const Container = styled.div`
+  max-width: 100vw;
   & * {
     z-index: 100;
   }
@@ -23,21 +25,40 @@ const Header = styled.header`
   position: fixed;
   top: 0;
   left: 0;
+  max-width: 100vw;
+
+
+  // border-bottom: 2px solid black;
+  box-sizing: border-box;
 
   z-index: 50;
-  background-color: white;
+  // background-color: white;
 
-  img {
-    width: 40px;
-  }
+
 `
 
 const Links = FlexRow.extend`
   font-family: "UnifrakturCook";
-  font-size: 2.5em;
-  justify-content: space-around;
+  font-size: 3em;
+  justify-content: space-between;
+  max-width: 150px;
+  align-items: center;
+  margin-right: 20px;
   a {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
     cursor: pointer !important;
+  }
+  img {
+    width: 40px;
+  }
+
+  @media (max-width: 700px) {
+    max-width: 80px;
+    img {
+      width: 30px;
+    }
   }
 `
 
@@ -52,8 +73,12 @@ const Logo = styled.h1`
   text-align: left;
   flex: 1 0 30%;
   margin-left: 20px;
-  height: 40px;
+  // height: 40px;
   font-weight: bold;
+
+  @media (max-width: 700px) {
+    font-size: 2em;
+  }
 `
 
 const Footer = styled.footer`
@@ -74,13 +99,19 @@ const Cross = styled.a`
   :hover {
     transform: rotate(180deg);
   }
+  @media (max-width: 700px) {
+    display: block;
+  }
 `
 
 
 class Nav extends Component {
   constructor(props) {
     super(props)
-    this.state = {menu: false}
+    this.state = {
+      menu: false,
+      cart: false
+    }
   }
 
   toggleMenu = e => {
@@ -91,25 +122,38 @@ class Nav extends Component {
     return (
       <Container>
         <Header>
-          <Logo><Link to='/shop'>Antes De Cristo</Link></Logo>
+          <Logo><Link to='/'>Antes De Cristo</Link></Logo>
           <Links>
-            <Link to='/'>Shop</Link>
-            <Link to='/archive'>Archive</Link>
-            <Link to='/about'>About</Link>
-            <Link to='/cart'>Cart {this.props.checkout.quantity}</Link>
-            <Link to='/cart'><img src={require('assets/icons/cart-black.svg')} /></Link>
+
+
+            {
+            //   <Link to='/'>Shop</Link>
+            // <Link to='/about'>Contact</Link>
+              // <Link to='/archive'>Archive</Link>
+              // <Link to='/cart'>Cart {this.props.checkout.quantity}</Link>
+              // <Link to='/cart'><img src={require('assets/icons/cart-black.svg')} /></Link>
+            }
+
+            <Link to="/cart"><img src={require('assets/icons/cart-black.svg')} /></Link>
             <Cross onClick={this.toggleMenu}>✝</Cross>
           </Links>
         </Header>
 
+        {
+          this.state.cart && <Cart />
+        }
+
         <HeaderPlaceholder />
 
-        <Footer>
-          <Link to='/'>Shop</Link>
-          <Link to='/archive'>Archive</Link>
-          <Link to='/about'>About</Link>
-          <Link to='/cart'>Cart {this.props.checkout.quantity}</Link>
-        </Footer>
+        {
+          // <Footer>
+          //   <Link to='/'>Shop</Link>
+          //   <Link to='/archive'>Archive</Link>
+          //   <Link to='/about'>About</Link>
+          //   <Link to='/cart'>Cart {this.props.checkout.quantity}</Link>
+          // </Footer>
+        }
+
 
         {this.state.menu && <Menu toggleMenu={this.toggleMenu} />}
       </Container>

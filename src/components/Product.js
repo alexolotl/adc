@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import {withRouter} from 'react-router-dom'
+import {withRouter, Link} from 'react-router-dom'
 import styled from 'styled-components'
 import {FlexRow, FlexCol} from 'globalStyles'
+import VariantSelector from 'components/VariantSelector'
+
+import ThreeWindow from 'components/ThreeWindow/ThreeWindow'
+
 
 import * as cartActions from 'redux/actions/cart'
 import * as shopActions from 'redux/actions/shop'
@@ -10,14 +14,12 @@ import * as threeActions from 'redux/actions/three'
 
 const ProductPage = FlexRow.extend`
   width: calc(100vw - 40px);
-  height: 100vh;
+  height: calc(100vh - 80px);
   overflow: hidden;
-  position: absolute;
-  left: 0;
-  top: 0;
   justify-content: space-between;
   margin: 0 auto;
-  margin-top: 20px;
+
+  box-sizing: border-box;
 
   @media (max-width: 700px) {
     overflow: scroll;
@@ -25,6 +27,7 @@ const ProductPage = FlexRow.extend`
     width: 100%;
     position: relative;
     display: block;
+    margin-top: 0;
   }
 `
 
@@ -39,8 +42,12 @@ const ImgContainer = styled.div`
   max-height: 100vh;
   overflow-y: scroll;
 
+  margin: 0 auto;
+
   @media (max-width: 700px) {
     flex: 1 0 100%;
+    width: 100vw;
+    max-width: 450px;
 
   }
 `
@@ -49,30 +56,31 @@ const Img = styled.img`
   max-height: 80vh;
   width: 50vw;
   max-width: 50vw;
+  margin: 0 auto;
 
   @media (max-width: 700px) {
     width: 100%;
     max-width: 100%;
+
+    margin: 0 auto;
   }
 `
 const Details = styled.div`
-  height: 100%;
   padding: 40px;
 
   flex: 1 1 50%;
   box-sizing: border-box;
-
-  height: calc(100vh - 180px);
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
 
-  color: black;
+  background-color: rgba(255,255,255,.8);
 
-  position: relative;
-  left: -15%;
-  top: 100px;
+  // border: 2px solid black;
+
+  // height: 80vh;
+
 
   h1 {
     font-size: 3em;
@@ -86,11 +94,10 @@ const Details = styled.div`
 
   @media (max-width: 700px) {
     padding: 0;
-    margin: 20px 0 40px 0;
     height: auto;
+    padding-top: 20px;
 
-    left: 0;
-    top: 0;
+    border: none;
 
     h1 {
       font-size: 1.5em;
@@ -118,23 +125,33 @@ const Variant = styled.div`
 `
 
 const Button = styled.div`
-  padding: 20px;
+  padding: 10px;
   border: 2px solid black;
   box-sizing: border-box;
   pointer-events: ${props => props.active ? 'auto' : 'none'};
   cursor: pointer;
+  margin: 0px 20px 20px 0px;
 
   width: 100%;
   max-width: 400px;
   text-align:center;
-  background-color: black;//transparent;//rgba(255,255,255,.65);
-
-  color: white;
+  background-color: ${props => props.added? '#aa72ff' : 'white'};
+  font-style: ${props => props.added ? 'italic' : 'normal'};
+  color: ${props => props.added? 'white' : 'black'};
+  pointer-events: ${props => props.added? 'none' : 'initial'};
   font-size: 1.75em;
+
+  font-weight: bold;
+  letter-spacing: .2em;
 
   :hover {
     // background-color: rgba(255,255,255,.3);
     background-color: #aa72ff;
+    color: white;
+  }
+
+  @media (max-width: 700px) {
+    margin: 0px 20px 20px 20px;
   }
 `
 
@@ -142,16 +159,21 @@ const DetailRow = FlexRow.extend`
   justify-content: flex-start;
   width: 100%;
   margin-bottom: 30px;
-
-  span {
-    background-color: white;
-    padding: 0 20px;
-    height: 60px;
-    border: 2px solid black;
-  }
+  text-align: left;
+  line-height: 1.5;
 
   @media (max-width: 700px) {
-    margin: 0;
+    margin-bottom: 20px;
+    span {
+      margin-left: 20px;
+      border: none;
+    }
+    > div {
+      margin-left: 20px;
+    }
+    > label {
+      margin-left: 20px;
+    }
   }
 `
 
@@ -166,6 +188,30 @@ const Screen = styled.div`
   z-index: -1;
 `
 
+const Label = styled.label`
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  input {
+    width: 30px;
+    height: 30px;
+    border: 2px solid black;
+    flex: 1 1 auto;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-around;
+    margin-left: 20px;
+  }
+`
+
+const Back = styled.img`
+  position: fixed;
+  top: 100px;
+  left: 20px;
+  width: 30px;
+`
+
 
 class Product extends Component {
   constructor(props) {
@@ -173,8 +219,7 @@ class Product extends Component {
     this.state = {
       quantity: 1,
       added: false,
-      variant: {id: null},
-      showModal: false
+      selectedVariantImage: {src: null}
     }
   }
 
@@ -186,18 +231,30 @@ class Product extends Component {
       })
       this.props.setActiveProduct(activeProduct)
       activeProduct && this.props.setImage(activeProduct.images[0].src)
+
+      activeProduct && activeProduct.options.forEach((selector) => {
+        this.setState({
+          selectedOptions: { [selector.name]: selector.values[0].value }
+        });
+      });
     }
   }
 
   componentDidUpdate(prevProps) {
     if (!this.state.product && this.props.products !== prevProps.products) {
+
       const activeProduct = this.props.products.find(p => p.handle == this.props.match.params.product)
-      console.log(activeProduct.id);
       // this.props.getProductById(activeProduct.id, this.props.client)
       this.setState({
         product: activeProduct
       })
       this.props.setActiveProduct(activeProduct)
+
+      activeProduct.options.forEach((selector) => {
+        this.setState({
+          selectedOptions: { [selector.name]: selector.values[0].value }
+        });
+      });
 
       activeProduct && this.props.setImage(activeProduct.images[0].src)
     }
@@ -210,62 +267,75 @@ class Product extends Component {
   selectVariant = variant => {
     this.setState({variant: variant})
   }
-  renderVariants = variants => {
-    if (variants.length == 1) {
-      this.state.variant.id != variants[0].id && this.selectVariant(variants[0])
-      return (
-        <h3>{variants.length == 1 && variants[0].price}</h3>
-      )
-    }
-    else return (
-      <div style={{display: 'flex', flexFlow: 'row nowrap', width: '100%'}}>
-        <div onClick={() => this.setState({showModal: !this.state.showModal})}>VIEW SIZES</div>
-        <VariantModal style={{display: this.state.showModal ? 'flex' : 'none'}}>
-          {
-            variants.map((variant, i) => (
-              <Variant active={this.state.variant.id === variant.id} key={i} onClick={() => this.selectVariant(variant)}>{variant.title}</Variant>
-            ))
-          }
 
-      </VariantModal>
-      </div>
-    )
+  handleQuantityChange = (event) => {
+    this.setState({
+      quantity: event.target.value
+    });
   }
+
+  handleOptionChange = (event) => {
+    const target = event.target
+    let selectedOptions = this.state.selectedOptions;
+    selectedOptions[target.name] = target.value;
+
+    const selectedVariant = this.props.client.product.helpers.variantForOptions(this.state.product, selectedOptions)
+    this.setState({
+      selectedVariant: selectedVariant,
+      selectedVariantImage: selectedVariant.attrs.image
+    });
+  }
+
   renderPage(product) {
+
+    let variant = this.state.selectedVariant || product.variants[0]
+    let variantQuantity = this.state.selectedVariantQuantity || 1
 
     return (
       <ProductPage>
         <Screen />
         <ImgContainer>
-          <Img src={product.images[0].src}/>
+          <Link to={'/shop'}><Back src={require('assets/icons/left-arrow.svg')} /></Link>
+          <Img src={this.state.selectedVariantImage.src || this.state.product.images[0].src}/>
         </ImgContainer>
         <Details>
             <DetailRow>
               <span><h1>{this.state.product.title}</h1></span>
             </DetailRow>
 
+
             <DetailRow>
-              <span>{
-                this.renderVariants(product.variants)
-              }</span>
+              <span><h3>{product.description}</h3></span>
             </DetailRow>
 
-
             <DetailRow>
-              <span><p>{product.description}</p></span>
+            <div style={{display: (product.options.length == 1 && product.options[0].name == 'Title') ? 'none' : 'block' }}>
+              {
+                product.options.map((option, i) => {
+                  return (
+                    <div key={i} style={{width: '100%'}}>
+                      <h3>Select {option.name}:</h3>
+                      <VariantSelector
+                        handleOptionChange={this.handleOptionChange}
+                        key={option.id.toString()}
+                        option={option}
+                      />
+                    </div>
+                  );
+                })
+              }
+              </div>
             </DetailRow>
 
-            {
-              // <DetailRow>
-              //   <p>Quantity:</p>
-              //   <p onClick={() => this.setState({quantity: Math.max(0, this.state.quantity - 1)})}>-</p>
-              //   <p>{this.state.quantity}</p>
-              //   <p onClick={() => this.setState({quantity: this.state.quantity + 1})}>+</p>
-              // </DetailRow>
-            }
+            <DetailRow>
+              <Label>
+                <p>Quantity</p>
+                <input min="1" type="number" defaultValue={this.state.quantity || 1} onChange={this.handleQuantityChange}></input>
+              </Label>
+            </DetailRow>
 
             <DetailRow>
-              <Button active={this.state.variant} onClick={() => {this.props.addVariantToCart(this.state.variant.id, this.state.quantity, this.props.client, this.props.checkout.id); this.setState({added: true})}}>
+              <Button active={variant} added={this.state.added} onClick={() => {this.props.addVariantToCart(variant.id, this.state.quantity, this.props.client, this.props.checkout.id); this.setState({added: true})}}>
               {this.state.added ? 'ADDED!' : 'ADD TO CART'}
               </Button>
             </DetailRow>

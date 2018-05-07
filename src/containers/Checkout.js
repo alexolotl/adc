@@ -1,65 +1,105 @@
 import React, { Component } from 'react';
-import {withRouter} from 'react-router-dom'
+import {withRouter, Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import * as cartActions from 'redux/actions/cart'
 import * as uiActions from 'redux/actions/ui'
 import styled from 'styled-components'
 import {P, H4} from 'components/styledComponents/Typography'
-import {FlexRow} from 'globalStyles'
+import {FlexRow, FlexCol} from 'globalStyles'
 
-const CheckoutWrapper = styled.div`
-  // max-width: calc(100vw - 160px);
-  // min-width: 400px;
-  width: 600px;
-  margin: 0 auto;
-  margin-top: 80px;
+const Wrapper = FlexCol.extend`
+  height: calc(100vh - 80px);
+  width: 100%;
+  position: fixed;
+  top: 80px;
+  left: 0;
+  // justify-content: flex-start;
   background-color: white;
-  border: 2px solid black;
-  height: calc(100vh - 280px);
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: space-around;
-  align-items: center;
-  padding: 20px;
+  z-index: 5;
+
+  @media (max-width: 700px) {
+
+  }
+`
+
+const LineItems = styled.div`
+  width: 600px;
+
+  margin: 0 20px 40px 20px;
+
+  @media (max-width: 700px) {
+    width: calc(100% - 40px);
+  }
+`
+
+const LineItem = FlexRow.extend`
+  width: calc(100%-40px);
+  box-sizing: border-box;
+  border-bottom: 2px solid black;
+  height: 50px;
+
+  &:first-child {
+    border-top: 2px solid black;
+  }
 
   > div {
-    width: 100%;
-    > div {
-      width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: flex-end;
+    > * {
+      margin-left: 20px;
+      font-size: 1.25em;
     }
   }
 `
 
-const FlexRowCenter = FlexRow.extend`
-  justify-content: center;
+const Totals=FlexCol.extend`
+  height: auto;
+  align-items: flex-end;
+  width: 600px;
+  margin: 0 20px 40px 20px;
+
+  p {
+    margin-bottom: 5px;
+  }
+
+  @media (max-width: 700px) {
+    width: calc(100% - 40px);
+  }
 `
 
-const FlexRowRight = FlexRow.extend`
-  justify-content: flex-end;
-`
+const Button = styled.div`
+  padding: 10px;
+  border: 2px solid black;
+  box-sizing: border-box;
+  cursor: pointer;
+  margin: 0px 20px 20px 20px;
 
-const Box = P.extend`
-    box-sizing: border-box;
-    display: flex;
-    flex-flow: row nowrap;
+  width: calc(100% - 40px);
+  max-width: 400px;
 
-    font-size: 2em;
+  background-color: white;
 
-    justify-content: center;
-    align-items: center;
+  text-align:center;
+  font-size: 1.75em;
+  font-weight: bold;
+  letter-spacing: .2em;
 
-    cursor: pointer;
-`
+  :hover {
+    background-color: #aa72ff;
+  }
 
-const LineItem = FlexRow.extend`
-  width: 100% !important;
-  max-width: 600px;
-  justify-content: space-around;
-
+  @media (max-width: 700px) {
+    margin: 0px 20px 20px 20px;
+  }
 `
 
 class Checkout extends Component {
-
+  constructor(props){
+    super(props)
+    console.log(props);
+  }
   componentDidMount() {
     this.props.setBkgText('CART ')
   }
@@ -67,15 +107,12 @@ class Checkout extends Component {
     return (
       this.props.checkout.lineItems.map((line_item) => {
         return (
-          <div key={line_item.id.toString()}>
-            <FlexRow style={{justifyContent: 'space-between', borderBottom: '1px solid black'}}>
-              <LineItem style={{width: 'auto'}}>
-                <H4>{line_item.title }</H4>
-                <P>| </P>
-                <P>${line_item.variant.price}</P>
-                <P>| </P>
-                <Box onClick={() => this.props.removeLineItemFromCart(line_item.id, this.props.client, this.props.checkout.id)}>×</Box>
-              </LineItem>
+          <LineItem key={line_item.id.toString()}>
+              <H4>{line_item.title }</H4>
+              <div>
+                <p>${line_item.variant.price}</p>
+                <p onClick={() => this.props.removeLineItemFromCart(line_item.id, this.props.client, this.props.checkout.id)}>×</p>
+              </div>
               {
                 // <P>/</P>
                 // <P>Qty: {line_item.quantity}</P>
@@ -84,41 +121,35 @@ class Checkout extends Component {
                 //   <P onClick={() => this.props.updateQuantityInCart(line_item.id, line_item.quantity + 1, this.props.client, this.props.checkout.id)}>+</P>
                 // </div>
               }
-
-            </FlexRow>
-          </div>
+          </LineItem>
         );
       })
     )
   }
-  renderContent = () => {
-    return (
-      <div>
-        <ul>
-          {this.renderLineItems()}
-        </ul>
-        <FlexRowRight>
-          <P>Subtotal: ${this.props.checkout.subtotalPrice}</P>
-        </FlexRowRight>
-        <FlexRowRight>
-          <P>Taxes: ${this.props.checkout.totalTax}</P>
-        </FlexRowRight>
-        <FlexRowRight>
-          <P style={{fontWeight: 800}}>Total: ${this.props.checkout.totalPrice}</P>
-        </FlexRowRight>
-      </div>
-    )
-  }
-
   render() {
-    return (
-      <CheckoutWrapper>
-          <FlexRow>
-            {this.props.checkout.lineItems.length == 0 ? <div>Your cart is empty!</div> : this.renderContent()}
-          </FlexRow>
-      </CheckoutWrapper>
-    );
-  }
+    if (this.props.checkout.lineItems.length == 0) {
+      return (
+        <Wrapper>
+          <h2>YOUR CART IS EMPTY</h2>
+          <br />
+          <Link to="/shop"><Button>SHOP</Button></Link>
+        </Wrapper>
+      )
+    }
+    else return (
+        <Wrapper>
+          <LineItems>
+            {this.renderLineItems()}
+          </LineItems>
+          <Totals>
+            <P>Subtotal: ${this.props.checkout.subtotalPrice}</P>
+            <P>Taxes: ${this.props.checkout.totalTax}</P>
+            <P style={{fontWeight: 800}}>Total: ${this.props.checkout.totalPrice}</P>
+          </Totals>
+          <Button>CHECKOUT</Button>
+        </Wrapper>
+      )
+    }
 }
 
 export default withRouter(connect(

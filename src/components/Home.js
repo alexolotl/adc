@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Link, withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
+import ThreeWindow from 'components/ThreeWindow/ThreeWindow'
 
 import styled from 'styled-components'
 
@@ -73,6 +74,13 @@ class Home extends Component {
       <div>
         <Text>
           <Link to={'/shop'}>
+          {
+            // <img
+            //   style={{width: 700}}
+            //   src={require('assets/images/adc2.png')} />
+            // <ThreeWindow />
+          }
+
             <h1>Antes</h1><h1>de</h1><h1>Cristo</h1>
           </Link>
         </Text>

@@ -10,30 +10,44 @@ import Product from 'components/Product'
 import Home from 'components/Home'
 import Checkout from 'containers/Checkout'
 import Cart from 'containers/Cart'
-import Archive from 'containers/Archive'
-import About from 'containers/About'
+// import Archive from 'containers/Archive'
+// import About from 'containers/About'
 
 const BackgroundText = styled.div`
   width: 140vw;
   margin: 0 auto;
   height: 100vh;
   position: fixed;
-  top: 60px;
+  top: 0px;
   left: -20vw;
   z-index: -5;
   font-size: 8em;
   font-style: italic;
   text-transform: uppercase;
   pointer-events: none;
+  word-break: break-all;
+  line-height: 1;
+  z-index: -1;
+  color: white;
+  opacity: .8;
+  color: transparent;
+  -webkit-text-stroke-width: 1px;
+   -webkit-text-stroke-color: white;
+
+   letter-spacing: .1em;
 
   display: ${props => props.hidden ? 'none': 'block'};
+
+  @media (max-width: 700px) {
+    word-break: break-all;
+    font-size: 5em;
+  }
 `
 
 class Main extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      isCartOpen: false,
       checkout: { lineItems: [] },
       products: [],
       shop: {}
@@ -83,8 +97,11 @@ class Main extends Component {
           <Route path='/shop' component={Shop} />
           <Route path='/shop/:product' component={Product} />
           <Route path='/cart' component={Checkout} />
-          <Route path='/archive' component={Archive} />
-          <Route path='/about' component={About} />
+          {
+            // <Route path='/archive' component={Archive} />
+            // <Route path='/about' component={About} />
+          }
+
         </Switch>
       </main>
     )

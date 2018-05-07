@@ -46,7 +46,7 @@ const MenuHeader = styled.div`
 
 const X = styled.a`
   position: absolute;
-  font-size: 4em;
+  font-size: 5em;
   font-weight: 100;
   right: 10px;
   top: 10px;
@@ -54,9 +54,10 @@ const X = styled.a`
   width: 60px;
   line-height: 1;
   padding: 15px;
+  color: white;
 
   @media (max-width: 700px) {
-    font-size: .6em;
+    font-size: 1em;
   }
 
 `
@@ -76,9 +77,27 @@ const StyledLink = styled(Link)`
     }
 
     @media (max-width: 700px) {
-      font-size: .6em;
+      font-size: 1em;
     }
 `;
+
+const A = styled.a`
+font-size: 1em;
+font-family: "UnifrakturCook";
+// color: transparent;
+-webkit-text-stroke: 2px black;
+letter-spacing: .07em;
+color: lavender;
+
+:hover {
+  color: lavender;
+  text-shadow: 2px 2px black;
+}
+
+@media (max-width: 700px) {
+  font-size: 1em;
+}
+`
 
 export default class Header extends Component {
   constructor(props) {
@@ -87,21 +106,19 @@ export default class Header extends Component {
 
   render() {
     return (
-      <MenuWrapper>
+      <MenuWrapper onClick={this.props.toggleMenu}>
         <FlexCol>
-          <MenuHeader>
-          </MenuHeader>
+          <FlexLi>
+            <H1><StyledLink to='/' onClick={this.props.toggleMenu}>Home</StyledLink></H1>
+          </FlexLi>
           <FlexLi>
             <H1><StyledLink to='/shop' onClick={this.props.toggleMenu}>Shop</StyledLink></H1>
           </FlexLi>
           <FlexLi>
-            <H1><StyledLink to='/shop' onClick={this.props.toggleMenu}>Designers</StyledLink></H1>
+            <H1><StyledLink to='/cart' onClick={this.props.toggleMenu}>Cart</StyledLink></H1>
           </FlexLi>
           <FlexLi>
-            <H1><StyledLink to='/archive' onClick={this.props.toggleMenu}>Archive</StyledLink></H1>
-          </FlexLi>
-          <FlexLi>
-            <H1><StyledLink to='/adc' onClick={this.props.toggleMenu}>About</StyledLink></H1>
+            <H1><A href="mailto:" target="_blank" onClick={this.props.toggleMenu}>Contact</A></H1>
           </FlexLi>
         </FlexCol>
       </MenuWrapper>
