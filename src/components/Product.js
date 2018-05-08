@@ -75,7 +75,8 @@ const Details = styled.div`
   justify-content: center;
   align-items: center;
 
-  background-color: rgba(255,255,255,.8);
+  background-color: rgba(255,255,255,1);
+  margin-right: 40px;
 
   // border: 2px solid black;
 
@@ -96,6 +97,8 @@ const Details = styled.div`
     padding: 0;
     height: auto;
     padding-top: 20px;
+
+    margin-right: auto;
 
     border: none;
 
@@ -146,7 +149,7 @@ const Button = styled.div`
 
   :hover {
     // background-color: rgba(255,255,255,.3);
-    background-color: #aa72ff;
+    background-color: black;//#aa72ff;
     color: white;
   }
 
@@ -290,13 +293,15 @@ class Product extends Component {
 
     let variant = this.state.selectedVariant || product.variants[0]
     let variantQuantity = this.state.selectedVariantQuantity || 1
+    let image = this.state.selectedVariantImage.src || this.state.product.images[0].src
+    image = image.slice(0, image.lastIndexOf('.')) + '_1024x1024' + image.slice(image.lastIndexOf('.'), -1)
 
     return (
       <ProductPage>
         <Screen />
         <ImgContainer>
           <Link to={'/shop'}><Back src={require('assets/icons/left-arrow.svg')} /></Link>
-          <Img src={this.state.selectedVariantImage.src || this.state.product.images[0].src}/>
+          <Img src={image}/>
         </ImgContainer>
         <Details>
             <DetailRow>

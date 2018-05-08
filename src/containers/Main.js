@@ -28,13 +28,13 @@ const BackgroundText = styled.div`
   word-break: break-all;
   line-height: 1;
   z-index: -1;
-  color: white;
-  opacity: .8;
-  color: transparent;
-  -webkit-text-stroke-width: 1px;
-   -webkit-text-stroke-color: white;
+  // color: white;
+  // opacity: .8;
+  // color: transparent;
+  // -webkit-text-stroke-width: 1px;
+  //  -webkit-text-stroke-color: white;
 
-   letter-spacing: .1em;
+  letter-spacing: .1em;
 
   display: ${props => props.hidden ? 'none': 'block'};
 

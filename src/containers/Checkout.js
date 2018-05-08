@@ -87,7 +87,7 @@ const Button = styled.div`
   letter-spacing: .2em;
 
   :hover {
-    background-color: #aa72ff;
+    background-color: black;//#aa72ff;
   }
 
   @media (max-width: 700px) {

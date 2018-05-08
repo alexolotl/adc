@@ -26,7 +26,7 @@ let store = createStore(
   rootReducer,
   composeEnhancers(applyMiddleware(
     thunkMiddleware,
-    loggerMiddleware
+    process.env.NODE_ENV == 'development' && loggerMiddleware
   ))
 )
 

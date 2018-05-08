@@ -32,7 +32,7 @@ const Header = styled.header`
   box-sizing: border-box;
 
   z-index: 50;
-  // background-color: white;
+  background-color: white;
 
 
 `
@@ -122,7 +122,7 @@ class Nav extends Component {
     return (
       <Container>
         <Header>
-          <Logo><Link to='/'>Antes De Cristo</Link></Logo>
+          <Logo><Link to='/shop'>Antes De Cristo</Link></Logo>
           <Links>
 
 

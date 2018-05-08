@@ -15,14 +15,11 @@ import seedrandom from 'seedrandom'
 const xIcon = require('assets/icons/close-button.svg')
 
 const Container = FlexRow.extend`
-  // width: calc(100vw - 50px);
-  // position: absolute;
   top: 100px;
   margin: 0 auto;
   min-height: 100vh;
   flex-flow: row wrap;
   max-width: 100vw !important;
-  overflow-x: hidden;
   width: 100vw;
   box-sizing: border-box;
 
@@ -53,9 +50,12 @@ const Container = FlexRow.extend`
   }
 `
 const Products = FlexRow.extend`
-  width: calc(100vw - 50px);
+  // width: calc(100vw - 50px);
+  width: 100vw;
   margin: 0 auto;
-  min-height: 100vh;
+  height: auto;
+  overflow-y: hidden;
+  overflow-x: visible;
   flex-flow: row wrap;
   box-sizing: border-box;
 `
@@ -71,6 +71,25 @@ const Preview = styled.img`
     pointer-events: initial;
   }
 `
+
+const Footer = styled.div`
+  font-size: 7em;
+  background-color: white;
+  width: 100vw;
+  height: 100px;
+  margin-top: 60px;
+  transform: scaleY(4);
+  margin-bottom: 0;
+
+  @media (max-width: 700px) {
+    margin: 0;
+    padding: 0;
+    border: none;
+    max-width: 100%;
+    pointer-events: initial;
+  }
+`
+
 const PreviewContainer = styled.div`
   max-width: 350px;
   margin: 40px;
@@ -150,7 +169,7 @@ const Button = styled.div`
     box-sizing: border-box;
 
     :hover {
-      background-color: #aa72ff;
+      background-color: black;//#aa72ff;
       color: white;
       border: 2px solid white;
     }
@@ -207,7 +226,10 @@ class ProductsList extends Component {
 
         <Products innerRef={ref => this.productsRef = ref}>
         {
-          this.props.shop.products && this.props.shop.products.map((prod, i) => (
+          this.props.shop.products && this.props.shop.products.map((prod, i) => {
+            let image = prod.images[0].src
+            image = image.slice(0, image.lastIndexOf('.')) + '_1024x1024' + image.slice(image.lastIndexOf('.'), -1)
+            return (
             <Draggable
               key={i}
               axis="both"
@@ -233,12 +255,12 @@ class ProductsList extends Component {
                   </div>
                 <Preview
                   onClick={() => this.onClick(i, prod.handle)}
-                  src={prod.images[0].src}
+                  src={image}
                   alt={prod.title}
                 />
               </PreviewContainer>
             </Draggable>
-          ))
+          )})
         }
         </Products>
       </Container>
