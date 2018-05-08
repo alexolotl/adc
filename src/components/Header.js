@@ -76,6 +76,11 @@ const Logo = styled.h1`
   // height: 40px;
   font-weight: bold;
 
+  :hover a {
+    unicode-bidi:bidi-override;
+    direction:rtl;
+  }
+
   @media (max-width: 700px) {
     font-size: 2em;
   }

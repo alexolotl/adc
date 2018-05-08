@@ -28,6 +28,11 @@ const BackgroundText = styled.div`
   word-break: break-all;
   line-height: 1;
   z-index: -1;
+  overflow: hidden;
+
+  // color: ${props => props.hover ? 'white' : 'black'};
+  // background-color: ${props => props.hover ? 'black' : 'white'};
+
   // color: white;
   // opacity: .8;
   // color: transparent;
@@ -40,7 +45,7 @@ const BackgroundText = styled.div`
 
   @media (max-width: 700px) {
     word-break: break-all;
-    font-size: 5em;
+    font-size: 4em;
   }
 `
 
@@ -87,7 +92,7 @@ class Main extends Component {
     const list = [...Array(100).keys()]
     return (
       <main>
-        <BackgroundText hidden={this.props.location.pathname == '/'}>
+        <BackgroundText hidden={this.props.location.pathname == '/'} hover={this.props.backgroundTextStyle.color != null}>
           {
             list.map(i => <span key={i}>{this.props.backgroundText}</span>)
           }

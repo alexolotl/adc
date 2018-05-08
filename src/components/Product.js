@@ -18,6 +18,7 @@ const ProductPage = FlexRow.extend`
   overflow: hidden;
   justify-content: space-between;
   margin: 0 auto;
+  min-height: calc(100vh - 80px);
 
   box-sizing: border-box;
 
@@ -28,6 +29,7 @@ const ProductPage = FlexRow.extend`
     position: relative;
     display: block;
     margin-top: 0;
+    background-color: white;
   }
 `
 
@@ -76,9 +78,10 @@ const Details = styled.div`
   align-items: center;
 
   background-color: rgba(255,255,255,1);
-  margin-right: 40px;
+  margin-right: 20px;
+  margin-left: 20px;
 
-  // border: 2px solid black;
+  border: 2px solid black;
 
   // height: 80vh;
 
@@ -94,6 +97,7 @@ const Details = styled.div`
   }
 
   @media (max-width: 700px) {
+    margin: 0 auto;
     padding: 0;
     height: auto;
     padding-top: 20px;
@@ -138,7 +142,7 @@ const Button = styled.div`
   width: 100%;
   max-width: 400px;
   text-align:center;
-  background-color: ${props => props.added? '#aa72ff' : 'white'};
+  background-color: ${props => props.added? 'black' : 'white'};
   font-style: ${props => props.added ? 'italic' : 'normal'};
   color: ${props => props.added? 'white' : 'black'};
   pointer-events: ${props => props.added? 'none' : 'initial'};
@@ -164,6 +168,10 @@ const DetailRow = FlexRow.extend`
   margin-bottom: 30px;
   text-align: left;
   line-height: 1.5;
+
+  select {
+    text-align-last: center;
+  }
 
   @media (max-width: 700px) {
     margin-bottom: 20px;
@@ -205,6 +213,7 @@ const Label = styled.label`
     align-items: center;
     justify-content: space-around;
     margin-left: 20px;
+    text-align-last: center;
   }
 `
 
@@ -313,8 +322,8 @@ class Product extends Component {
               <span><h3>{product.description}</h3></span>
             </DetailRow>
 
-            <DetailRow>
-            <div style={{display: (product.options.length == 1 && product.options[0].name == 'Title') ? 'none' : 'block' }}>
+            <DetailRow  style={{display: (product.options.length == 1 && product.options[0].name == 'Title') ? 'none' : 'block' }}>
+            <div>
               {
                 product.options.map((option, i) => {
                   return (

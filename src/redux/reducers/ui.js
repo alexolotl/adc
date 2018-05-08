@@ -17,7 +17,7 @@ const ui = (state = initialState, action) => {
       return Object.assign({}, state, {
         backgroundText: action.payload
       })
-    case SET_BKG_TEXT:
+    case SET_BKG_TEXT_STYLE:
       return Object.assign({}, state, {
         backgroundTextStyle: action.payload
       })

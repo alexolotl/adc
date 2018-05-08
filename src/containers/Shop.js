@@ -7,7 +7,8 @@ import Product from 'components/Product'
 import ProductsList from 'containers/ProductsList'
 
 const Container = styled.div`
-
+  max-width: 100vw;
+  overflow-x: hidden;
 `
 
 export default class Shop extends Component {

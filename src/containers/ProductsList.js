@@ -20,6 +20,7 @@ const Container = FlexRow.extend`
   min-height: 100vh;
   flex-flow: row wrap;
   max-width: 100vw !important;
+  overflow-x: hidden;
   width: 100vw;
   box-sizing: border-box;
 
@@ -28,6 +29,8 @@ const Container = FlexRow.extend`
 
   @media (max-width: 700px) {
     max-width: calc(100vw - 50px);
+    width: calc(100vw - 50px);
+    margin: 0 auto;
 
     .react-draggable {
       transform: none !important;
@@ -131,6 +134,7 @@ const PreviewContainer = styled.div`
   }
 
   @media (max-width: 700px) {
+    background-color: transparent;
     margin: 0;
     padding: 0;
     border: none;
@@ -202,7 +206,11 @@ class ProductsList extends Component {
     this.props.setImage(src)
     window.innerWidth > 700 && this.setState({activeProductIdx: i, activeImage: src})
     this.props.setBkgText(title + '  ✝  ')
-    this.props.setBkgTextStyle({fontStyle: 'italic'})
+    this.props.setBkgTextStyle({color: 'black'})
+  }
+
+  onMouseOut = () => {
+    this.props.setBkgTextStyle({color: null})
   }
 
   closeProduct = i => {
@@ -243,7 +251,7 @@ class ProductsList extends Component {
               <PreviewContainer
                 active={this.state.activeProductIdx == i}
                 onMouseOver={() => this.onHover(prod.images[0].src, i, prod.title, prod.vendor)}
-                onMouseOut={() => this.props.setBkgTextStyle({fontStyle: ''})}
+                onMouseOut={this.onMouseOut}
               >
                   <div>
                     <img src={xIcon} onClick={() => this.closeProduct(i)} />

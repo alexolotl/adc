@@ -36,10 +36,27 @@ const LineItem = FlexRow.extend`
   width: calc(100%-40px);
   box-sizing: border-box;
   border-bottom: 2px solid black;
-  height: 50px;
+  min-height: 80px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 
   &:first-child {
     border-top: 2px solid black;
+  }
+
+  > img {
+    max-width: 50px;
+  }
+
+  h4 {
+    text-align: left;
+    max-width: 250px;
+    overflow: ellipsis;
+    text-transform: uppercase;
+
+    p {
+      font-size: .5em;
+    }
   }
 
   > div {
@@ -47,10 +64,23 @@ const LineItem = FlexRow.extend`
     flex-flow: row nowrap;
     align-items: center;
     justify-content: flex-end;
+    flex: 1 1 50%;
+
     > * {
+      width: 75px;
+      // border: 1px solid black;
       margin-left: 20px;
       font-size: 1.25em;
+      text-align: right;
+
+      &:last-child {
+        width: 25px;
+      }
     }
+
+  }
+  @media (max-width: 700px) {
+    flex-flow: row wrap;
   }
 `
 
@@ -88,6 +118,7 @@ const Button = styled.div`
 
   :hover {
     background-color: black;//#aa72ff;
+    color: white;
   }
 
   @media (max-width: 700px) {
@@ -108,10 +139,28 @@ class Checkout extends Component {
       this.props.checkout.lineItems.map((line_item) => {
         return (
           <LineItem key={line_item.id.toString()}>
-              <H4>{line_item.title }</H4>
+              <img src={line_item.variant.image.src} style={{width: 40, marginRight: 20}} />
+              <H4>
+                {line_item.title }
+                {
+                  line_item.variant.selectedOptions && line_item.variant.selectedOptions.map(opt => (
+                    opt.value != 'Default Title' && <p>{opt.value} </p>
+                  ))
+                }
+              </H4>
+
               <div>
+              {
+                <p>Qty: {line_item.quantity}</p>
+                // <p>+</p>
+                // <p>-</p>
+              }
+
+
                 <p>${line_item.variant.price}</p>
-                <p onClick={() => this.props.removeLineItemFromCart(line_item.id, this.props.client, this.props.checkout.id)}>×</p>
+                <p onClick={() => this.props.removeLineItemFromCart(line_item.id, this.props.client, this.props.checkout.id)}
+                  style={{cursor: 'pointer'}}
+                >×</p>
               </div>
               {
                 // <P>/</P>
