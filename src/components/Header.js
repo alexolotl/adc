@@ -140,7 +140,7 @@ class Nav extends Component {
             }
 
             <Link to="/cart"><img src={require('assets/icons/cart-black.svg')} /></Link>
-            <Cross onClick={this.toggleMenu}>✝</Cross>
+            <Cross onClick={this.toggleMenu}>✝&#xFE0E;</Cross>
           </Links>
         </Header>
 
