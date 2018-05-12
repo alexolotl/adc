@@ -41,7 +41,7 @@ const Links = FlexRow.extend`
   font-family: "UnifrakturCook";
   font-size: 3em;
   justify-content: space-between;
-  max-width: 150px;
+  max-width: 100px;
   align-items: center;
   margin-right: 20px;
   a {

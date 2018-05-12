@@ -7,7 +7,6 @@ import VariantSelector from 'components/VariantSelector'
 
 import ThreeWindow from 'components/ThreeWindow/ThreeWindow'
 
-
 import * as cartActions from 'redux/actions/cart'
 import * as shopActions from 'redux/actions/shop'
 import * as threeActions from 'redux/actions/three'
@@ -41,7 +40,7 @@ const ImgContainer = styled.div`
   flex-flow: row nowrap;
   justify-content: flex-start;
   align-items: flex-start;
-  max-height: 100vh;
+  max-height: 80vh;
   overflow-y: scroll;
 
   margin: 0 auto;
@@ -54,9 +53,9 @@ const ImgContainer = styled.div`
   }
 `
 const Img = styled.img`
-  object-fit: contain;
+  // object-fit: contain;
   max-height: 80vh;
-  width: 50vw;
+  // width: 50vw;
   max-width: 50vw;
   margin: 0 auto;
 
@@ -68,22 +67,25 @@ const Img = styled.img`
   }
 `
 const Details = styled.div`
-  padding: 40px;
+  padding: 40px 40px 0 40px;
 
   flex: 1 1 50%;
   box-sizing: border-box;
   display: flex;
   flex-flow: column nowrap;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  box-sizing: border-box;
 
   background-color: rgba(255,255,255,1);
-  margin-right: 20px;
+  // margin-right: 20px;
   margin-left: 20px;
 
   border: 2px solid black;
 
-  // height: 80vh;
+  height: 80vh;
+
+  overflow-y: scroll;
 
 
   h1 {
@@ -108,6 +110,7 @@ const Details = styled.div`
 
     h1 {
       font-size: 1.5em;
+      line-height: 1;
     }
 
     > div {
@@ -168,6 +171,8 @@ const DetailRow = FlexRow.extend`
   margin-bottom: 30px;
   text-align: left;
   line-height: 1.5;
+  flex: 1 0 auto;
+
 
   select {
     text-align-last: center;
@@ -253,10 +258,12 @@ class Product extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (!this.state.product && this.props.products !== prevProps.products) {
+    if (this.props.products.length && !this.state.product && (this.props.products !== prevProps.products)) {
 
       const activeProduct = this.props.products.find(p => p.handle == this.props.match.params.product)
       // this.props.getProductById(activeProduct.id, this.props.client)
+
+      // console.log(activeProduct);
       this.setState({
         product: activeProduct
       })

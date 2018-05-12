@@ -8,7 +8,7 @@ import Header from 'components/Header'
 import Main from 'containers/Main'
 import Checkout from 'containers/Checkout'
 import './App.css';
-import Client, {Config} from 'shopify-buy';
+import Client, {Config, ShopResource} from 'shopify-buy';
 import {initializeClient} from 'redux/actions/client'
 import * as cartActions from 'redux/actions/cart'
 //
@@ -16,8 +16,8 @@ import * as cartActions from 'redux/actions/cart'
 class App extends Component {
   componentWillMount() {
     const config = {
-      storefrontAccessToken: process.env.REACT_APP_SHOPIFY_TOKEN,
-      domain: 'antes-de-cristo.myshopify.com',
+      storefrontAccessToken: 'dd4d4dc146542ba7763305d71d1b3d38',//process.env.REACT_APP_SHOPIFY_TOKEN,
+      domain: 'graphql.myshopify.com'//'antes-de-cristo.myshopify.com',
     }
 
     this.props.initializeClient(config)

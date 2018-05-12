@@ -1,10 +1,12 @@
-import {REQUEST_CLIENT, RECEIVE_CLIENT, SET_ACTIVE_PRODUCT, SET_CHECKOUT, GET_ALL_PRODUCTS, SET_SHOP, GET_COLLECTIONS, SET_COLLECTION} from 'redux/actions/shop'
+import {REQUEST_CLIENT, PRODUCTS_LOADING, RECEIVE_CLIENT, SET_ACTIVE_PRODUCT, SET_CHECKOUT, GET_ALL_PRODUCTS, SET_SHOP, GET_COLLECTIONS, SET_COLLECTION} from 'redux/actions/shop'
 
 let initialState = {
   isFetching: false,
   isCartOpen: false,
   checkout: { lineItems: [] },
   products: [],
+  productsLoading: false,
+  hasNextPage: false,
   collections: null,
   activeCollection: null,
   shop: {},
@@ -18,9 +20,14 @@ const shop = (state = initialState, action) => {
         checkout: action.payload
       })
     case GET_ALL_PRODUCTS:
+      let prods = state.products.concat(action.payload)
       return Object.assign({}, state, {
-        products: action.payload
+        products: prods,
+        productsLoading: false,
+        hasNextPage: action.payload.slice(-1)[0].hasNextPage
       })
+    case PRODUCTS_LOADING:
+      return Object.assign({}, state, {productsLoading: true})
     case SET_ACTIVE_PRODUCT:
       return Object.assign({}, state, {
         activeProduct: action.payload

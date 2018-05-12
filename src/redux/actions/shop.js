@@ -1,5 +1,6 @@
 import Client from 'shopify-buy';
 import {initializeCheckout} from 'redux/actions/cart'
+import * as uiActions from 'redux/actions/ui'
 
 export const SET_CHECKOUT = 'SET_CHECKOUT'
 export function setCheckout(payload) {
@@ -14,6 +15,12 @@ export function getAllProducts(payload) {
   return {
     type: GET_ALL_PRODUCTS,
     payload
+  }
+}
+export const PRODUCTS_LOADING = 'PRODUCTS_LOADING'
+export function productsLoading() {
+  return {
+    type: PRODUCTS_LOADING
   }
 }
 
@@ -50,6 +57,16 @@ export function setCollection(payload) {
   }
 }
 
+export function fetchNextPage(productList, client) {
+  return dispatch => {
+    dispatch(productsLoading())
+    productList && productList.slice(-1)[0].hasNextPage && client.fetchNextPage(productList).then((nextPageOfProducts) => {
+      dispatch(getAllProducts(nextPageOfProducts.model))
+      dispatch(uiActions.setBkgText('ANTES DE CRISTO ✝ '))
+    }).catch(err => {return console.log(err)})
+  }
+}
+
 export function filterByType(type, client) {
   return function(dispatch) {
     return client.product.fetchAll().then((products) => {
@@ -62,15 +79,19 @@ export function filterByType(type, client) {
 export function getProductById(id, client) {
   return dispatch => {
     return client.product.fetch(id).then((product) => {
-      console.log(product);
+      // console.log(product);
       return dispatch(setActiveProduct(product))
     })
   }
 }
 
-// export function fetchNextPage(products, client) {
-//   return function(dispatch) {
-//     let moreProducts = client.graphQLClient.fetchNextPage(products)
-//     return dispatch(getAllProducts(moreProducts))
-//   }
-// }
+// FETCH BY QUERY
+// const query = {
+//   query: 'updated_at:>="2016-09-25T21:31:33"',
+//   sortBy: 'title'
+// };
+//
+// client.product.fetchQuery(query).then((products) => {
+//   console.log(products); // An array of products updated after 2016-09-25T21:31:33
+//                          // and sorted in ascending order by title.
+// });

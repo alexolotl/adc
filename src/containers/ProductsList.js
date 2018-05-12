@@ -57,7 +57,7 @@ const Products = FlexRow.extend`
   width: 100vw;
   margin: 0 auto;
   height: auto;
-  overflow-y: hidden;
+  overflow-y: visible;
   overflow-x: visible;
   flex-flow: row wrap;
   box-sizing: border-box;
@@ -175,7 +175,7 @@ const Button = styled.div`
     :hover {
       background-color: black;//#aa72ff;
       color: white;
-      border: 2px solid white;
+      // border: 2px solid white;
     }
   }
 
@@ -188,6 +188,22 @@ const Button = styled.div`
   }
 `
 
+const MoreButton = styled.div`
+  display: ${props => props.visible ? 'flex' : 'none'};
+  background-color: white;
+  font-size: 2em;
+  width: 500px;
+  height: 60px;
+  margin: 0 auto;
+  cursor: pointer;
+  flex-flow: row nowrap;
+  align-items: center;
+  border: 2px solid black;
+  margin: 40px auto;
+  text-transform: uppercase;
+  justify-content: center;
+  z-index: 10;
+`
 
 class ProductsList extends Component {
 
@@ -199,7 +215,8 @@ class ProductsList extends Component {
   }
 
   componentDidMount() {
-    this.props.setBkgText('ADC ✝ ')
+    this.props.setBkgText('ANTES DE CRISTO ✝ ')
+    // window.addEventListener('scroll', this.onScroll)
   }
 
   onHover = (src, i, title, vendor) => {
@@ -228,13 +245,26 @@ class ProductsList extends Component {
     }
   }
 
+  // onScroll = e => {
+  //   console.log(window.scrollY);
+  //   if (window.scrollY > 1000) {
+  //     console.log('hi');
+  //     this.props.fetchNextPage(this.props.shop.products, this.props.client)
+  //   }
+  // }
+
+  loadMore = () => {
+    this.props.fetchNextPage(this.props.shop.products, this.props.client)
+    this.props.setBkgText('Loading... ')
+  }
+
   render() {
     return (
       <Container>
 
         <Products innerRef={ref => this.productsRef = ref}>
         {
-          this.props.shop.products && this.props.shop.products.map((prod, i) => {
+          this.props.shop.products.length && this.props.shop.products.map((prod, i) => {
             let image = prod.images[0].src
             image = image.slice(0, image.lastIndexOf('.')) + '_1024x1024' + image.slice(image.lastIndexOf('.'), -1)
             return (
@@ -271,6 +301,9 @@ class ProductsList extends Component {
           )})
         }
         </Products>
+        <MoreButton visible={this.props.hasNextPage} onClick={this.loadMore}>
+          {this.props.productsLoading ? 'Loading...' : 'Load More'}
+        </MoreButton>
       </Container>
     )
   }
@@ -279,12 +312,16 @@ class ProductsList extends Component {
 export default withRouter(connect(
   state => ({
     image: state.three.image,
-    shop: state.shop
+    shop: state.shop,
+    client: state.client.client,
+    productsLoading: state.shop.productsLoading,
+    hasNextPage: state.shop.hasNextPage
   }),
   dispatch => ({
     setImage: (img) => dispatch(threeActions.setImage(img)),
     setBkgText: text => dispatch(uiActions.setBkgText(text)),
-    setBkgTextStyle: style => dispatch(uiActions.setBkgTextStyle(style))
+    setBkgTextStyle: style => dispatch(uiActions.setBkgTextStyle(style)),
+    fetchNextPage:(prods, client) => dispatch(shopActions.fetchNextPage(prods, client))
   })
 )(ProductsList))
 
