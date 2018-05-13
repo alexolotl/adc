@@ -76,11 +76,11 @@ export function filterByType(type, client) {
   }
 }
 
-export function getProductById(id, client) {
+export function fetchByHandle(handle, client) {
   return dispatch => {
-    return client.product.fetch(id).then((product) => {
-      // console.log(product);
-      return dispatch(setActiveProduct(product))
+    return client.product.fetchByHandle(handle).then((product) => {
+      dispatch(setActiveProduct(product))
+      return product
     })
   }
 }

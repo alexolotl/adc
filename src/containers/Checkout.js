@@ -191,9 +191,9 @@ class Checkout extends Component {
             {this.renderLineItems()}
           </LineItems>
           <Totals>
-            <P>Subtotal: ${this.props.checkout.subtotalPrice}</P>
-            <P>Taxes: ${this.props.checkout.totalTax}</P>
-            <P style={{fontWeight: 800}}>Total: ${this.props.checkout.totalPrice}</P>
+            <P>Subtotal: {this.props.checkout.subtotalPrice + ' ' + this.props.checkout.currencyCode}</P>
+            <P>Taxes: {this.props.checkout.totalTax + ' ' + this.props.checkout.currencyCode}</P>
+            <P style={{fontWeight: 800}}>Total: {this.props.checkout.totalPrice + ' ' + this.props.checkout.currencyCode}</P>
           </Totals>
           <Button>CHECKOUT</Button>
         </Wrapper>

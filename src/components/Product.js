@@ -234,48 +234,35 @@ class Product extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      quantity: 1,
-      added: false,
-      selectedVariantImage: {src: null}
+      selectedVariantQuantity: 1,
+      selectedVariant: null,
+      selectedOptions: {},
+      added: false
     }
   }
 
   componentDidMount() {
-    if (this.props.products) {
-      const activeProduct = this.props.products.find(p => p.handle == this.props.match.params.product)
-      this.setState({
-        product: activeProduct
-      })
-      this.props.setActiveProduct(activeProduct)
-      activeProduct && this.props.setImage(activeProduct.images[0].src)
+    // if (this.props.client) {
+    //   if (!this.props.products.length) {
+    //
+    //   }
+    //   else if (this.props.products.length) {
+    //     const activeProduct = this.props.products.find(prod => prod.handle === this.props.match.params.product)
+    //     this.props.setActiveProduct(activeProduct)
+    //     this.handleNewActiveProduct(activeProduct)
+    //   }
+    // }
 
-      activeProduct && activeProduct.options.forEach((selector) => {
-        this.setState({
-          selectedOptions: { [selector.name]: selector.values[0].value }
-        });
-      });
-    }
+    this.props.client && this.props.fetchByHandle(this.props.match.params.product, this.props.client)
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.products.length && !this.state.product && (this.props.products !== prevProps.products)) {
-
-      const activeProduct = this.props.products.find(p => p.handle == this.props.match.params.product)
-      // this.props.getProductById(activeProduct.id, this.props.client)
-
-      // console.log(activeProduct);
-      this.setState({
-        product: activeProduct
-      })
-      this.props.setActiveProduct(activeProduct)
-
-      activeProduct.options.forEach((selector) => {
-        this.setState({
-          selectedOptions: { [selector.name]: selector.values[0].value }
-        });
-      });
-
-      activeProduct && this.props.setImage(activeProduct.images[0].src)
+    if (this.props.activeProduct && !prevProps.activeProduct) {
+      this.handleNewActiveProduct(this.props.activeProduct)
+      // let info = this.props.client.shop.fetchInfo().then(res => res)
+      // let policies = this.props.client.shop.fetchPolicies().then(res =>res)
+      // console.log(info); // this includes currency
+      // console.log(policies);
     }
   }
 
@@ -283,13 +270,28 @@ class Product extends Component {
     this.props.setActiveProduct(null)
   }
 
+  handleNewActiveProduct = activeProduct => {
+
+    let initOptions = {}
+    activeProduct.options.forEach((selector) => {
+      initOptions[selector.name] = selector.values[0].value
+    });
+    this.setState({
+      selectedOptions: initOptions,
+      product: activeProduct,
+      selectedVariant: activeProduct.variants[0]
+    });
+
+    this.props.setImage(activeProduct.variants[0].image.src)
+  }
+
   selectVariant = variant => {
-    this.setState({variant: variant})
+    this.setState({selectedVariant: variant, selectedVariantQuantity: 1})
   }
 
   handleQuantityChange = (event) => {
-    this.setState({
-      quantity: event.target.value
+    event.target.value >= 0 && event.target.value <= this.state.selectedfavailable && this.setState({
+      selectedVariantQuantity: event.target.value
     });
   }
 
@@ -297,19 +299,18 @@ class Product extends Component {
     const target = event.target
     let selectedOptions = this.state.selectedOptions;
     selectedOptions[target.name] = target.value;
-
     const selectedVariant = this.props.client.product.helpers.variantForOptions(this.state.product, selectedOptions)
     this.setState({
       selectedVariant: selectedVariant,
-      selectedVariantImage: selectedVariant.attrs.image
+      selectedVariantImage: selectedVariant.image.src
     });
   }
 
   renderPage(product) {
-
+    console.log(this.state.selectedOptions);
     let variant = this.state.selectedVariant || product.variants[0]
     let variantQuantity = this.state.selectedVariantQuantity || 1
-    let image = this.state.selectedVariantImage.src || this.state.product.images[0].src
+    let image = variant.image.src || this.state.product.images[0].src
     image = image.slice(0, image.lastIndexOf('.')) + '_1024x1024' + image.slice(image.lastIndexOf('.'), -1)
 
     return (
@@ -327,6 +328,10 @@ class Product extends Component {
 
             <DetailRow>
               <span><h3>{product.description}</h3></span>
+            </DetailRow>
+
+            <DetailRow>
+              <span><h3>${variant.price}</h3></span>
             </DetailRow>
 
             <DetailRow  style={{display: (product.options.length == 1 && product.options[0].name == 'Title') ? 'none' : 'block' }}>
@@ -351,13 +356,13 @@ class Product extends Component {
             <DetailRow>
               <Label>
                 <p>Quantity</p>
-                <input min="1" type="number" defaultValue={this.state.quantity || 1} onChange={this.handleQuantityChange}></input>
+                <input min="1" type="number" defaultValue={this.state.selectedVariantQuantity || 1} onChange={this.handleQuantityChange}></input>
               </Label>
             </DetailRow>
 
             <DetailRow>
-              <Button active={variant} added={this.state.added} onClick={() => {this.props.addVariantToCart(variant.id, this.state.quantity, this.props.client, this.props.checkout.id); this.setState({added: true})}}>
-              {this.state.added ? 'ADDED!' : 'ADD TO CART'}
+              <Button active={variant} added={this.state.added === variant.id} onClick={() => {this.props.addVariantToCart(variant.id, this.state.selectedVariantQuantity, this.props.client, this.props.checkout.id); this.setState({added: variant.id})}}>
+              {this.state.added === variant.id ? 'ADDED!' : 'ADD TO CART'}
               </Button>
             </DetailRow>
         </Details>
@@ -384,5 +389,6 @@ export default withRouter(connect(
     addVariantToCart: (variantId, quantity, client, checkoutId) => dispatch(cartActions.addVariantToCart(variantId, quantity, client, checkoutId)),
     setActiveProduct: prod => dispatch(shopActions.setActiveProduct(prod)),
     setImage: (img) => dispatch(threeActions.setImage(img)),
+    fetchByHandle: (handle, client) => dispatch(shopActions.fetchByHandle(handle, client))
   })
 )(Product))

@@ -28,8 +28,8 @@ if (process.env.NODE_ENV == 'development') {
   store = createStore(
     rootReducer,
     composeEnhancers(applyMiddleware(
-      thunkMiddleware,
-      loggerMiddleware
+      thunkMiddleware//,
+      // loggerMiddleware
     ))
   )
 }
