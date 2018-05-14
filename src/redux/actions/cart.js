@@ -1,3 +1,5 @@
+import {client} from 'components/initializeClient'
+
 export const TOGGLE_CART = 'TOGGLE_CART'
 export function toggleCart(bool) {
   return {
@@ -14,7 +16,7 @@ export function updateCheckout(payload) {
   }
 }
 
-export function addVariantToCart(variantId, quantity, client, checkoutId) {
+export function addVariantToCart(variantId, quantity, checkoutId) {
   return (dispatch) => {
     const lineItemsToAdd = [{variantId, quantity: parseInt(quantity, 10)}]
 
@@ -26,7 +28,7 @@ export function addVariantToCart(variantId, quantity, client, checkoutId) {
 
 // the following 2 are not used yet
 
-export function updateQuantityInCart(lineItemId, quantity, client, checkoutId) {
+export function updateQuantityInCart(lineItemId, quantity, checkoutId) {
   return function(dispatch) {
     const lineItemsToUpdate = [{id: lineItemId, quantity: parseInt(quantity, 10)}]
 
@@ -36,7 +38,7 @@ export function updateQuantityInCart(lineItemId, quantity, client, checkoutId) {
   }
 }
 
-export function removeLineItemFromCart(lineItemId, client, checkoutId) {
+export function removeLineItemFromCart(lineItemId, checkoutId) {
   return function(dispatch) {
     return client.checkout.removeLineItems(checkoutId, [lineItemId]).then(res => {
       dispatch(updateCheckout(res))

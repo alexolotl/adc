@@ -9,18 +9,42 @@ import Main from 'containers/Main'
 import Checkout from 'containers/Checkout'
 import './App.css';
 import Client, {Config, ShopResource} from 'shopify-buy';
-import {initializeClient} from 'redux/actions/client'
 import * as cartActions from 'redux/actions/cart'
+import * as shopActions from 'redux/actions/shop'
+
+import {client} from 'components/initializeClient'
 //
 
 class App extends Component {
   componentWillMount() {
-    const config = {
-      storefrontAccessToken: 'dd4d4dc146542ba7763305d71d1b3d38',//process.env.REACT_APP_SHOPIFY_TOKEN,
-      domain: 'graphql.myshopify.com'//'antes-de-cristo.myshopify.com',
+    // CHECKOUT
+    const checkoutId = localStorage.getItem('checkoutId')
+    if (checkoutId) {
+      client.checkout.fetch(checkoutId).then((checkout) => {
+        this.props.updateCheckout(checkout)
+      });
+    }
+    else {
+      client.checkout.create().then((checkout) => {
+        localStorage.setItem('checkoutId', checkout.id)
+        this.props.updateCheckout(checkout)
+      });
     }
 
-    this.props.initializeClient(config)
+    // PRODUCTS
+    client.product.fetchAll().then((products) => {
+      this.props.getAllProducts(products)
+    });
+
+    // COLLECTION
+    // client.collection.fetchAllWithProducts().then((collections) => {
+    //   const filteredCollections = collections.filter(coll => coll.products.length > 0)
+    //   dispatch(shopActions.getCollections(filteredCollections))
+    // });
+
+    // client.fetchShopInfo().then((res) => {
+    //   dispatch(shopActions.setShop(res))
+    // });
   }
   render() {
     return (
@@ -38,6 +62,8 @@ export default withRouter(connect(
       isCartOpen: state.cart.isCartOpen
     }),
     dispatch => ({
-      initializeClient: config => dispatch(initializeClient(config)),
+      updateCheckout: checkout => dispatch(cartActions.updateCheckout(checkout)),
+      getAllProducts: prods => dispatch(shopActions.getAllProducts(prods))
+      // initializeClient: config => dispatch(initializeClient(config)),
     })
 )(App))

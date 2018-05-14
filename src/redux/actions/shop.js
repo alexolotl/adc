@@ -1,6 +1,7 @@
 import Client from 'shopify-buy';
 import {initializeCheckout} from 'redux/actions/cart'
 import * as uiActions from 'redux/actions/ui'
+import {client} from 'components/initializeClient'
 
 export const SET_CHECKOUT = 'SET_CHECKOUT'
 export function setCheckout(payload) {
@@ -57,7 +58,7 @@ export function setCollection(payload) {
   }
 }
 
-export function fetchNextPage(productList, client) {
+export function fetchNextPage(productList) {
   return dispatch => {
     dispatch(productsLoading())
     productList && productList.slice(-1)[0].hasNextPage && client.fetchNextPage(productList).then((nextPageOfProducts) => {
@@ -67,7 +68,7 @@ export function fetchNextPage(productList, client) {
   }
 }
 
-export function filterByType(type, client) {
+export function filterByType(type) {
   return function(dispatch) {
     return client.product.fetchAll().then((products) => {
       let filtered = products.filter(product => product.productType == type)
@@ -76,7 +77,7 @@ export function filterByType(type, client) {
   }
 }
 
-export function fetchByHandle(handle, client) {
+export function fetchByHandle(handle) {
   return dispatch => {
     return client.product.fetchByHandle(handle).then((product) => {
       dispatch(setActiveProduct(product))

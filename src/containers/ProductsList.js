@@ -8,6 +8,7 @@ import { Switch, Route, withRouter, Link } from 'react-router-dom'
 import * as threeActions from 'redux/actions/three'
 import * as shopActions from 'redux/actions/shop'
 import * as uiActions from 'redux/actions/ui'
+import * as utils from 'utils/factory'
 import {connect} from 'react-redux'
 import Product from 'components/Product'
 import seedrandom from 'seedrandom'
@@ -220,7 +221,7 @@ class ProductsList extends Component {
   }
 
   onHover = (src, i, title, vendor) => {
-    this.props.setImage(src)
+    this.props.setImage(utils.resizeImgForShopify(src, 'grande'))
     window.innerWidth > 700 && this.setState({activeProductIdx: i, activeImage: src})
     this.props.setBkgText(title + '  ✝  ')
     this.props.setBkgTextStyle({color: 'black'})
@@ -254,7 +255,7 @@ class ProductsList extends Component {
   // }
 
   loadMore = () => {
-    this.props.fetchNextPage(this.props.shop.products, this.props.client)
+    this.props.fetchNextPage(this.props.shop.products)
     this.props.setBkgText('Loading... ')
   }
 
@@ -266,7 +267,7 @@ class ProductsList extends Component {
         {
           this.props.shop.products.length && this.props.shop.products.map((prod, i) => {
             let image = prod.images[0].src
-            image = image.slice(0, image.lastIndexOf('.')) + '_1024x1024' + image.slice(image.lastIndexOf('.'), -1)
+            image = utils.resizeImgForShopify(image, '1024x1024')
             return (
             <Draggable
               key={i}
@@ -313,7 +314,7 @@ export default withRouter(connect(
   state => ({
     image: state.three.image,
     shop: state.shop,
-    client: state.client.client,
+    // client: state.client.client,
     productsLoading: state.shop.productsLoading,
     hasNextPage: state.shop.hasNextPage
   }),
@@ -321,7 +322,7 @@ export default withRouter(connect(
     setImage: (img) => dispatch(threeActions.setImage(img)),
     setBkgText: text => dispatch(uiActions.setBkgText(text)),
     setBkgTextStyle: style => dispatch(uiActions.setBkgTextStyle(style)),
-    fetchNextPage:(prods, client) => dispatch(shopActions.fetchNextPage(prods, client))
+    fetchNextPage:(prods) => dispatch(shopActions.fetchNextPage(prods))
   })
 )(ProductsList))
 

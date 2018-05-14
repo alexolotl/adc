@@ -10,6 +10,9 @@ import ThreeWindow from 'components/ThreeWindow/ThreeWindow'
 import * as cartActions from 'redux/actions/cart'
 import * as shopActions from 'redux/actions/shop'
 import * as threeActions from 'redux/actions/three'
+import * as utils from 'utils/factory'
+
+import {client} from 'components/initializeClient'
 
 const ProductPage = FlexRow.extend`
   width: calc(100vw - 40px);
@@ -248,7 +251,7 @@ class Product extends Component {
     //   }
     // }
 
-    this.props.client && this.props.fetchByHandle(this.props.match.params.product, this.props.client)
+    client && this.props.fetchByHandle(this.props.match.params.product)
   }
 
   componentDidUpdate(prevProps) {
@@ -277,7 +280,7 @@ class Product extends Component {
       selectedVariant: activeProduct.variants[0]
     });
 
-    this.props.setImage(activeProduct.variants[0].image.src)
+    this.props.setImage(utils.resizeImgForShopify(activeProduct.variants[0].image.src, '1024x1024'))
   }
 
   selectVariant = variant => {
@@ -285,7 +288,8 @@ class Product extends Component {
   }
 
   handleQuantityChange = (event) => {
-    event.target.value >= 0 && event.target.value <= this.state.selectedfavailable && this.setState({
+    // event.target.value >= 0 && event.target.value <= this.state.selectedVariant.available &&
+    this.setState({
       selectedVariantQuantity: event.target.value
     });
   }
@@ -294,7 +298,7 @@ class Product extends Component {
     const target = event.target
     let selectedOptions = this.state.selectedOptions;
     selectedOptions[target.name] = target.value;
-    const selectedVariant = this.props.client.product.helpers.variantForOptions(this.state.product, selectedOptions)
+    const selectedVariant = client.product.helpers.variantForOptions(this.state.product, selectedOptions)
     this.setState({
       selectedVariant: selectedVariant,
       selectedVariantImage: selectedVariant.image.src
@@ -302,11 +306,11 @@ class Product extends Component {
   }
 
   renderPage(product) {
-    console.log(this.state.selectedOptions);
+    // console.log(this.state.selectedOptions);
     let variant = this.state.selectedVariant || product.variants[0]
     let variantQuantity = this.state.selectedVariantQuantity || 1
     let image = variant.image.src || this.state.product.images[0].src
-    image = image.slice(0, image.lastIndexOf('.')) + '_1024x1024' + image.slice(image.lastIndexOf('.'), -1)
+    image = utils.resizeImgForShopify(image, '1024x1024')
 
     return (
       <ProductPage>
@@ -356,7 +360,7 @@ class Product extends Component {
             </DetailRow>
 
             <DetailRow>
-              <Button active={variant} added={this.state.added === variant.id} onClick={() => {this.props.addVariantToCart(variant.id, this.state.selectedVariantQuantity, this.props.client, this.props.checkout.id); this.setState({added: variant.id})}}>
+              <Button active={variant} added={this.state.added === variant.id} onClick={() => {this.props.addVariantToCart(variant.id, this.state.selectedVariantQuantity, this.props.checkout.id); this.setState({added: variant.id})}}>
               {this.state.added === variant.id ? 'ADDED!' : 'ADD TO CART'}
               </Button>
             </DetailRow>
@@ -375,15 +379,15 @@ class Product extends Component {
 
 export default withRouter(connect(
   state => ({
-    client: state.client.client,
+    // client: state.client.client,
     checkout: state.cart.checkout,
     products: state.shop.products,
     activeProduct: state.shop.activeProduct
   }),
   dispatch => ({
-    addVariantToCart: (variantId, quantity, client, checkoutId) => dispatch(cartActions.addVariantToCart(variantId, quantity, client, checkoutId)),
+    addVariantToCart: (variantId, quantity, checkoutId) => dispatch(cartActions.addVariantToCart(variantId, quantity, checkoutId)),
     setActiveProduct: prod => dispatch(shopActions.setActiveProduct(prod)),
     setImage: (img) => dispatch(threeActions.setImage(img)),
-    fetchByHandle: (handle, client) => dispatch(shopActions.fetchByHandle(handle, client))
+    fetchByHandle: (handle) => dispatch(shopActions.fetchByHandle(handle))
   })
 )(Product))

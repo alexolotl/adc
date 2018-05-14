@@ -158,7 +158,7 @@ class Checkout extends Component {
 
 
                 <p>${line_item.variant.price}</p>
-                <p onClick={() => this.props.removeLineItemFromCart(line_item.id, this.props.client, this.props.checkout.id)}
+                <p onClick={() => this.props.removeLineItemFromCart(line_item.id, this.props.checkout.id)}
                   style={{cursor: 'pointer'}}
                 >×</p>
               </div>
@@ -203,12 +203,12 @@ class Checkout extends Component {
 
 export default withRouter(connect(
   state => ({
-    checkout: state.cart.checkout,
-    client: state.client.client
+    checkout: state.cart.checkout
+    // client: state.client.client
   }),
   dispatch => ({
-    updateQuantityInCart: (li_id, qty, client, checkout_id) => dispatch(cartActions.updateQuantityInCart(li_id, qty, client, checkout_id)),
-    removeLineItemFromCart: (li_id, client, checkout_id) => dispatch(cartActions.removeLineItemFromCart(li_id, client, checkout_id)),
+    updateQuantityInCart: (li_id, qty, checkout_id) => dispatch(cartActions.updateQuantityInCart(li_id, qty, checkout_id)),
+    removeLineItemFromCart: (li_id, checkout_id) => dispatch(cartActions.removeLineItemFromCart(li_id, checkout_id)),
     closeCart: () => dispatch(cartActions.toggleCart(false)),
     setBkgText: txt => dispatch(uiActions.setBkgText(txt))
   })

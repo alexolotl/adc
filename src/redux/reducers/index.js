@@ -9,7 +9,6 @@ const rootReducer = combineReducers({
   shop,
   three,
   cart,
-  client,
   ui
 })
 
