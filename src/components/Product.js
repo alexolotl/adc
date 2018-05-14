@@ -161,7 +161,8 @@ const Button = styled.div`
   }
 
   @media (max-width: 700px) {
-    margin: 0px 20px 20px 20px;
+    // margin: 0px 20px 20px 20px;
+    margin: 0;
   }
 `
 
@@ -180,15 +181,9 @@ const DetailRow = FlexRow.extend`
 
   @media (max-width: 700px) {
     margin-bottom: 20px;
+    width: calc(100vw - 40px);
     span {
-      margin-left: 20px;
       border: none;
-    }
-    > div {
-      margin-left: 20px;
-    }
-    > label {
-      margin-left: 20px;
     }
   }
 `
