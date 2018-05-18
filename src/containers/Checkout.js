@@ -3,6 +3,7 @@ import {withRouter, Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import * as cartActions from 'redux/actions/cart'
 import * as uiActions from 'redux/actions/ui'
+import * as utils from 'utils/factory'
 import styled from 'styled-components'
 import {P, H4} from 'components/styledComponents/Typography'
 import {FlexRow, FlexCol} from 'globalStyles'
@@ -50,6 +51,7 @@ const LineItem = FlexRow.extend`
 
   h4 {
     text-align: left;
+    width: 250px;
     max-width: 250px;
     overflow: ellipsis;
     text-transform: uppercase;
@@ -67,7 +69,7 @@ const LineItem = FlexRow.extend`
     flex: 1 1 50%;
 
     > * {
-      width: 75px;
+      width: 150px;
       // border: 1px solid black;
       margin-left: 20px;
       font-size: 1.25em;
@@ -75,12 +77,17 @@ const LineItem = FlexRow.extend`
 
       &:last-child {
         width: 25px;
+        font-size: 2em;
       }
     }
 
   }
   @media (max-width: 700px) {
     flex-flow: row wrap;
+    // justify-content: space-between;
+    h4 {
+      text-align: right;
+    }
   }
 `
 
@@ -107,7 +114,7 @@ const Button = styled.div`
   margin: 0px 20px 20px 20px;
 
   width: calc(100% - 40px);
-  max-width: 400px;
+  max-width: 600px;
 
   background-color: white;
 
@@ -123,6 +130,7 @@ const Button = styled.div`
 
   @media (max-width: 700px) {
     margin: 0px 20px 20px 20px;
+    font-size: 1em;
   }
 `
 
@@ -138,13 +146,13 @@ class Checkout extends Component {
   openCheckout = () => {
     window.open(this.props.checkout.webUrl);
   }
-  
+
   renderLineItems = () => {
     return (
       this.props.checkout.lineItems.map((line_item) => {
         return (
           <LineItem key={line_item.id.toString()}>
-              <img src={line_item.variant.image.src} style={{width: 40, marginRight: 20}} />
+              <img src={utils.resizeImgForShopify(line_item.variant.image.src, 'medium')} style={{width: 40, marginRight: 20}} />
               <H4>
                 {line_item.title }
                 {
@@ -156,13 +164,13 @@ class Checkout extends Component {
 
               <div>
               {
-                <p>Qty: {line_item.quantity}</p>
+                // <p>Qty: {line_item.quantity}</p>
                 // <p>+</p>
                 // <p>-</p>
               }
 
 
-                <p>${line_item.variant.price}</p>
+                <p>{line_item.variant.price} {this.props.checkout.currencyCode}</p>
                 <p onClick={() => this.props.removeLineItemFromCart(line_item.id, this.props.checkout.id)}
                   style={{cursor: 'pointer'}}
                 >×</p>
@@ -196,11 +204,11 @@ class Checkout extends Component {
             {this.renderLineItems()}
           </LineItems>
           <Totals>
-            <P>Subtotal: {this.props.checkout.subtotalPrice + ' ' + this.props.checkout.currencyCode}</P>
             <P>Taxes: {this.props.checkout.totalTax + ' ' + this.props.checkout.currencyCode}</P>
-            <P style={{fontWeight: 800}}>Total: {this.props.checkout.totalPrice + ' ' + this.props.checkout.currencyCode}</P>
+            <P>Shipping: TBD</P>
+            <P style={{fontWeight: 800}}>Subtotal: {this.props.checkout.subtotalPrice + ' ' + this.props.checkout.currencyCode}</P>
           </Totals>
-          <Button onClick={this.openCheckout}>CHECKOUT</Button>
+          <Button onClick={this.openCheckout}>PROCEED TO CHECKOUT</Button>
         </Wrapper>
       )
     }

@@ -25,6 +25,10 @@ const Text = styled.div`
       unicode-bidi:bidi-override;
       direction:rtl;
     }
+
+    @media (max-width: 700px) {
+      font-size: 6em;
+    }
   }
 `
 
@@ -81,7 +85,7 @@ class Home extends Component {
             // <ThreeWindow />
           }
 
-            <h1>Antes</h1><h1>de</h1><h1>Cristo</h1>
+            <h1>antes</h1><h1>de</h1><h1>Cristo</h1>
           </Link>
         </Text>
       </div>

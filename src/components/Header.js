@@ -28,20 +28,22 @@ const Header = styled.header`
   max-width: 100vw;
 
 
-  // border-bottom: 2px solid black;
+  border-bottom: 2px solid black;
   box-sizing: border-box;
 
   z-index: 50;
   background-color: white;
 
-
+  @media (max-width: 700px) {
+    border-bottom: 0px solid black;
+  }
 `
 
 const Links = FlexRow.extend`
   font-family: "UnifrakturCook";
   font-size: 3em;
   justify-content: space-between;
-  max-width: 150px;
+  max-width: 100px;
   align-items: center;
   margin-right: 20px;
   a {
@@ -74,7 +76,7 @@ const Logo = styled.h1`
   flex: 1 0 30%;
   margin-left: 20px;
   // height: 40px;
-  font-weight: bold;
+  font-weight: medium;
 
   :hover a {
     unicode-bidi:bidi-override;

@@ -63,7 +63,7 @@ export function fetchNextPage(productList) {
     dispatch(productsLoading())
     productList && productList.slice(-1)[0].hasNextPage && client.fetchNextPage(productList).then((nextPageOfProducts) => {
       dispatch(getAllProducts(nextPageOfProducts.model))
-      dispatch(uiActions.setBkgText('ANTES DE CRISTO ✝ '))
+      dispatch(uiActions.setBkgText('ANTES DE CRISTO ✝\uFE0E '))
     }).catch(err => {return console.log(err)})
   }
 }

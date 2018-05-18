@@ -170,7 +170,7 @@ const Button = styled.div`
     font-style: italic;
     text-transform: uppercase;
     margin-bottom: 55px;
-    // border: 2px solid black;
+    border: 2px solid black;
     box-sizing: border-box;
 
     :hover {
@@ -204,6 +204,12 @@ const MoreButton = styled.div`
   text-transform: uppercase;
   justify-content: center;
   z-index: 10;
+
+  :hover {
+    background-color: black;//#aa72ff;
+    color: white;
+    // border: 2px solid white;
+  }
 `
 
 class ProductsList extends Component {
@@ -216,14 +222,14 @@ class ProductsList extends Component {
   }
 
   componentDidMount() {
-    this.props.setBkgText('ANTES DE CRISTO ✝ ')
+    this.props.setBkgText('ANTES DE CRISTO ✝\uFE0E ')
     // window.addEventListener('scroll', this.onScroll)
   }
 
   onHover = (src, i, title, vendor) => {
     this.props.setImage(utils.resizeImgForShopify(src, 'grande'))
     window.innerWidth > 700 && this.setState({activeProductIdx: i, activeImage: src})
-    this.props.setBkgText(title + '  ✝  ')
+    this.props.setBkgText(title + '  ✝\uFE0E  ')
     this.props.setBkgTextStyle({color: 'black'})
   }
 

@@ -84,7 +84,7 @@ const Details = styled.div`
   // margin-right: 20px;
   margin-left: 20px;
 
-  // border: 2px solid black;
+  border: 2px solid black;
 
   max-height: 80vh;
 
@@ -95,6 +95,11 @@ const Details = styled.div`
     font-size: 2.15em;
     text-align: left;
     text-transform: uppercase;
+    font-style: italic;
+  }
+
+  h3 {
+    // font-family: "Xolonium";
   }
 
   p {
@@ -144,6 +149,7 @@ const Button = styled.div`
   pointer-events: ${props => props.active ? 'auto' : 'none'};
   cursor: pointer;
   margin: 0px 0px 0px 0px;
+  // font-family: "Xolonium";
 
   width: 100%;
   // max-width: 400px;
@@ -240,16 +246,25 @@ class Product extends Component {
   }
 
   componentDidMount() {
-    // if (this.props.client) {
-    //   if (!this.props.products.length) {
-    //
-    //   }
-    //   else if (this.props.products.length) {
-    //     const activeProduct = this.props.products.find(prod => prod.handle === this.props.match.params.product)
-    //     this.props.setActiveProduct(activeProduct)
-    //     this.handleNewActiveProduct(activeProduct)
-    //   }
-    // }
+      // if (this.productPageRef) {
+      //   this.productPageRef.addEventListener('touchstart', event => {
+      //       this.allowUp = (this.scrollTop > 0);
+      //       this.allowDown = (this.scrollTop < this.scrollHeight - this.clientHeight);
+      //       this.slideBeginY = event.pageY;
+      //   });
+      //
+      //   this.productPageRef.addEventListener('touchmove', event => {
+      //       var up = (event.pageY > this.slideBeginY);
+      //       var down = (event.pageY < this.slideBeginY);
+      //       this.slideBeginY = event.pageY;
+      //       if ((up && this.allowUp) || (down && this.allowDown)) {
+      //           event.stopPropagation();
+      //       }
+      //       else {
+      //           event.preventDefault();
+      //       }
+      //   });
+      // }
 
     client && this.props.fetchByHandle(this.props.match.params.product)
   }
@@ -310,7 +325,7 @@ class Product extends Component {
     let variant = this.state.selectedVariant || product.variants[0]
     let variantQuantity = this.state.selectedVariantQuantity || 1
     let image = variant.image.src || this.state.product.images[0].src
-    image = utils.resizeImgForShopify(image, '1024x1024')
+    image = utils.resizeImgForShopify(image, '2048x2048')
 
     return (
       <ProductPage>
@@ -324,13 +339,12 @@ class Product extends Component {
               <span><h1>{this.state.product.title}</h1></span>
             </DetailRow>
 
-
             <DetailRow>
-              <span><h3>{product.description}</h3></span>
+              <span><h2>{variant.price} {this.props.checkout.currencyCode}</h2></span>
             </DetailRow>
 
             <DetailRow>
-              <span><h3>${variant.price}</h3></span>
+              <span><h3>{product.description}</h3></span>
             </DetailRow>
 
             <DetailRow  style={{display: (product.options.length == 1 && product.options[0].name == 'Title') ? 'none' : 'block' }}>
@@ -352,12 +366,15 @@ class Product extends Component {
               </div>
             </DetailRow>
 
-            <DetailRow>
-              <Label>
-                <p>Quantity</p>
-                <input min="1" type="number" defaultValue={this.state.selectedVariantQuantity || 1} onChange={this.handleQuantityChange}></input>
-              </Label>
-            </DetailRow>
+            {
+              // <DetailRow>
+              //   <Label>
+              //     <p>Quantity</p>
+              //     <input min="1" type="number" defaultValue={this.state.selectedVariantQuantity || 1} onChange={this.handleQuantityChange}></input>
+              //   </Label>
+              // </DetailRow>
+            }
+
 
             <DetailRow>
               <Button active={variant} added={this.state.added === variant.id} onClick={() => {this.props.addVariantToCart(variant.id, this.state.selectedVariantQuantity, this.props.checkout.id); this.setState({added: variant.id})}}>
