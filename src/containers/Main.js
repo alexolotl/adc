@@ -30,16 +30,19 @@ const BackgroundText = styled.div`
   z-index: -1;
   overflow: hidden;
 
+
   // color: ${props => props.hover ? 'white' : 'black'};
   // background-color: ${props => props.hover ? 'black' : 'white'};
 
   // color: white;
-  // opacity: .8;
+  // opacity: 1;
+  letter-spacing: .05em;
   // color: transparent;
-  // -webkit-text-stroke-width: 1px;
+  // -webkit-text-stroke-width: .75px;
   //  -webkit-text-stroke-color: white;
+  //  transition: opacity .5s;
 
-  letter-spacing: .1em;
+  // letter-spacing: .1em;
 
   display: ${props => props.hidden ? 'none': 'block'};
 

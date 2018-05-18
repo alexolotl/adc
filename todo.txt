@@ -1,4 +1,3 @@
 max quantity
-move client to private place
 should shipping price be predefined
 do terms & conditions etc need to be shown

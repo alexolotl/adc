@@ -7,11 +7,9 @@ import * as cartActions from 'redux/actions/cart'
 class Cart extends Component {
   constructor(props) {
     super(props);
-
-    this.openCheckout = this.openCheckout.bind(this);
   }
 
-  openCheckout() {
+  openCheckout = () => {
     window.open(this.props.checkout.webUrl);
   }
 

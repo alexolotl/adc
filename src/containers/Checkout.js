@@ -134,6 +134,11 @@ class Checkout extends Component {
   componentDidMount() {
     this.props.setBkgText('CART ')
   }
+
+  openCheckout = () => {
+    window.open(this.props.checkout.webUrl);
+  }
+  
   renderLineItems = () => {
     return (
       this.props.checkout.lineItems.map((line_item) => {
@@ -195,7 +200,7 @@ class Checkout extends Component {
             <P>Taxes: {this.props.checkout.totalTax + ' ' + this.props.checkout.currencyCode}</P>
             <P style={{fontWeight: 800}}>Total: {this.props.checkout.totalPrice + ' ' + this.props.checkout.currencyCode}</P>
           </Totals>
-          <Button>CHECKOUT</Button>
+          <Button onClick={this.openCheckout}>CHECKOUT</Button>
         </Wrapper>
       )
     }

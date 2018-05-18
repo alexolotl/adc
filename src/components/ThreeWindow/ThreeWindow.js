@@ -7,6 +7,7 @@ import {withRouter} from 'react-router-dom'
 
 import styled from 'styled-components'
 const _texmap = require('assets/images/lookbook/F303BB32-EC15-44E0-9904-41F29C279929.jpg')
+// const _texmap = require('assets/images/black-square.jpg')
 
 const Div = styled.div`
   position: fixed;

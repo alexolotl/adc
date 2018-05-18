@@ -41,7 +41,7 @@ const Links = FlexRow.extend`
   font-family: "UnifrakturCook";
   font-size: 3em;
   justify-content: space-between;
-  max-width: 100px;
+  max-width: 150px;
   align-items: center;
   margin-right: 20px;
   a {
@@ -127,7 +127,7 @@ class Nav extends Component {
     return (
       <Container>
         <Header>
-          <Logo><Link to='/shop'>Antes De Cristo</Link></Logo>
+          <Logo><Link to='/shop'>antes de Cristo</Link></Logo>
           <Links>
 
 

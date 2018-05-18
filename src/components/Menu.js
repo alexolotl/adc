@@ -11,6 +11,9 @@ const MenuWrapper = styled.header`
   width: 100vw;
   height: 100vh;
   z-index: 20;
+  padding-top: 60px;
+  padding-bottom: 60px;
+  box-sizing: border-box;
 `;
 
 const FlexCol = styled.ul`
@@ -118,7 +121,7 @@ export default class Header extends Component {
             <H1><StyledLink to='/cart' onClick={this.props.toggleMenu}>Cart</StyledLink></H1>
           </FlexLi>
           <FlexLi>
-            <H1><A href="mailto:" target="_blank" onClick={this.props.toggleMenu}>Contact</A></H1>
+            <H1><A href="mailto:contactjesusourlord@gmail.com" target="_blank" onClick={this.props.toggleMenu}>Contact</A></H1>
           </FlexLi>
         </FlexCol>
       </MenuWrapper>

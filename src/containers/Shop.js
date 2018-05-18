@@ -16,7 +16,7 @@ export default class Shop extends Component {
     return (
       <Container>
       {
-          <ThreeWindow />
+          // <ThreeWindow />
       }
         <Route exact path={'/shop'} component={ProductsList}/>
         <Route exact path={'/shop/:product'} component={Product}/>

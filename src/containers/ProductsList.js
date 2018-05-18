@@ -170,7 +170,7 @@ const Button = styled.div`
     font-style: italic;
     text-transform: uppercase;
     margin-bottom: 55px;
-    border: 2px solid black;
+    // border: 2px solid black;
     box-sizing: border-box;
 
     :hover {

@@ -15,7 +15,7 @@ import * as utils from 'utils/factory'
 import {client} from 'components/initializeClient'
 
 const ProductPage = FlexRow.extend`
-  width: calc(100vw - 40px);
+  width: calc(100vw - 120px);
   height: calc(100vh - 80px);
   overflow: hidden;
   justify-content: space-between;
@@ -84,15 +84,15 @@ const Details = styled.div`
   // margin-right: 20px;
   margin-left: 20px;
 
-  border: 2px solid black;
+  // border: 2px solid black;
 
-  height: 80vh;
+  max-height: 80vh;
 
   overflow-y: scroll;
 
 
   h1 {
-    font-size: 3em;
+    font-size: 2.15em;
     text-align: left;
     text-transform: uppercase;
   }
@@ -143,10 +143,10 @@ const Button = styled.div`
   box-sizing: border-box;
   pointer-events: ${props => props.active ? 'auto' : 'none'};
   cursor: pointer;
-  margin: 0px 20px 20px 0px;
+  margin: 0px 0px 0px 0px;
 
   width: 100%;
-  max-width: 400px;
+  // max-width: 400px;
   text-align:center;
   background-color: ${props => props.added? 'black' : 'white'};
   font-style: ${props => props.added ? 'italic' : 'normal'};
