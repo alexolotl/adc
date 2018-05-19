@@ -1,3 +1,7 @@
 max quantity
-should shipping price be predefined
+test cart
+language
+shipping cost hopefully automatically works
+domain
+clear storefront domain
 do terms & conditions etc need to be shown

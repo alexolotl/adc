@@ -5,13 +5,37 @@ import ThreeWindow from 'components/ThreeWindow/ThreeWindow'
 
 import styled from 'styled-components'
 
+const Container = styled.div`
+  border: 20px solid white;
+  box-sizing: border-box;
+  video {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    z-index: -1 !important;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+
+  }
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+`
+
 const Text = styled.div`
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
   justify-content: center;
-  width: 100vw;
-  height: 100vh;
+  // width: 30vw;
+  // height: 30vw;
+  padding: 30px 80px;
+  background-color: white;
+  z-index: 1;
 
   h1 {
     font-size: 10em;
@@ -75,20 +99,19 @@ class Home extends Component {
   }
   render() {
     return (
-      <div>
+      <Container>
         <Text>
           <Link to={'/shop'}>
-          {
-            // <img
-            //   style={{width: 700}}
-            //   src={require('assets/images/adc2.png')} />
-            // <ThreeWindow />
-          }
-
             <h1>antes</h1><h1>de</h1><h1>Cristo</h1>
           </Link>
         </Text>
-      </div>
+        {
+          // <video autoPlay muted>
+          //   <source src={require('assets/videos/7pm.webm')} />
+          // </video>
+        }
+
+      </Container>
     );
   }
 }

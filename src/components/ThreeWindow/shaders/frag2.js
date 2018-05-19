@@ -19,6 +19,7 @@ uniform float time;
 uniform vec2 mouse;
 uniform vec2 resolution;
 uniform float ramp;
+uniform float scroll;
 uniform float amplitude;
 
 // Refs
@@ -127,7 +128,7 @@ void main(void)
 
     vec2 st3 = st + 10.*vec2(fbm(vec3(amplitude*5., st.x, st.y)));
 
-    st2 = mix(st, st2, mouse/4.);
+    st2 = mix(st, st2, (scroll+mouse)/8.);
     st2 = mix(st2, st3, amplitude);
 
     float grad = st2.y*st2.x;

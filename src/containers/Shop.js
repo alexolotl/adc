@@ -11,16 +11,20 @@ const Container = styled.div`
   overflow-x: hidden;
 `
 
-export default class Shop extends Component {
+class Shop extends Component {
   render() {
     return (
       <Container>
-      {
-          // <ThreeWindow />
-      }
+      
         <Route exact path={'/shop'} component={ProductsList}/>
         <Route exact path={'/shop/:product'} component={Product}/>
       </Container>
     );
   }
 }
+
+export default withRouter(connect(
+  state => ({
+    backgroundModeShader: state.ui.backgroundModeShader
+  })
+)(Shop))

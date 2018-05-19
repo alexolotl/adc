@@ -40,17 +40,11 @@ class ThreeWindow extends Component {
   }
 
   componentDidMount() {
-    this.setState({scene: new Three(this.threeRef, window.innerWidth, window.innerHeight, this.props.image)})
+    this.setState({scene: new Three(this.threeRef, window.innerWidth, window.innerHeight, this.props.image, this.props.image)})
   }
 
   componentDidUpdate(oldProps, oldState) {
     if (this.props.image != oldProps.image) {
-
-      // this.state.scene.scene.morph.uniforms.textureSampler2.value.image.src = this.state.scene.scene.morph.uniforms.textureSampler1.value.image.src
-      // this.state.scene.scene.morph.uniforms.textureSampler1.value.image.src = this.props.image
-      //
-      // this.state.scene.scene.morph.uniforms.ramp.value = 0
-
 
       _loader.load(this.props.image, imgTex => {
         this.state.scene.scene.morph.uniforms.textureSampler2.value.image.src = this.state.scene.scene.morph.uniforms.textureSampler1.value.image.src
@@ -77,125 +71,20 @@ export default withRouter(connect(
 
 const _loader = new THREE.TextureLoader()
 _loader.crossOrigin = ''
-const _tex1 = _loader.load(_texmap)
 const _mouse = new THREE.Vector2(0, 0);
 const _dampenedMouse = new THREE.Vector2(0, 0);
-
-class Sphere extends THREE.Mesh {
-  constructor() {
-    const geometry = new THREE.SphereGeometry(3, 30, 30);
-
-    const material = new THREE.MeshStandardMaterial({
-      color: 0xffffff,
-      // transparent: true,
-      // wireframe: true,
-      map: _tex1,
-      side: THREE.DoubleSide
-    });
-    super(geometry, material);
-    this.rotation.x = Math.random(Math.PI)
-    this.rotation.y = Math.random(Math.PI)
-  }
-
-  update() {
-    this.rotation.x += 0.0005;
-    this.rotation.y += 0.0005;
-  }
-}
-
-class TextCanvas extends THREE.Mesh {
-  constructor() {
-    const text = 'Antes de Cristo';
-
-    const canvas = document.createElement('canvas');
-
-    const context = canvas.getContext('2d');
-    const metrics = context.measureText(text);
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    context.fillStyle = 'rgba(0,0,0,1)';
-    context.fillRect(0,0,canvas.width,canvas.height);
-    context.font = '200px Xolonium';
-    context.textAlign = 'center';
-    context.textBaseline = 'middle';
-    context.fillStyle = 'rgba(255,255,255,1)';
-
-    context.fillText(text, canvas.width / 2, canvas.height / 2);
-    const textTexture = new THREE.Texture(canvas);
-    textTexture.needsUpdate = true;
-    console.log(window.innerWidth)
-
-    const uniforms = {
-      textureSampler: { type: 't', value: textTexture },
-      textureSampler1: { type: 't', value: _tex1 },
-      textureSampler2: { type: 't', value: _tex1 },
-      textureSampler3: { type: 't', value: _tex1 },
-      ramp: {type: 'f', value: 0},
-      time: { type: 'f', value: 0 },
-      mouse: { type: 'v2', value: new THREE.Vector2() },
-      resolution: {
-        type: 'v2',
-        value: new THREE.Vector2(window.innerWidth, window.innerHeight)
-      }
-    };
-
-    // const material = new THREE.MeshBasicMaterial({
-    // 	map : texture,
-    //   // side: THREE.DoubleSide
-    // })
-    // material.transparent = true
-    const material = new THREE.ShaderMaterial({
-      uniforms,
-      vertexShader: textVertex,
-      fragmentShader: textFragment,
-      // transparent: true
-    });
-    const geometry = new THREE.PlaneGeometry(canvas.width, canvas.height)
-    // const geometry = new THREE.SphereGeometry(
-    //   16,
-    //   32,
-    //   32,
-    //   0,
-    //   Math.PI * 2,
-    //   Math.PI / 2 - 0.4,
-    //   0.8
-    // );
-
-    super(geometry, material);
-
-    // this.position.z = 4
-    this.scale.set(.01,.01,.01)
-    // this.scale.set(0.2, 0.2, 0.2);
-    this.rotateX = Math.PI / 2;
-    this.uniforms = uniforms;
-  }
-
-  update() {
-    this.uniforms.time.value += 0.02;
-    this.uniforms.ramp.value += 0.06;
-    this.uniforms.mouse.value = new THREE.Vector2(
-      Math.abs(_mouse.x - _dampenedMouse.x),
-      Math.abs(_mouse.y - _dampenedMouse.y)
-    ).multiplyScalar(0.05);
-  }
-}
-
-class TextObject extends THREE.Object3D {
-  constructor() {
-    super();
-    this.textcanvas = new TextCanvas();
-    this.add(this.textcanvas);
-  }
-
-  update() {
-    // this.rotation.y -= 0.01;
-    this.textcanvas.update();
-  }
-}
+let _scroll = 0
+let _dampenedscroll = 0
 
 class Morph extends THREE.Mesh {
-  constructor() {
-
+  constructor(image) {
+    let _tex1
+    if (!image) {
+      _tex1 = _loader.load(_texmap)
+    }
+    else {
+      _tex1 = _loader.load(image)
+    }
     const uniforms = {
       textureSampler: { type: 't', value: null },
       textureSampler1: { type: 't', value: _tex1 },
@@ -204,6 +93,7 @@ class Morph extends THREE.Mesh {
       ramp: {type: 'f', value: 0},
       amplitude: {type: 'f', value: 0.5},
       time: { type: 'f', value: 0 },
+      scroll: { type: 'f', value: 0 },
       mouse: { type: 'v2', value: new THREE.Vector2() },
       resolution: {
         type: 'v2',
@@ -224,61 +114,64 @@ class Morph extends THREE.Mesh {
     // this.createAudioCtx()
   }
 
-  createAudioCtx() {
-    this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    this.analyser = this.audioCtx.createAnalyser();
-    this.analyser.smoothingTimeConstant = 0.3;
-    // this.audio.src = URL.createObjectURL(inputRef.files[0]);
-    this.audio = document.createElement('audio')
-    // this.audio.src = require('assets/test.mp3')
-    this.audio.load();
-    this.audio.play();
-    this.source = this.audioCtx.createMediaElementSource(this.audio);
-    // this.source = this.audioCtx.createMediaStreamSource(stream);
-    this.source.connect(this.analyser);
-    this.analyser.connect(this.audioCtx.destination);
-    this.analyser.fftSize = 512;
-    this.bufferLength = this.analyser.frequencyBinCount;
-    // console.log(this.bufferLength);
-  }
-
-  updateAudio() {
-    var dataArray = new Uint8Array(this.bufferLength);
-    this.analyser.getByteTimeDomainData(dataArray);
-
-    //this.analyser.getByteFrequencyData(dataArray);
-
-    var amp = 0
-    const amps = []
-    const division = 256
-    const start = 30
-    const end = 60
-    const offset = end - start
-    for(var i = parseInt((start)*this.bufferLength/division); i < parseInt((end)*this.bufferLength/division); i++) {
-      amp += dataArray[i]
-      // amps.pushv(dataArray[i])
-    }
-    // console.log(amps)
-    amp /= parseInt(this.bufferLength / division)*offset
-    // console.log(amp/256)
-    if (amp/256 > .6) {console.log('hit')}
-    // this works too...
-    // this.uniforms.amplitude.value += (amp/256 - this.uniforms.amplitude.value) * 0.07
-    if (amp/256 > .6) {
-      this.uniforms.amplitude.value += (amp/256 - this.uniforms.amplitude.value) * 0.07
-    }
-    else {
-      this.uniforms.amplitude.value += (0 - this.uniforms.amplitude.value) * 0.07
-    }
-  }
+  // createAudioCtx() {
+  //   this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  //   this.analyser = this.audioCtx.createAnalyser();
+  //   this.analyser.smoothingTimeConstant = 0.3;
+  //   // this.audio.src = URL.createObjectURL(inputRef.files[0]);
+  //   this.audio = document.createElement('audio')
+  //   // this.audio.src = require('assets/test.mp3')
+  //   this.audio.load();
+  //   this.audio.play();
+  //   this.source = this.audioCtx.createMediaElementSource(this.audio);
+  //   // this.source = this.audioCtx.createMediaStreamSource(stream);
+  //   this.source.connect(this.analyser);
+  //   this.analyser.connect(this.audioCtx.destination);
+  //   this.analyser.fftSize = 512;
+  //   this.bufferLength = this.analyser.frequencyBinCount;
+  //   // console.log(this.bufferLength);
+  // }
+  //
+  // updateAudio() {
+  //   var dataArray = new Uint8Array(this.bufferLength);
+  //   this.analyser.getByteTimeDomainData(dataArray);
+  //
+  //   //this.analyser.getByteFrequencyData(dataArray);
+  //
+  //   var amp = 0
+  //   const amps = []
+  //   const division = 256
+  //   const start = 30
+  //   const end = 60
+  //   const offset = end - start
+  //   for(var i = parseInt((start)*this.bufferLength/division); i < parseInt((end)*this.bufferLength/division); i++) {
+  //     amp += dataArray[i]
+  //     // amps.pushv(dataArray[i])
+  //   }
+  //   // console.log(amps)
+  //   amp /= parseInt(this.bufferLength / division)*offset
+  //   // console.log(amp/256)
+  //   if (amp/256 > .6) {console.log('hit')}
+  //   // this works too...
+  //   // this.uniforms.amplitude.value += (amp/256 - this.uniforms.amplitude.value) * 0.07
+  //   if (amp/256 > .6) {
+  //     this.uniforms.amplitude.value += (amp/256 - this.uniforms.amplitude.value) * 0.07
+  //   }
+  //   else {
+  //     this.uniforms.amplitude.value += (0 - this.uniforms.amplitude.value) * 0.07
+  //   }
+  // }
 
   update() {
-    this.uniforms.time.value += 0.02;
-    this.uniforms.ramp.value += 0.02;
+    this.uniforms.time.value += 0.05;
+    this.uniforms.ramp.value += 0.05;
     this.uniforms.mouse.value = new THREE.Vector2(
       Math.abs(_mouse.x - _dampenedMouse.x),
       Math.abs(_mouse.y - _dampenedMouse.y)
     ).multiplyScalar(0.002);
+
+    this.uniforms.scroll.value = Math.abs(_scroll - _dampenedscroll) * (0.002);
+    // console.log(this.uniforms.scroll.value);
 
     // this.updateAudio()
 
@@ -286,12 +179,12 @@ class Morph extends THREE.Mesh {
 }
 
 class Scene extends THREE.Scene {
-  constructor(bufferTexture, themeColor) {
+  constructor(image) {
     super();
-
+    console.log(image);
     this.time = 0;
 
-    this.morph = new Morph();
+    this.morph = new Morph(image);
     this.add(this.morph)
 
     // this.add( new TextObject() );
@@ -307,6 +200,8 @@ class Scene extends THREE.Scene {
     _dampenedMouse.x += (_mouse.x - _dampenedMouse.x) * 0.02;
     _dampenedMouse.y += (_mouse.y - _dampenedMouse.y) * 0.02;
 
+    _dampenedscroll += (_scroll - _dampenedscroll) * 0.02;
+
     this.children.forEach(child => {
       if (child.update) {
         child.update()
@@ -316,7 +211,7 @@ class Scene extends THREE.Scene {
 }
 
 class Three {
-  constructor(container, width, height, props) {
+  constructor(container, width, height, props, image) {
     this.width = width;
     this.height = height;
     this.fov = 45;
@@ -330,11 +225,11 @@ class Three {
     this.renderer.setClearColor( 0x000000, 0 ); // the default
     container.appendChild(this.renderer.domElement);
 
-    const fps = 60;
+    const fps = 30;
     this.fpsInterval = 1000 / fps;
     this.then = Date.now();
 
-    this.scene = new Scene();
+    this.scene = new Scene(image);
 
     this.resize();
     this.bind();
@@ -344,6 +239,7 @@ class Three {
   bind() {
     // window.addEventListener('resize', this.resize.bind(this), false);
     window.addEventListener('mousemove', this.mousemove.bind(this), false);
+    window.addEventListener('scroll', this.scroll.bind(this), false);
     // window.addEventListener('click', this.click.bind(this), false);
   }
 
@@ -376,14 +272,18 @@ class Three {
     _mouse.y = e.clientY;
     //
     let timeout;
-    const oldmouse = _mouse.clone();
+    // const oldmouse = _mouse.clone();
 
     const mousevec = _mouse.clone();
 
     mousevec.x = mousevec.x / window.innerWidth * 2 - 1;
     mousevec.y = (1 - mousevec.y / window.innerHeight) * 2 - 1;
-    oldmouse.x = oldmouse.x / window.innerWidth * 2 - 1;
-    oldmouse.y = oldmouse.y / window.innerHeight * 2 - 1;
+    // oldmouse.x = oldmouse.x / window.innerWidth * 2 - 1;
+    // oldmouse.y = oldmouse.y / window.innerHeight * 2 - 1;
+  }
+
+  scroll(e) {
+    _scroll = window.scrollY
   }
 
   click() {

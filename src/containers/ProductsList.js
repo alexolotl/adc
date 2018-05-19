@@ -227,7 +227,7 @@ class ProductsList extends Component {
   }
 
   onHover = (src, i, title, vendor) => {
-    this.props.setImage(utils.resizeImgForShopify(src, 'grande'))
+    this.props.setImage(src)
     window.innerWidth > 700 && this.setState({activeProductIdx: i, activeImage: src})
     this.props.setBkgText(title + '  ✝\uFE0E  ')
     this.props.setBkgTextStyle({color: 'black'})

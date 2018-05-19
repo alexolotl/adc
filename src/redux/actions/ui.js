@@ -28,3 +28,11 @@ export function setBkgTextStyle(style) {
     payload: style
   }
 }
+
+export const SET_BKG_MODE_SHADER = 'SET_BKG_MODE_SHADER'
+export function setBackgroundModeShader(bool) {
+  return {
+    type: SET_BKG_MODE_SHADER,
+    payload: bool
+  }
+}

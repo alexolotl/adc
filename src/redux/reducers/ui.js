@@ -1,10 +1,11 @@
-import {TOGGLE_HAMBURGER, SET_BKG_TEXT, SET_BKG_TEXT_STYLE} from 'redux/actions/ui'
+import {TOGGLE_HAMBURGER, SET_BKG_TEXT, SET_BKG_TEXT_STYLE, SET_BKG_MODE_SHADER} from 'redux/actions/ui'
 
 const initialState = {
   hamburger: false,
   header: true,
   backgroundText: 'Antes de Cristo ',
-  backgroundTextStyle: {fontStyle: ''}
+  backgroundTextStyle: {fontStyle: ''},
+  backgroundModeShader: false
 }
 
 const ui = (state = initialState, action) => {
@@ -20,6 +21,10 @@ const ui = (state = initialState, action) => {
     case SET_BKG_TEXT_STYLE:
       return Object.assign({}, state, {
         backgroundTextStyle: action.payload
+      })
+    case SET_BKG_MODE_SHADER:
+      return Object.assign({}, state, {
+        backgroundModeShader: action.payload
       })
     default:
       return state

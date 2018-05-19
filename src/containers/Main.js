@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import styled from 'styled-components'
 import {bindActionCreators} from 'redux'
 import {withRouter} from 'react-router-dom'
-
+import ThreeWindow from 'components/ThreeWindow/ThreeWindow'
 import Shop from 'containers/Shop'
 import Product from 'components/Product'
 import Home from 'components/Home'
@@ -95,11 +95,14 @@ class Main extends Component {
     const list = [...Array(100).keys()]
     return (
       <main>
-        <BackgroundText hidden={this.props.location.pathname == '/'} hover={this.props.backgroundTextStyle.color != null}>
-          {
-            list.map(i => <span key={i}>{this.props.backgroundText}</span>)
-          }
-        </BackgroundText>
+        {
+            this.props.backgroundModeShader ? <ThreeWindow image={this.props.image} /> : <BackgroundText hidden={this.props.location.pathname == '/'} hover={this.props.backgroundTextStyle.color != null}>
+              {
+                list.map(i => <span key={i}>{this.props.backgroundText}</span>)
+              }
+            </BackgroundText>
+        }
+
         <Switch>
           <Route exact path='/' component={Home} />
           <Route path='/shop' component={Shop} />
@@ -120,7 +123,9 @@ export default withRouter(connect(
   state => ({
     client: state.shop.client,
     backgroundText: state.ui.backgroundText,
-    backgroundTextStyle: state.ui.backgroundTextStyle
+    backgroundTextStyle: state.ui.backgroundTextStyle,
+    backgroundModeShader: state.ui.backgroundModeShader,
+    image: state.three.image
   })
 )(Main))
 

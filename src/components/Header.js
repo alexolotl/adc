@@ -4,6 +4,8 @@ import {connect} from 'react-redux'
 import {FlexRow} from 'globalStyles'
 import {H1} from 'components/styledComponents/Typography'
 import * as cartActions from 'redux/actions/cart'
+import * as uiActions from 'redux/actions/ui'
+import * as threeActions from 'redux/actions/three'
 import Menu from 'components/Menu'
 import styled from 'styled-components'
 import Cart from 'containers/Checkout'
@@ -43,7 +45,7 @@ const Links = FlexRow.extend`
   font-family: "UnifrakturCook";
   font-size: 3em;
   justify-content: space-between;
-  max-width: 100px;
+  max-width: 160px;
   align-items: center;
   margin-right: 20px;
   a {
@@ -52,12 +54,15 @@ const Links = FlexRow.extend`
     align-items: center;
     cursor: pointer !important;
   }
+  a.menu {
+    transform: scaleX(.8);
+  }
   img {
     width: 40px;
   }
 
   @media (max-width: 700px) {
-    max-width: 80px;
+    max-width: 120px;
     img {
       width: 30px;
     }
@@ -78,7 +83,7 @@ const Logo = styled.h1`
   // height: 40px;
   font-weight: medium;
 
-  :hover a {
+  a:hover {
     unicode-bidi:bidi-override;
     direction:rtl;
   }
@@ -103,9 +108,7 @@ const Footer = styled.footer`
 const Cross = styled.a`
   color: white;
   -webkit-text-stroke: 1px black;
-  :hover {
-    transform: rotate(180deg);
-  }
+  transform: ${props => props.rotate ? 'rotate(180deg)' : 'none'};
   @media (max-width: 700px) {
     display: block;
   }
@@ -125,33 +128,31 @@ class Nav extends Component {
     this.setState({menu: !this.state.menu})
   }
 
+  onMouseEnter = e => {
+    this.props.setBackgroundModeShader(!this.state.backgroundModeShader)
+  }
+
+  handleCrossClick = () => {
+    this.props.setBackgroundModeShader(!this.props.backgroundModeShader)
+    this.props.activeProduct && this.props.setImage(this.props.activeProduct.images[0].src)
+  }
+
   render() {
     return (
       <Container>
         <Header>
           <Logo><Link to='/shop'>antes de Cristo</Link></Logo>
           <Links>
-
-
-            {
-            //   <Link to='/'>Shop</Link>
-            // <Link to='/about'>Contact</Link>
-              // <Link to='/archive'>Archive</Link>
-              // <Link to='/cart'>Cart {this.props.checkout.quantity}</Link>
-              // <Link to='/cart'><img src={require('assets/icons/cart-black.svg')} /></Link>
-            }
-
+            <Cross rotate={this.props.backgroundModeShader} onClick={this.handleCrossClick}>✝&#xFE0E;</Cross>
             <Link to="/cart"><img src={require('assets/icons/cart-black.svg')} /></Link>
-            <Cross onClick={this.toggleMenu}>✝&#xFE0E;</Cross>
+            <a className="menu" onClick={this.toggleMenu}><img src={require('assets/icons/menu.svg')} /></a>
           </Links>
         </Header>
 
         {
           this.state.cart && <Cart />
         }
-
         <HeaderPlaceholder />
-
         {
           // <Footer>
           //   <Link to='/'>Shop</Link>
@@ -160,8 +161,6 @@ class Nav extends Component {
           //   <Link to='/cart'>Cart {this.props.checkout.quantity}</Link>
           // </Footer>
         }
-
-
         {this.state.menu && <Menu toggleMenu={this.toggleMenu} />}
       </Container>
     );
@@ -170,9 +169,13 @@ class Nav extends Component {
 
 export default withRouter(connect(
   state => ({
-    checkout: state.cart.checkout
+    checkout: state.cart.checkout,
+    backgroundModeShader: state.ui.backgroundModeShader,
+    activeProduct: state.shop.activeProduct
   }),
   dispatch => ({
-    openCart: () => dispatch(cartActions.toggleCart(true))
+    openCart: () => dispatch(cartActions.toggleCart(true)),
+    setBackgroundModeShader: bool => dispatch(uiActions.setBackgroundModeShader(bool)),
+    setImage: img => dispatch(threeActions.setImage(img))
   })
 )(Nav))

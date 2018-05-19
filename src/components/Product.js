@@ -16,6 +16,7 @@ import {client} from 'components/initializeClient'
 
 const ProductPage = FlexRow.extend`
   width: calc(100vw - 120px);
+  width: 100vw;
   height: calc(100vh - 80px);
   overflow: hidden;
   justify-content: space-between;
@@ -45,6 +46,7 @@ const ImgContainer = styled.div`
   align-items: flex-start;
   max-height: 80vh;
   overflow-y: scroll;
+  padding: 20px;
 
   margin: 0 auto;
 
@@ -52,6 +54,7 @@ const ImgContainer = styled.div`
     flex: 1 0 100%;
     width: 100vw;
     max-width: 450px;
+    padding: 0;
 
   }
 `
@@ -73,10 +76,11 @@ const Details = styled.div`
   padding: 40px 40px 0 40px;
 
   flex: 1 1 50%;
+  height: 100vh;
   box-sizing: border-box;
   display: flex;
   flex-flow: column nowrap;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   box-sizing: border-box;
 
@@ -86,9 +90,10 @@ const Details = styled.div`
 
   border: 2px solid black;
 
-  max-height: 80vh;
+  // max-height: 80vh;
 
   overflow-y: scroll;
+  margin: 0;
 
 
   h1 {
@@ -152,7 +157,7 @@ const Button = styled.div`
   // font-family: "Xolonium";
 
   width: 100%;
-  // max-width: 400px;
+  max-width: 400px;
   text-align:center;
   background-color: ${props => props.added? 'black' : 'white'};
   font-style: ${props => props.added ? 'italic' : 'normal'};
@@ -178,10 +183,11 @@ const Button = styled.div`
 const DetailRow = FlexRow.extend`
   justify-content: flex-start;
   width: 100%;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
   text-align: left;
   line-height: 1.5;
-  flex: 1 0 auto;
+  // flex: 1 0 auto;
+  justify-content: center;
 
 
   select {
@@ -189,6 +195,8 @@ const DetailRow = FlexRow.extend`
   }
 
   @media (max-width: 700px) {
+
+    justify-content: flex-start;
     margin-bottom: 20px;
     width: calc(100vw - 40px);
     span {
@@ -246,26 +254,6 @@ class Product extends Component {
   }
 
   componentDidMount() {
-      // if (this.productPageRef) {
-      //   this.productPageRef.addEventListener('touchstart', event => {
-      //       this.allowUp = (this.scrollTop > 0);
-      //       this.allowDown = (this.scrollTop < this.scrollHeight - this.clientHeight);
-      //       this.slideBeginY = event.pageY;
-      //   });
-      //
-      //   this.productPageRef.addEventListener('touchmove', event => {
-      //       var up = (event.pageY > this.slideBeginY);
-      //       var down = (event.pageY < this.slideBeginY);
-      //       this.slideBeginY = event.pageY;
-      //       if ((up && this.allowUp) || (down && this.allowDown)) {
-      //           event.stopPropagation();
-      //       }
-      //       else {
-      //           event.preventDefault();
-      //       }
-      //   });
-      // }
-
     client && this.props.fetchByHandle(this.props.match.params.product)
   }
 
@@ -274,8 +262,6 @@ class Product extends Component {
       this.handleNewActiveProduct(this.props.activeProduct)
       // let info = this.props.client.shop.fetchInfo().then(res => res)
       // let policies = this.props.client.shop.fetchPolicies().then(res =>res)
-      // console.log(info); // this includes currency
-      // console.log(policies);
     }
   }
 
@@ -295,7 +281,7 @@ class Product extends Component {
       selectedVariant: activeProduct.variants[0]
     });
 
-    this.props.setImage(utils.resizeImgForShopify(activeProduct.variants[0].image.src, '1024x1024'))
+    this.props.setImage(activeProduct.variants[0].image.src)
   }
 
   selectVariant = variant => {
@@ -325,7 +311,7 @@ class Product extends Component {
     let variant = this.state.selectedVariant || product.variants[0]
     let variantQuantity = this.state.selectedVariantQuantity || 1
     let image = variant.image.src || this.state.product.images[0].src
-    image = utils.resizeImgForShopify(image, '2048x2048')
+    image = utils.resizeImgForShopify(image, '1024x1024')
 
     return (
       <ProductPage>
@@ -340,7 +326,7 @@ class Product extends Component {
             </DetailRow>
 
             <DetailRow>
-              <span><h2>{variant.price} {this.props.checkout.currencyCode}</h2></span>
+              <span><h3>{variant.price} {this.props.checkout.currencyCode}</h3></span>
             </DetailRow>
 
             <DetailRow>
