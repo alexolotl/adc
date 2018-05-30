@@ -168,7 +168,7 @@ const Button = styled.div`
     padding: 10px;
     font-size: 1.5em;
     font-style: italic;
-    text-transform: uppercase;
+    // text-transform: uppercase;
     margin-bottom: 55px;
     border: 2px solid black;
     box-sizing: border-box;
@@ -201,7 +201,7 @@ const MoreButton = styled.div`
   align-items: center;
   border: 2px solid black;
   margin: 40px auto;
-  text-transform: uppercase;
+  // text-transform: uppercase;
   justify-content: center;
   z-index: 10;
 
@@ -309,7 +309,7 @@ class ProductsList extends Component {
         }
         </Products>
         <MoreButton visible={this.props.hasNextPage} onClick={this.loadMore}>
-          {this.props.productsLoading ? 'Loading...' : 'Load More'}
+          {this.props.productsLoading ? 'Loading...' : 'More'}
         </MoreButton>
       </Container>
     )

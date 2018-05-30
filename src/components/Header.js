@@ -93,6 +93,11 @@ const Logo = styled.h1`
   }
 `
 
+const Img = styled.img`
+  max-height: 40px;
+  max-width: 50vw;
+`
+
 const Footer = styled.footer`
   display: flex;
   flex-flow: row nowrap;
@@ -133,15 +138,15 @@ class Nav extends Component {
   }
 
   handleCrossClick = () => {
-    this.props.setBackgroundModeShader(!this.props.backgroundModeShader)
-    this.props.activeProduct && this.props.setImage(this.props.activeProduct.images[0].src)
+    // this.props.setBackgroundModeShader(!this.props.backgroundModeShader)
+    // this.props.activeProduct && this.props.setImage(this.props.activeProduct.images[0].src)
   }
 
   render() {
     return (
       <Container>
         <Header>
-          <Logo><Link to='/shop'>antes de Cristo</Link></Logo>
+          <Logo><Link to='/shop'><Img src={require('assets/images/logo1200.png')} /></Link></Logo>
           <Links>
             <Cross rotate={this.props.backgroundModeShader} onClick={this.handleCrossClick}>✝&#xFE0E;</Cross>
             <Link to="/cart"><img src={require('assets/icons/cart-black.svg')} /></Link>

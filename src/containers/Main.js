@@ -96,7 +96,7 @@ class Main extends Component {
     return (
       <main>
         {
-            this.props.backgroundModeShader ? <ThreeWindow image={this.props.image} /> : <BackgroundText hidden={this.props.location.pathname == '/'} hover={this.props.backgroundTextStyle.color != null}>
+            this.props.backgroundModeShader && this.props.location.pathname != '/' ? <ThreeWindow image={this.props.image} /> : <BackgroundText hidden={this.props.location.pathname == '/'} hover={this.props.backgroundTextStyle.color != null}>
               {
                 list.map(i => <span key={i}>{this.props.backgroundText}</span>)
               }

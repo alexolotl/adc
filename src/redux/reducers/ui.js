@@ -5,7 +5,7 @@ const initialState = {
   header: true,
   backgroundText: 'Antes de Cristo ',
   backgroundTextStyle: {fontStyle: ''},
-  backgroundModeShader: false
+  backgroundModeShader: true
 }
 
 const ui = (state = initialState, action) => {

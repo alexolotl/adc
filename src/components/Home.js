@@ -6,7 +6,7 @@ import ThreeWindow from 'components/ThreeWindow/ThreeWindow'
 import styled from 'styled-components'
 
 const Container = styled.div`
-  border: 20px solid white;
+  // border: 20px solid white;
   box-sizing: border-box;
   video {
     width: 100vw;
@@ -33,7 +33,7 @@ const Text = styled.div`
   justify-content: center;
   // width: 30vw;
   // height: 30vw;
-  padding: 30px 80px;
+  // padding: 30px 80px;
   background-color: white;
   z-index: 1;
 
@@ -57,15 +57,9 @@ const Text = styled.div`
 `
 
 const Img = styled.img`
-  z-index: -5;
-  position: absolute;
-  // top: -1800px;
-  // left: -1800px;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  object-fit: cover;
+  max-width: 100vw;
+  max-height: 80vh;
+  padding: 0;
 `
 
 
@@ -102,10 +96,11 @@ class Home extends Component {
       <Container>
         <Text>
           <Link to={'/shop'}>
-            <h1>antes</h1><h1>de</h1><h1>Cristo</h1>
+            <Img src={require('assets/images/home.png')} />
           </Link>
         </Text>
         {
+          // <h1>antes</h1><h1>de</h1><h1>Cristo</h1>
           // <video autoPlay muted>
           //   <source src={require('assets/videos/7pm.webm')} />
           // </video>

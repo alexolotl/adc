@@ -54,7 +54,7 @@ const ImgContainer = styled.div`
     flex: 1 0 100%;
     width: 100vw;
     max-width: 450px;
-    padding: 0;
+    padding: 20px;
 
   }
 `
