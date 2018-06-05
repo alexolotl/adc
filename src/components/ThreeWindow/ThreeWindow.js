@@ -41,6 +41,11 @@ class ThreeWindow extends Component {
 
   componentDidMount() {
     this.setState({scene: new Three(this.threeRef, window.innerWidth, window.innerHeight, this.props.image, this.props.image)})
+    window.addEventListener('resize', this.onResize)
+  }
+
+  onResize = e => {
+    this.state.scene && this.state.scene.setSize(window.innerWidth, window.innerHeight)
   }
 
   componentDidUpdate(oldProps, oldState) {
@@ -265,6 +270,12 @@ class Three {
     this.camera.updateProjectionMatrix();
 
     this.renderer.setSize(this.width, this.height);
+  }
+
+  setSize = (w,h) => {
+    this.width = w
+    this.height = h
+    this.resize()
   }
 
   mousemove(e) {

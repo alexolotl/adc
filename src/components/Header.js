@@ -45,7 +45,7 @@ const Links = FlexRow.extend`
   font-family: "UnifrakturCook";
   font-size: 3em;
   justify-content: space-between;
-  max-width: 160px;
+  max-width: 100px;
   align-items: center;
   margin-right: 20px;
   a {
@@ -62,7 +62,7 @@ const Links = FlexRow.extend`
   }
 
   @media (max-width: 700px) {
-    max-width: 120px;
+    max-width: 70px;
     img {
       width: 30px;
     }
@@ -94,7 +94,7 @@ const Logo = styled.h1`
 `
 
 const Img = styled.img`
-  max-height: 40px;
+  max-height: 35px;
   max-width: 50vw;
 `
 
@@ -148,9 +148,9 @@ class Nav extends Component {
         <Header>
           <Logo><Link to='/shop'><Img src={require('assets/images/logo1200.png')} /></Link></Logo>
           <Links>
-            <Cross rotate={this.props.backgroundModeShader} onClick={this.handleCrossClick}>✝&#xFE0E;</Cross>
             <Link to="/cart"><img src={require('assets/icons/cart-black.svg')} /></Link>
-            <a className="menu" onClick={this.toggleMenu}><img src={require('assets/icons/menu.svg')} /></a>
+            <Cross onClick={this.toggleMenu} rotate={this.props.backgroundModeShader}>✝&#xFE0E;</Cross>
+
           </Links>
         </Header>
 
