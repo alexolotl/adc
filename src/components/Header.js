@@ -30,6 +30,7 @@ const Header = styled.header`
   max-width: 100vw;
 
 
+
   border-bottom: 2px solid black;
   box-sizing: border-box;
 
@@ -37,10 +38,22 @@ const Header = styled.header`
   background-color: white;
 
   @media (max-width: 700px) {
+    height: 50px;
+    max-height: 50px;
     border-bottom: 0px solid black;
+
+    padding: 0 25px;
+
+    transform-origin: top center;
+    // transform: skew(180deg, -9deg) scaleY(1.5) translateY(20px);
+    // transform: scaleY(1.5);
+    // top: -2px;
   }
 `
-
+const Hamburger = styled.img`
+  max-width: 30px;
+  max-height: 100%;
+`
 const Links = FlexRow.extend`
   font-family: "UnifrakturCook";
   font-size: 3em;
@@ -63,15 +76,22 @@ const Links = FlexRow.extend`
 
   @media (max-width: 700px) {
     max-width: 70px;
+    margin-right: 0;
+
     img {
       width: 30px;
     }
+    // display: none;
   }
 `
 
 const HeaderPlaceholder = styled.div`
   height: 80px;
   width: 100%;
+
+  @media (max-width: 700px) {
+    height: 50px;
+  }
 `
 
 const Logo = styled.h1`
@@ -82,6 +102,7 @@ const Logo = styled.h1`
   margin-left: 20px;
   // height: 40px;
   font-weight: medium;
+  cursor: pointer;
 
   a:hover {
     unicode-bidi:bidi-override;
@@ -89,13 +110,25 @@ const Logo = styled.h1`
   }
 
   @media (max-width: 700px) {
-    font-size: 2em;
+    // font-size: 2em;
+    font-size: 0;
+    flex: 1 0 auto;
+    margin: 0 !important;
+    position: relative;
+    text-align: left;
   }
 `
 
 const Img = styled.img`
   max-height: 35px;
   max-width: 50vw;
+  cursor: pointer;
+
+  @media (max-width: 700px) {
+    max-height: 30px;
+    max-width: calc(100vw - 50px - 85px);
+    margin: 0 auto;
+  }
 `
 
 const Footer = styled.footer`
@@ -142,15 +175,18 @@ class Nav extends Component {
     // this.props.activeProduct && this.props.setImage(this.props.activeProduct.images[0].src)
   }
 
+  handleClick = () => {
+      this.props.history.push('/shop')
+  }
+
   render() {
     return (
       <Container>
         <Header>
-          <Logo><Link to='/shop'><Img src={require('assets/images/logo1200.png')} /></Link></Logo>
+          <Logo onClick={this.handleClick}><Img src={require('assets/images/logo1200.png')} /></Logo>
           <Links>
             <Link to="/cart"><img src={require('assets/icons/cart-black.svg')} /></Link>
             <Cross onClick={this.toggleMenu} rotate={this.props.backgroundModeShader}>✝&#xFE0E;</Cross>
-
           </Links>
         </Header>
 

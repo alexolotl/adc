@@ -24,13 +24,14 @@ const Container = FlexRow.extend`
   overflow-x: hidden;
   width: 100vw;
   box-sizing: border-box;
+  overflow-y: hidden;
 
   .react-draggable {
   }
 
   @media (max-width: 700px) {
     max-width: calc(100vw - 50px);
-    width: calc(100vw - 50px);
+    // width: calc(100vw - 50px);
     margin: 0 auto;
 
     .react-draggable {
@@ -98,9 +99,9 @@ const PreviewContainer = styled.div`
   max-width: 350px;
   margin: 40px;
   z-index: ${props => props.active ? 10 : 1};
-  padding: 25px;
-  border: 3px solid black;
-  background-color: white;
+  // padding: 25px;
+  // border: 3px solid black;
+  // background-color: white;
 
   cursor: move; /* fallback if grab cursor is unsupported */
   cursor: grab;
@@ -205,6 +206,9 @@ const MoreButton = styled.div`
   justify-content: center;
   z-index: 10;
 
+  margin: 25px;
+  box-sizing: border-box;
+
   :hover {
     background-color: black;//#aa72ff;
     color: white;
@@ -266,6 +270,7 @@ class ProductsList extends Component {
   }
 
   render() {
+    // console.log(this.props.hasNextPage);
     return (
       <Container>
 

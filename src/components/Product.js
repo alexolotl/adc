@@ -31,8 +31,12 @@ const ProductPage = FlexRow.extend`
     width: 100%;
     position: relative;
     display: block;
+    flex-flow: column nowrap;
+    justify-content: space-around;
     margin-top: 0;
     background-color: white;
+    height: calc(100vh - 50px);
+    overflow-y: scroll;
   }
 `
 
@@ -53,7 +57,9 @@ const ImgContainer = styled.div`
   @media (max-width: 700px) {
     flex: 1 0 100%;
     width: 100vw;
-    max-width: 450px;
+    max-width: calc(100vw - 50px);//450px;
+    height: auto;
+    max-height: none;
     padding: 0px;
 
   }
@@ -67,7 +73,8 @@ const Img = styled.img`
 
   @media (max-width: 700px) {
     width: 100%;
-    max-width: 100%;
+    max-width: calc(100vw - 50px);//450px;
+    max-height: none;
 
     margin: 0 auto;
   }
@@ -177,6 +184,7 @@ const Button = styled.div`
   @media (max-width: 700px) {
     // margin: 0px 20px 20px 20px;
     margin: 0;
+    font-size: 1.25em;
   }
 `
 
@@ -239,6 +247,10 @@ const Back = styled.img`
   top: 100px;
   left: 20px;
   width: 30px;
+
+  @media (max-width: 700px) {
+    display: none;
+  }
 `
 
 

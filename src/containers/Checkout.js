@@ -9,17 +9,24 @@ import {P, H4} from 'components/styledComponents/Typography'
 import {FlexRow, FlexCol} from 'globalStyles'
 
 const Wrapper = FlexCol.extend`
-  height: calc(100vh - 80px);
+  // height: calc(100vh - 80px);
+  height: auto;
+  min-height: calc(100vh - 80px);
+  box-sizing: border-box;
   width: 100%;
-  position: fixed;
+  // position: fixed;
   top: 80px;
-  left: 0;
+  // left: 0;
   // justify-content: flex-start;
   background-color: white;
   z-index: 5;
+  overflow-y: scroll;
+  padding-top: 20px;
 
   @media (max-width: 700px) {
-
+    min-height: calc(100vh - 50px);
+    height: auto;
+    top: 50px;
   }
 `
 
@@ -27,6 +34,8 @@ const LineItems = styled.div`
   width: 600px;
 
   margin: 0 20px 40px 20px;
+  box-sizing: border-box;
+  height: auto;
 
   @media (max-width: 700px) {
     width: calc(100% - 40px);
