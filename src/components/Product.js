@@ -17,11 +17,11 @@ import {client} from 'components/initializeClient'
 const ProductPage = FlexRow.extend`
   width: calc(100vw - 120px);
   width: 100vw;
-  height: calc(100vh - 80px);
+  height: calc(100vh - 60px);
   overflow: hidden;
   justify-content: space-between;
   margin: 0 auto;
-  min-height: calc(100vh - 80px);
+  min-height: calc(100vh - 60px);
 
   box-sizing: border-box;
 
@@ -164,7 +164,7 @@ const Button = styled.div`
   // font-family: "Xolonium";
 
   width: 100%;
-  max-width: 400px;
+  max-width: 650px;
   text-align:center;
   background-color: ${props => props.added? 'black' : 'white'};
   font-style: ${props => props.added ? 'italic' : 'normal'};

@@ -22,7 +22,7 @@ const Header = styled.header`
   flex-flow: row nowrap;
   align-items: center;
   justify-content: space-between;
-  height: 80px;
+  height: 60px;
   width: 100%;
   position: fixed;
   top: 0;
@@ -86,7 +86,7 @@ const Links = FlexRow.extend`
 `
 
 const HeaderPlaceholder = styled.div`
-  height: 80px;
+  height: 60px;
   width: 100%;
 
   @media (max-width: 700px) {

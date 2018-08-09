@@ -9,13 +9,13 @@ import {P, H4} from 'components/styledComponents/Typography'
 import {FlexRow, FlexCol} from 'globalStyles'
 
 const Wrapper = FlexCol.extend`
-  // height: calc(100vh - 80px);
+  // height: calc(100vh - 60px);
   height: auto;
-  min-height: calc(100vh - 80px);
+  min-height: calc(100vh - 60px);
   box-sizing: border-box;
   width: 100%;
   // position: fixed;
-  top: 80px;
+  top: 60px;
   // left: 0;
   // justify-content: flex-start;
   background-color: white;

@@ -206,7 +206,8 @@ const MoreButton = styled.div`
   justify-content: center;
   z-index: 10;
 
-  margin: 25px;
+  margin: 25px auto;
+  max-width: calc(100vw - 50px);
   box-sizing: border-box;
 
   :hover {
