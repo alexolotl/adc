@@ -146,7 +146,6 @@ const Button = styled.div`
 class Checkout extends Component {
   constructor(props){
     super(props)
-    console.log(props);
   }
   componentDidMount() {
     this.props.setBkgText('CART ')

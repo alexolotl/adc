@@ -186,7 +186,7 @@ class Morph extends THREE.Mesh {
 class Scene extends THREE.Scene {
   constructor(image) {
     super();
-    console.log(image);
+    // console.log(image);
     this.time = 0;
 
     this.morph = new Morph(image);

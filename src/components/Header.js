@@ -186,7 +186,7 @@ class Nav extends Component {
           <Logo onClick={this.handleClick}><Img src={require('assets/images/logo1200.png')} /></Logo>
           <Links>
             <Link to="/cart"><img src={require('assets/icons/cart-black.svg')} /></Link>
-            <Cross onClick={this.toggleMenu} rotate={this.props.backgroundModeShader}>✝&#xFE0E;</Cross>
+            <Cross onClick={this.toggleMenu} rotate={this.props.backgroundModeShader? 1 : 0}>✝&#xFE0E;</Cross>
           </Links>
         </Header>
 

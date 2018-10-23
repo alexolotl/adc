@@ -68,6 +68,11 @@ const Preview = styled.img`
   max-width: 350px;
   pointer-events: none;
 
+  @media (min-width: 700px) {
+    width: 350px;
+    height: 500px;
+  }
+
   @media (max-width: 700px) {
     margin: 0;
     padding: 0;

@@ -80,6 +80,20 @@ class Home extends Component {
     //     activeImage: this.props.products ? this.props.products[idx].images[0].src : null
     //   })
     // }, 2000)
+
+    window.addEventListener('mousemove', this.mouseMove)
+  }
+  componentWillUnmount(){
+    window.removeEventListener('mousemove', this.mouseMove)
+  }
+  mouseMove = e => {
+    let x = e.clientX-window.innerWidth/2
+    let y = e.clientY-window.innerHeight/2
+    let c = Math.sqrt(x*x + y*y)
+    if(this.imgRef) {
+      this.imgRef.style.transform = `rotateX(${y/100}deg) rotateY(${-x/100}deg)`
+    }
+
   }
   componentDidUpdate(oldProps) {
     // if (oldProps.products != this.props.products) {
@@ -95,8 +109,8 @@ class Home extends Component {
     return (
       <Container>
         <Text>
-          <Link to={'/shop'}>
-            <Img src={require('assets/images/home.png')} />
+          <Link innerRef={ref => this.containerRef = ref} style={{perspective: 75}} to={'/shop'}>
+            <Img innerRef={ref => this.imgRef = ref} src={require('assets/images/home.png')} />
           </Link>
         </Text>
         {

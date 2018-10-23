@@ -22,6 +22,12 @@ class App extends Component {
     if (checkoutId) {
       client.checkout.fetch(checkoutId).then((checkout) => {
         this.props.updateCheckout(checkout)
+      }).catch(error => {
+        console.log(error);
+        client.checkout.create().then((checkout) => {
+          localStorage.setItem('checkoutId', checkout.id)
+          this.props.updateCheckout(checkout)
+        });
       });
     }
     else {
