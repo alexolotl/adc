@@ -15,9 +15,8 @@ class Shop extends Component {
   render() {
     return (
       <Container>
-      
-        <Route exact path={'/shop'} component={ProductsList}/>
-        <Route exact path={'/shop/:product'} component={Product}/>
+        <Route exact path={'/shop'} component={ProductsList} />
+        <Route exact path={'/shop/:product'} component={Product} />
       </Container>
     );
   }
