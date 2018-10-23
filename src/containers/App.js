@@ -18,28 +18,25 @@ import {client} from 'components/initializeClient'
 class App extends Component {
   componentWillMount() {
     // CHECKOUT
+
+    if (checkout.completedAt != null) {
+      localStorage.setItem('checkoutId', null)
+    }
     const checkoutId = localStorage.getItem('checkoutId')
 
     if (checkoutId) {
       client.checkout.fetch(checkoutId).then((checkout) => {
         this.props.updateCheckout(checkout)
-        console.log(checkout);
-        console.log(client);
       }).catch(error => {
         console.log(error);
         client.checkout.create().then((checkout) => {
           localStorage.setItem('checkoutId', checkout.id)
           this.props.updateCheckout(checkout)
-          console.log(checkout);
-          console.log(client);
         });
       });
     }
     else {
       client.checkout.create().then((checkout) => {
-
-        console.log(checkout);
-        console.log(client);
         localStorage.setItem('checkoutId', checkout.id)
         this.props.updateCheckout(checkout)
       });
