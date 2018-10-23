@@ -375,7 +375,7 @@ class Product extends Component {
 
 
             <DetailRow>
-              <Button active={variant} added={this.state.added === variant.id} onClick={() => {console.log(variant.id);console.log(this.state.selectedVariantQuantity);console.log(this.props.checkout.id);this.props.addVariantToCart(variant.id, this.state.selectedVariantQuantity, this.props.checkout.id); this.setState({added: variant.id})}}>
+              <Button active={variant} added={this.state.added === variant.id} onClick={() => {this.props.addVariantToCart(variant.id, this.state.selectedVariantQuantity, this.props.checkout.id); this.setState({added: variant.id})}}>
               {this.state.added === variant.id ? 'ADDED!' : 'ADD TO CART'}
               </Button>
             </DetailRow>

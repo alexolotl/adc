@@ -19,10 +19,10 @@ export function updateCheckout(payload) {
 export function addVariantToCart(variantId, quantity, checkoutId) {
   return (dispatch) => {
     const lineItemsToAdd = [{variantId, quantity: parseInt(quantity, 10)}]
-
+    // console.log(lineItemsToAdd);
     return client.checkout.addLineItems(checkoutId, lineItemsToAdd).then(res => {
         dispatch(updateCheckout(res))
-    });
+    }).catch(error => {console.log(error);});
   }
 }
 
