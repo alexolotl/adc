@@ -19,27 +19,23 @@ class App extends Component {
   componentWillMount() {
     // CHECKOUT
 
-    if (checkout.completedAt != null) {
-      localStorage.setItem('checkoutId', null)
-    }
     const checkoutId = localStorage.getItem('checkoutId')
 
     if (checkoutId) {
       client.checkout.fetch(checkoutId).then((checkout) => {
-        this.props.updateCheckout(checkout)
+        if (checkout.completedAt != null) {
+          this.createCheckout()
+        }
+        else {
+          this.props.updateCheckout(checkout)
+        }
       }).catch(error => {
         console.log(error);
-        client.checkout.create().then((checkout) => {
-          localStorage.setItem('checkoutId', checkout.id)
-          this.props.updateCheckout(checkout)
-        });
+        this.createCheckout()
       });
     }
     else {
-      client.checkout.create().then((checkout) => {
-        localStorage.setItem('checkoutId', checkout.id)
-        this.props.updateCheckout(checkout)
-      });
+      this.createCheckout()
     }
 
     // PRODUCTS
@@ -56,6 +52,12 @@ class App extends Component {
     // client.fetchShopInfo().then((res) => {
     //   dispatch(shopActions.setShop(res))
     // });
+  }
+  createCheckout = () => {
+    client.checkout.create().then((checkout) => {
+      localStorage.setItem('checkoutId', checkout.id)
+      this.props.updateCheckout(checkout)
+    });
   }
   render() {
     return (
