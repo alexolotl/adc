@@ -23,14 +23,14 @@ class App extends Component {
 
     if (checkoutId) {
       client.checkout.fetch(checkoutId).then((checkout) => {
-        if (false && checkout.completedAt != null) {
+        if (checkout.completedAt != null) {
           this.createCheckout()
         }
         else {
           this.props.updateCheckout(checkout)
         }
       }).catch(error => {
-        console.log(error);
+        // console.log(error);
         this.createCheckout()
       });
     }
