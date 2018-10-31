@@ -172,11 +172,11 @@ const Button = styled.div`
   p {
     background-color: white;
     padding: 10px;
-    font-size: 1.5em;
+    font-size: 1.25em;
     font-style: italic;
     // text-transform: uppercase;
     margin-bottom: 55px;
-    border: 2px solid black;
+    // border: 2px solid black;
     box-sizing: border-box;
 
     :hover {
@@ -205,7 +205,7 @@ const MoreButton = styled.div`
   cursor: pointer;
   flex-flow: row nowrap;
   align-items: center;
-  border: 2px solid black;
+  // border: 2px solid black;
   margin: 40px auto;
   // text-transform: uppercase;
   justify-content: center;

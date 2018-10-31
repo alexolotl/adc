@@ -71,7 +71,7 @@ const Links = FlexRow.extend`
     transform: scaleX(.8);
   }
   img {
-    width: 40px;
+    width: 35px;
   }
 
   @media (max-width: 700px) {
@@ -120,12 +120,12 @@ const Logo = styled.h1`
 `
 
 const Img = styled.img`
-  max-height: 35px;
+  max-height: 30px;
   max-width: 50vw;
   cursor: pointer;
 
   @media (max-width: 700px) {
-    max-height: 30px;
+    max-height: 25px;
     max-width: calc(100vw - 50px - 85px);
     margin: 0 auto;
   }
@@ -145,6 +145,7 @@ const Footer = styled.footer`
 
 const Cross = styled.a`
   color: white;
+  font-size: .9em;
   -webkit-text-stroke: 1px black;
   transform: ${props => props.rotate ? 'rotate(180deg)' : 'none'};
   @media (max-width: 700px) {
